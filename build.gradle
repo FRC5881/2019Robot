@@ -1,6 +1,6 @@
 plugins {
     id "java"
-    id "edu.wpi.first.GradleRIO" version "2019.1.1-rc-1"
+    id "edu.wpi.first.GradleRIO" version "2019.1.1"
     id 'idea'
 }
 
@@ -51,6 +51,10 @@ dependencies {
 jar {
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
     manifest edu.wpi.first.gradlerio.GradleRIOPlugin.javaManifest(ROBOT_MAIN_CLASS)
+}
+
+repositories {
+    maven { url 'http://repo1.maven.org/maven2' }
 }
 
 wrapper {
