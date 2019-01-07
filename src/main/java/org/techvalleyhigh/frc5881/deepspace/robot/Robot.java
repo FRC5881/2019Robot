@@ -3,6 +3,8 @@ package org.techvalleyhigh.frc5881.deepspace.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.techvalleyhigh.frc5881.deepspace.robot.commands.TestCommand;
+import org.techvalleyhigh.frc5881.deepspace.robot.subsystem.*;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -17,12 +19,38 @@ public class Robot extends TimedRobot {
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
+  // Define OI and subsystems
+  public static OI oi;
+  public static TestSubsystem testSubsystem;
+  public static Climber climber;
+  public static DriveControl driveControl;
+  public static Elevator elevator;
+  public static Intake intake;
+  public static Manipulator manipulator;
+
   /**
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
    */
   @Override
   public void robotInit() {
+    // Init subsystems
+    testSubsystem = new TestSubsystem();
+    climber = new Climber();
+    driveControl = new DriveControl();
+    elevator = new Elevator();
+    intake = new Intake();
+    manipulator = new Manipulator();
+
+
+    /*
+    OI must be constructed after subsystems. If the OI creates Commands
+    (which it very likely will), subsystems are not guaranteed to be
+    constructed yet. Thus, their requires() statements may grab null
+    pointers. Bad news. Don't move it.
+     */
+    oi = new OI();
+
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
