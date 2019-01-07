@@ -4,6 +4,9 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
+/**
+ * Controls operator interfaces, such as controllers (and a few buttons)
+ */
 public class OI {
     public final GenericHID driverController;
 
@@ -65,7 +68,7 @@ public class OI {
         if (Math.abs(input) < deadZone) {
             output = 0;
         } else {
-            // If we're above the joystick deadzone sqaure the inputs but keep the sign
+            // If we're above the joystick deadZone, square the inputs but keep the sign
             output = input < 0 ? -input * input : input * input;
         }
 

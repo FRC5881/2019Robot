@@ -10,7 +10,6 @@ public class TestSubsystem extends Subsystem {
     // Initialize test motor as id 0
     private WPI_TalonSRX testMotor = new WPI_TalonSRX(0);
     private TestCommand testCommand;
-    private double percent;
 
     public TestSubsystem() {
         // Run default subsystem constructor
@@ -31,13 +30,19 @@ public class TestSubsystem extends Subsystem {
         testCommand = new TestCommand();
     }
 
+    /**
+     * Init subsystem variables
+     */
     private void init() {
         // Set up motor controller
         testMotor.setName("Test", "Motor One");
     }
 
+    /**
+     * Drive test motor in percent mode
+     * @param percent raw value to drive
+     */
     public void rawDrive(double percent) {
-        this.percent = percent;
         // Set bounds on inputs, motors in percent mode except inputs on [-1, 1]
         if (percent > 1) percent = 1;
         else if (percent < -1) percent = -1;
@@ -46,6 +51,9 @@ public class TestSubsystem extends Subsystem {
         testMotor.set(percent);
     }
 
+    /**
+     * Drive test motor in percent mode based on Joystick input
+     */
     public void driveJoystickInputs() {
         // Get axis reading from controller
         double input = Robot.oi.driverController.getRawAxis(OI.XBOX_LEFT_Y_AXIS);
