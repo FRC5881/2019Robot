@@ -9,8 +9,11 @@ public class Elevator extends Subsystem {
     //TODO: Find out if there is any better way to do this
     private ElevatorState elevatorState = ElevatorState.HIGH_HATCH;
     // TODO: Change the "deviceNumber" to whatever the actual number(s) on the talon(s) is(are).
+    // There are four motors because Ian is thinking of having four on the bot.
     private WPI_TalonSRX elevatorMasterMotor = new WPI_TalonSRX(2);
-    private WPI_TalonSRX elevatorSlaveMotor = new WPI_TalonSRX(3);
+    private WPI_TalonSRX elevatorSlaveMotor1 = new WPI_TalonSRX(3);
+    private WPI_TalonSRX elevatorSlaveMotor2 = new WPI_TalonSRX(4);
+    private WPI_TalonSRX elevatorSlaveMotor3 = new WPI_TalonSRX(5);
     // TODO: find out how many "ticks" it is till the top of the elevator
     // if we actually reach these points we need to stop
     private int topTicks = 1000;
@@ -80,7 +83,9 @@ public class Elevator extends Subsystem {
     }
 
     private void init(){
-       elevatorSlaveMotor.follow(elevatorMasterMotor);
+      elevatorSlaveMotor1.follow(elevatorMasterMotor);
+      elevatorSlaveMotor2.follow(elevatorMasterMotor);
+      elevatorSlaveMotor3.follow(elevatorMasterMotor);
       SmartDashboard.putNumber("Elevator kP", kP);
       SmartDashboard.putNumber("Elevator kI", kI);
       SmartDashboard.putNumber("Elevator kD", kD);
