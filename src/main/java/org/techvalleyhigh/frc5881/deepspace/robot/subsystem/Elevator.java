@@ -5,22 +5,22 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class Elevator extends Subsystem {
+    //TODO: Find out if there is any better way to do this
     private ElevatorState elevatorState = ElevatorState.HIGH_HATCH;
-
-    //TODO: Change the "deviceNumber" to whatever the actual number(s) on the talon(s) is(are).
+    // TODO: Change the "deviceNumber" to whatever the actual number(s) on the talon(s) is(are).
     private WPI_TalonSRX elevatorMasterMotor = new WPI_TalonSRX(2);
     private WPI_TalonSRX elevatorSlaveMotor = new WPI_TalonSRX(3);
-    //TODO: find out how many "ticks" it is till the top of the elevator
-    //if we actually reach these points we need to stop
+    // TODO: find out how many "ticks" it is till the top of the elevator
+    // if we actually reach these points we need to stop
     private int topTicks = 1000;
     private int bottomTicks = 0;
-    //TODO: Find out how many "ticks" it is till the first level that the elevator needs to go to
+    // TODO: Find out how many "ticks" it is till the first level that the elevator needs to go to
     private int firstLevelTicks = 333;
-    //TODO: Find out how many "ticks" it is till the second level that the elevator needs to go to
+    // TODO: Find out how many "ticks" it is till the second level that the elevator needs to go to
     private int secondLevelTicks = 667;
-    //TODO: Find out how many "ticks" it is till the third level that the elevator needs to go to(if we actually decide to do that)
+    // TODO: Find out how many "ticks" it is till the third level that the elevator needs to go to(if we actually decide to do that)
     private int thirdLevelTicks = 1000;
-    //TODO: We should probably find out what the heights for the low, middle and high hatchet and ball locations are
+    // TODO: We should probably find out what the heights for the low, middle and high hatchet and ball locations are
     public enum ElevatorState {
         NONE,
         LOW_HATCH,
@@ -49,8 +49,8 @@ public class Elevator extends Subsystem {
     }
 
     public void elevatorUp(){
-        //TODO: Probably should organize this in the future so it might have a chance of working
-        //In theory whenever we tell the elevator to go up it should
+        // TODO: Probably should organize this in the future so it might have a chance of working
+        // In theory whenever we tell the elevator to go up it should
         if(ElevatorState.LOW_HATCH.equals(elevatorState)){
             elevatorMasterMotor.set(ControlMode.Position, firstLevelTicks);
             elevatorState = ElevatorState.MIDDLE_HATCH;
@@ -66,7 +66,7 @@ public class Elevator extends Subsystem {
         }
     }
     public void elevatorDown(){
-        //TODO: Probably should organize this in the future so it might have a chance of working
+        // TODO: Probably should organize this in the future so it might have a chance of working
         if (ElevatorState.HIGH_HATCH.equals(elevatorState)){
             elevatorMasterMotor.set(ControlMode.Position, secondLevelTicks);
             elevatorState = ElevatorState.MIDDLE_HATCH;
@@ -80,8 +80,5 @@ public class Elevator extends Subsystem {
             elevatorMasterMotor.set(ControlMode.Position, firstLevelTicks);
             elevatorState = ElevatorState.LOW_CARGO;
         }
-                /*
-        Put something here that would signify the moving of the 'elevator' in the downward fashion, but not too far down.
-         */
     }
 }
