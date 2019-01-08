@@ -50,36 +50,35 @@ public class Elevator extends Subsystem {
 
     public void elevatorUp(){
         //TODO: Probably should organize this in the future so it might have a chance of working
-
-        if(elevatorState == ElevatorState.LOW_HATCH){
+        //In theory whenever we tell the elevator to go up it should
+        if(ElevatorState.LOW_HATCH.equals(elevatorState)){
             elevatorMasterMotor.set(ControlMode.Position, firstLevelTicks);
             elevatorState = ElevatorState.MIDDLE_HATCH;
-        } else if(elevatorState == ElevatorState.MIDDLE_HATCH) {
+        } else if(ElevatorState.MIDDLE_HATCH.equals(elevatorState)) {
             elevatorMasterMotor.set(ControlMode.Position, secondLevelTicks);
             elevatorState = ElevatorState.HIGH_HATCH;
-        } else if(elevatorState == ElevatorState.LOW_CARGO){
+        } else if(ElevatorState.HIGH_HATCH.equals(elevatorState)){
+            //TODO: Do something here eventually that will tell the driver/ operator that they are "too high to do that"
+        } else if(ElevatorState.LOW_CARGO.equals(elevatorState)){
             elevatorMasterMotor.set(ControlMode.Position, firstLevelTicks);
             elevatorState = ElevatorState.MIDDLE_CARGO;
-        } else if(elevatorState == ElevatorState.MIDDLE_CARGO){
+        } else if(ElevatorState.MIDDLE_CARGO.equals(elevatorState)){
             elevatorMasterMotor.set(ControlMode.Position, secondLevelTicks);
             elevatorState = ElevatorState.HIGH_CARGO;
-        }                /*
-        Put something here that would signify the moving of the 'elevator' in the upward fashion, but not too far up.
-         */
-
+        }
     }
     public void elevatorDown(){
         //TODO: Probably should organize this in the future so it might have a chance of working
-        if (elevatorState == ElevatorState.HIGH_HATCH){
+        if (ElevatorState.HIGH_HATCH.equals(elevatorState)){
             elevatorMasterMotor.set(ControlMode.Position, secondLevelTicks);
             elevatorState = ElevatorState.MIDDLE_HATCH;
-        } else if(elevatorState == ElevatorState.MIDDLE_HATCH){
+        } else if(ElevatorState.MIDDLE_HATCH.equals(elevatorState)){
             elevatorMasterMotor.set(ControlMode.Position, firstLevelTicks);
             elevatorState = ElevatorState.LOW_HATCH;
-        } else if(elevatorState == ElevatorState.HIGH_CARGO){
+        } else if(ElevatorState.HIGH_CARGO.equals(elevatorState)){
             elevatorMasterMotor.set(ControlMode.Position, secondLevelTicks);
             elevatorState = ElevatorState.MIDDLE_CARGO;
-        } else if(elevatorState == ElevatorState.MIDDLE_CARGO){
+        } else if(ElevatorState.MIDDLE_CARGO.equals(elevatorState)){
             elevatorMasterMotor.set(ControlMode.Position, firstLevelTicks);
             elevatorState = ElevatorState.LOW_CARGO;
         }
