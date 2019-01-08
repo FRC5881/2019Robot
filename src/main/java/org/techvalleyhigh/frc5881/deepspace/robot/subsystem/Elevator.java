@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class Elevator extends Subsystem {
     //TODO: Change the "deviceNumber" to whatever the actual number(s) on the talon(s) is(are).
     private WPI_TalonSRX elevatorMasterMotor = new WPI_TalonSRX(2);
-    //private WPI_TalonSRX elevatorSlaveMotor = new WPI_TalonSRX(3);
+    private WPI_TalonSRX elevatorSlaveMotor = new WPI_TalonSRX(3);
     //TODO: find out how many "ticks" it is till the top of the elevator
     //if we actually reach these points we need to stop
     private int topTicks = 1000;
@@ -30,7 +30,7 @@ public class Elevator extends Subsystem {
     }
 
     private void init(){
-      //  elevatorSlaveMotor.follow(elevatorMasterMotor);
+       elevatorSlaveMotor.follow(elevatorMasterMotor);
     }
 
     @Override
