@@ -8,7 +8,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Elevator extends Subsystem {
 
-    // TODO: Find out if there is any better way to do this
     private ElevatorState elevatorState = ElevatorState.HIGH_HATCH;
 
     // TODO: Change the "deviceNumber" to whatever the actual number(s) on the talon(s) is(are).
@@ -30,8 +29,6 @@ public class Elevator extends Subsystem {
     private int midHatchTicks = 50;
     private int midCargoTicks = 55;
     private int highHatchTicks = 100;
-
-    // TODO: Find out what the actual amount of ticks to each thing is
     private int highCargoTicks = 105;
 
     // TODO: Find the actual kP of the elevator motors
