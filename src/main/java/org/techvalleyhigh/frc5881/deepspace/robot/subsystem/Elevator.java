@@ -59,7 +59,7 @@ public class Elevator extends Subsystem {
     public void elevatorDown(){
         int ticksToGo = 0;
         if (elevatorLevel <= 3 && ticksToGo > 0){
-            ticksToGo -= 333;
+            ticksToGo -= elevatorLevel * 333;
             elevatorMasterMotor.set(ControlMode.Position, ticksToGo);
         }
                 /*
