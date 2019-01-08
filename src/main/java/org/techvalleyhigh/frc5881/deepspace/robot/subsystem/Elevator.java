@@ -23,17 +23,24 @@ public class Elevator extends Subsystem {
     // TODO: We should probably find out what the heights for the low, middle and high hatchet and ball locations are
     public enum ElevatorState {
         NONE,
+
         LOW_HATCH,
+
         LOW_CARGO,
+
         MIDDLE_HATCH,
+
         MIDDLE_CARGO,
+
         HIGH_HATCH,
+
         HIGH_CARGO
     }
 
     public Elevator() {
         super();
     }
+
     public Elevator(String name){
         super(name);
         init();
@@ -65,6 +72,7 @@ public class Elevator extends Subsystem {
             elevatorState = ElevatorState.HIGH_CARGO;
         }
     }
+
     public void elevatorDown(){
         // TODO: Probably should organize this in the future so it might have a chance of working
         if (ElevatorState.HIGH_HATCH.equals(elevatorState)){
