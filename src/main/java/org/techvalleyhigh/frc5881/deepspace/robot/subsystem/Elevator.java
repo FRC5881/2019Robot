@@ -3,6 +3,7 @@ package org.techvalleyhigh.frc5881.deepspace.robot.subsystem;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Elevator extends Subsystem {
     //TODO: Find out if there is any better way to do this
@@ -28,7 +29,16 @@ public class Elevator extends Subsystem {
     //TODO: Find out what the actual amount of ticks to each thing is
     private int highCargoTicks = 105;
     // TODO: We should probably find out what the heights for the low, middle and high hatchet and ball locations are
-    /*
+
+    //TODO: Find the value
+    private int kP = 0;
+    //TODO: Find the value
+    private int kI = 0;
+    //TODO: Find the value
+    private int kD = 0;
+    //TODO: Find the value
+    private int kF = 0;
+  /*
     The order of heights is: (greatest to least)
 
     1. High cargo
@@ -71,6 +81,15 @@ public class Elevator extends Subsystem {
 
     private void init(){
        elevatorSlaveMotor.follow(elevatorMasterMotor);
+      SmartDashboard.putNumber("Elevator kP", kP);
+      SmartDashboard.putNumber("Elevator kI", kI);
+      SmartDashboard.putNumber("Elevator kD", kD);
+      SmartDashboard.putNumber("Elevator kF", kF);
+      elevatorMasterMotor.config_kP(0, 2);
+      elevatorMasterMotor.config_kI(0, 0);
+      elevatorMasterMotor.config_kD(0, 20);
+      elevatorMasterMotor.config_kF(0, .076);
+
     }
 
     @Override
