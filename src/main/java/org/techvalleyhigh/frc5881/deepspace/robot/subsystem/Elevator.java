@@ -39,31 +39,31 @@ public class Elevator extends Subsystem {
     }
 
     public void elevatorUp(){
-        int ticksToGo = 0;
-        if(elevatorLevel == 3){
-            elevatorMasterMotor.set(ControlMode.Position, 0);
-        } else if (elevatorLevel < 3){
-            //TODO: Figure out if we want to do the elevator movement by incrementing or by just using the joysticks
-            //Supposed to make the ticksToGo become the ticks of the next level, don't know if it will do that, but who knows.
-            ticksToGo += 333;
-            //TODO: Figure out what mode we want to move the elevator in
-            elevatorMasterMotor.set(ControlMode.Position, ticksToGo);
-            System.out.println(ticksToGo);
+        if(elevatorLevel == 0){
+            elevatorMasterMotor.set(ControlMode.Position, firstLevelTicks);
+            elevatorLevel = 1;
+        } else if(elevatorLevel == 1){
+            elevatorMasterMotor.set(ControlMode.Position, secondLevelTicks);
+            elevatorLevel = 2;
+        } else if(elevatorLevel == 2){
+            elevatorMasterMotor.set(ControlMode.Position, thirdLevelTicks);
+            elevatorLevel = 3;
         }
-        //elevatorMasterMotor.set(ControlMode.Position, );
                 /*
         Put something here that would signify the moving of the 'elevator' in the upward fashion, but not too far up.
          */
 
     }
     public void elevatorDown(){
-        int ticksToGo = 0;
-        if (elevatorLevel <= 3 && ticksToGo > 0){
-            ticksToGo -= elevatorLevel * 333;
-            elevatorMasterMotor.set(ControlMode.Position, ticksToGo);
+        if (elevatorLevel == 3){
+            elevatorMasterMotor.set(ControlMode.Position, secondLevelTicks);
+            elevatorLevel = 2;
+        } else if(elevatorLevel == 2){
+            elevatorMasterMotor.set(ControlMode.Position, firstLevelTicks);
+            elevatorLevel = 1;
         }
                 /*
-        Put something here that would signify the moving of the 'elevator' in the downward fashion, but not too far up.
+        Put something here that would signify the moving of the 'elevator' in the downward fashion, but not too far down.
          */
     }
 }
