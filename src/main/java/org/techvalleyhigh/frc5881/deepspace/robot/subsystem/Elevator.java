@@ -26,4 +26,9 @@ public class Elevator extends Subsystem {
         Put something here that would signify the moving of the 'elevator' in the upward fashion, but not to far up.
          */
     }
+    public void elevatorDown(){
+                /*
+        Put something here that would signify the moving of the 'elevator' in the upward fashion, but not to far up.
+         */
+    }
 }
