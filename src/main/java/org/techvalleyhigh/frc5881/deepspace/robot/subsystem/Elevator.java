@@ -4,6 +4,8 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
+import static org.techvalleyhigh.frc5881.deepspace.robot.subsystem.Elevator.ElevatorState.*;
+
 public class Elevator extends Subsystem {
     //TODO: Change the "deviceNumber" to whatever the actual number(s) on the talon(s) is(are).
     private WPI_TalonSRX elevatorMasterMotor = new WPI_TalonSRX(2);
@@ -18,8 +20,16 @@ public class Elevator extends Subsystem {
     private int secondLevelTicks = 667;
     //TODO: Find out how many "ticks" it is till the third level that the elevator needs to go to(if we actually decide to do that)
     private int thirdLevelTicks = 1000;
-
-    private int elevatorLevel = 0;
+    //TODO: We should probably find out what the heights for the low, middle and high hatchet and ball locations are
+    public enum ElevatorState {
+        NONE,
+        LOW_HATCHET,
+        LOW_CARGO,
+        MIDDLE_HATCHET,
+        MIDDLE_CARGO,
+        HIGH_HATCHET,
+        HIGH_CARGO
+    }
 
     public Elevator() {
         super();
@@ -39,28 +49,40 @@ public class Elevator extends Subsystem {
     }
 
     public void elevatorUp(){
-        if(elevatorLevel == 0){
+        //TODO: Probably should organize this in the future so it might have a chance of working
+        ElevatorState elevatorState = ElevatorState.HIGH_HATCHET;
+        if(elevatorState == ElevatorState.LOW_HATCHET){
             elevatorMasterMotor.set(ControlMode.Position, firstLevelTicks);
-            elevatorLevel = 1;
-        } else if(elevatorLevel == 1){
+            elevatorState = ElevatorState.MIDDLE_HATCHET;
+        } else if(elevatorState == ElevatorState.MIDDLE_HATCHET) {
             elevatorMasterMotor.set(ControlMode.Position, secondLevelTicks);
-            elevatorLevel = 2;
-        } else if(elevatorLevel == 2){
-            elevatorMasterMotor.set(ControlMode.Position, thirdLevelTicks);
-            elevatorLevel = 3;
-        }
-                /*
+            elevatorState = ElevatorState.HIGH_HATCHET;
+        } else if(elevatorState == ElevatorState.LOW_CARGO){
+            elevatorMasterMotor.set(ControlMode.Position, firstLevelTicks);
+            elevatorState = ElevatorState.MIDDLE_CARGO;
+        } else if(elevatorState == ElevatorState.MIDDLE_CARGO){
+            elevatorMasterMotor.set(ControlMode.Position, secondLevelTicks);
+            elevatorState = ElevatorState.HIGH_CARGO;
+        }                /*
         Put something here that would signify the moving of the 'elevator' in the upward fashion, but not too far up.
          */
 
     }
     public void elevatorDown(){
-        if (elevatorLevel == 3){
+        //TODO: Probably should organize this in the future so it might have a chance of working
+        ElevatorState elevatorState = ElevatorState.HIGH_HATCHET;
+        if (elevatorState == ElevatorState.HIGH_HATCHET){
             elevatorMasterMotor.set(ControlMode.Position, secondLevelTicks);
-            elevatorLevel = 2;
-        } else if(elevatorLevel == 2){
+            elevatorState = ElevatorState.MIDDLE_HATCHET;
+        } else if(elevatorState == ElevatorState.MIDDLE_HATCHET){
             elevatorMasterMotor.set(ControlMode.Position, firstLevelTicks);
-            elevatorLevel = 1;
+            elevatorState = ElevatorState.LOW_HATCHET;
+        } else if(elevatorState == ElevatorState.HIGH_CARGO){
+            elevatorMasterMotor.set(ControlMode.Position, secondLevelTicks);
+            elevatorState = ElevatorState.MIDDLE_CARGO;
+        } else if(elevatorState == ElevatorState.MIDDLE_CARGO){
+            elevatorMasterMotor.set(ControlMode.Position, firstLevelTicks);
+            elevatorState = ElevatorState.LOW_CARGO;
         }
                 /*
         Put something here that would signify the moving of the 'elevator' in the downward fashion, but not too far down.
