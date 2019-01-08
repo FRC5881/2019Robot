@@ -7,16 +7,18 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 // TODO: Probably should test this code and make sure it works.
 
 public class Elevator extends Subsystem {
-    //TODO: Find out if there is any better way to do this
+
+    // TODO: Find out if there is any better way to do this
     private ElevatorState elevatorState = ElevatorState.HIGH_HATCH;
+
     // TODO: Change the "deviceNumber" to whatever the actual number(s) on the talon(s) is(are).
     // There are four motors because Ian is thinking of having four on the bot.
     private WPI_TalonSRX elevatorMasterMotor = new WPI_TalonSRX(2);
     private WPI_TalonSRX elevatorSlaveMotor1 = new WPI_TalonSRX(3);
     private WPI_TalonSRX elevatorSlaveMotor2 = new WPI_TalonSRX(4);
     private WPI_TalonSRX elevatorSlaveMotor3 = new WPI_TalonSRX(5);
-    // TODO: find out how many "ticks" it is till the top of the elevator
 
+    // TODO: find out how many "ticks" it is till the top of the elevator
     // If we actually reach these points we need to stop
     private int topTicks = 1000;
 
