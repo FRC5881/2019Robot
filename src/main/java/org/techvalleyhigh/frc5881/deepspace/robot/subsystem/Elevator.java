@@ -24,19 +24,11 @@ public class Elevator extends Subsystem {
 
     private int bottomTicks = 0;
 
-    // TODO: Find out what the actual amount of ticks to each thing is
+    // TODO: Find out what the actual amount of ticks to each is
     private int lowHatchTicks = 10;
-
-    // TODO: Find out what the actual amount of ticks to each thing is
     private int lowCargoTicks = 15;
-
-    // TODO: Find out what the actual amount of ticks to each thing is
     private int midHatchTicks = 50;
-
-    // TODO: Find out what the actual amount of ticks to each thing is
     private int midCargoTicks = 55;
-
-    // TODO: Find out what the actual amount of ticks to each thing is
     private int highHatchTicks = 100;
 
     // TODO: Find out what the actual amount of ticks to each thing is
