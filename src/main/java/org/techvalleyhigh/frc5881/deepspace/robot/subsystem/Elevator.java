@@ -5,6 +5,8 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class Elevator extends Subsystem {
+    private ElevatorState elevatorState = ElevatorState.HIGH_HATCH;
+
     //TODO: Change the "deviceNumber" to whatever the actual number(s) on the talon(s) is(are).
     private WPI_TalonSRX elevatorMasterMotor = new WPI_TalonSRX(2);
     private WPI_TalonSRX elevatorSlaveMotor = new WPI_TalonSRX(3);
@@ -48,7 +50,7 @@ public class Elevator extends Subsystem {
 
     public void elevatorUp(){
         //TODO: Probably should organize this in the future so it might have a chance of working
-        ElevatorState elevatorState = ElevatorState.HIGH_HATCH;
+
         if(elevatorState == ElevatorState.LOW_HATCH){
             elevatorMasterMotor.set(ControlMode.Position, firstLevelTicks);
             elevatorState = ElevatorState.MIDDLE_HATCH;
@@ -68,7 +70,6 @@ public class Elevator extends Subsystem {
     }
     public void elevatorDown(){
         //TODO: Probably should organize this in the future so it might have a chance of working
-        ElevatorState elevatorState = ElevatorState.HIGH_HATCH;
         if (elevatorState == ElevatorState.HIGH_HATCH){
             elevatorMasterMotor.set(ControlMode.Position, secondLevelTicks);
             elevatorState = ElevatorState.MIDDLE_HATCH;
