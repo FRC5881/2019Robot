@@ -57,8 +57,6 @@ public class Elevator extends Subsystem {
         } else if(ElevatorState.MIDDLE_HATCH.equals(elevatorState)) {
             elevatorMasterMotor.set(ControlMode.Position, secondLevelTicks);
             elevatorState = ElevatorState.HIGH_HATCH;
-        } else if(ElevatorState.HIGH_HATCH.equals(elevatorState)){
-            //TODO: Do something here eventually that will tell the driver/ operator that they are "too high to do that"
         } else if(ElevatorState.LOW_CARGO.equals(elevatorState)){
             elevatorMasterMotor.set(ControlMode.Position, firstLevelTicks);
             elevatorState = ElevatorState.MIDDLE_CARGO;
