@@ -3,6 +3,7 @@ package org.techvalleyhigh.frc5881.deepspace.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.techvalleyhigh.frc5881.deepspace.robot.commands.ArcadeDrive;
 import org.techvalleyhigh.frc5881.deepspace.robot.commands.TestCommand;
 import org.techvalleyhigh.frc5881.deepspace.robot.subsystem.*;
 
@@ -28,6 +29,9 @@ public class Robot extends TimedRobot {
   public static Intake intake;
   public static Manipulator manipulator;
 
+  // Commands
+  public static ArcadeDrive driveCommand;
+
   /**
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
@@ -42,7 +46,6 @@ public class Robot extends TimedRobot {
     intake = new Intake();
     manipulator = new Manipulator();
 
-
     /*
     OI must be constructed after subsystems. If the OI creates Commands
     (which it very likely will), subsystems are not guaranteed to be
@@ -50,6 +53,8 @@ public class Robot extends TimedRobot {
     pointers. Bad news. Don't move it.
      */
     oi = new OI();
+
+    driveCommand = new ArcadeDrive();
 
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
