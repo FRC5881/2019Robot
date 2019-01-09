@@ -72,10 +72,10 @@ public class Elevator extends Subsystem {
 
     public Elevator() {
         super();
-    }
-
-    public Elevator(String name){
-        super(name);
+        SmartDashboard.putNumber("Elevator kP", 2);
+        SmartDashboard.putNumber("Elevator kI", 0);
+        SmartDashboard.putNumber("Elevator kD", 20);
+        SmartDashboard.putNumber("Elevator kF", 0.076);
         init();
     }
 
@@ -83,9 +83,13 @@ public class Elevator extends Subsystem {
       elevatorSlaveMotor.set(ControlMode.Follower, 2);
        elevatorMasterMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
 
+
       elevatorMasterMotor.config_kP(0, getElevator_kP(), 10);
+
       elevatorMasterMotor.config_kI(0, getElevator_kI(), 10);
+
       elevatorMasterMotor.config_kD(0, getElevator_kD(), 10);
+
       elevatorMasterMotor.config_kF(0, getElevator_kF(), 10);
 
     }
