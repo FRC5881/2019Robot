@@ -82,6 +82,11 @@ public class Elevator extends Subsystem {
       elevatorSlaveMotor.set(ControlMode.Follower, 2);
        elevatorMasterMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
 
+      elevatorMasterMotor.config_kP(0, kP, 10);
+      elevatorMasterMotor.config_kI(0, kI, 10);
+      elevatorMasterMotor.config_kD(0, kD, 10);
+      elevatorMasterMotor.config_kF(0, kF, 10);
+
     }
 
     @Override
