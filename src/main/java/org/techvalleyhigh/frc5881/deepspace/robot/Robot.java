@@ -1,8 +1,11 @@
 package org.techvalleyhigh.frc5881.deepspace.robot;
 
+import com.kauailabs.navx.frc.AHRS;
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.techvalleyhigh.frc5881.deepspace.robot.commands.Elevator.ElevatorSave;
 import org.techvalleyhigh.frc5881.deepspace.robot.commands.TestCommand;
 import org.techvalleyhigh.frc5881.deepspace.robot.subsystem.*;
 
@@ -18,6 +21,8 @@ public class Robot extends TimedRobot {
   private static final String kCustomAuto = "My Auto";
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
+
+  private static AHRS navX;
 
   // Define OI and subsystems
   public static OI oi;
@@ -51,6 +56,10 @@ public class Robot extends TimedRobot {
      */
     oi = new OI();
 
+
+    SPI.Port port = SPI.Port.kOnboardCS0;
+    navX = new AHRS(port);
+
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
@@ -66,6 +75,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+
   }
 
   /**
@@ -107,6 +117,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
+    if (navX.getRawGyroY() > 45) {
+      new ElevatorSave();
+    }
   }
 
   /**
