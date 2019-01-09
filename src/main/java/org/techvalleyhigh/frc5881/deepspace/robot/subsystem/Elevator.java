@@ -1,8 +1,8 @@
 package org.techvalleyhigh.frc5881.deepspace.robot.subsystem;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class Elevator extends Subsystem {
@@ -11,10 +11,7 @@ public class Elevator extends Subsystem {
     // TODO: Change the "deviceNumber" to whatever the actual number(s) on the talon(s) is(are).
     private WPI_TalonSRX elevatorMasterMotor = new WPI_TalonSRX(2);
     private WPI_TalonSRX elevatorSlaveMotor = new WPI_TalonSRX(3);
-//    private Encoder encoder1 = new Encoder(0, 1);
-//    private Encoder encoder2 = new Encoder(2, 3);
     // TODO: find out how many "ticks" it is till the top of the elevator
-    // if we actually reach these points we need to stop
     public static final int topTicks = 1000;
     public static final int bottomTicks = 0;
 
@@ -82,8 +79,8 @@ public class Elevator extends Subsystem {
     }
 
     private void init(){
-       elevatorSlaveMotor.follow(elevatorMasterMotor);
-       // elevatorMasterMotor.configSelectedFeedbackSensor();
+      elevatorSlaveMotor.set(ControlMode.Follower, 2);
+       elevatorMasterMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
 
     }
 
@@ -139,6 +136,12 @@ public class Elevator extends Subsystem {
     }
 
     public void setSetpoint(double setpoint) {
-      elevatorMasterMotor.set(ControlMode.Position, setpoint);
+      if(getSetpoint() >= bottomTicks && getSetpoint() <= topTicks) {
+        elevatorMasterMotor.set(ControlMode.Position, setpoint);
+      }
+    }
+
+    public double getSetpoint(){
+    return elevatorMasterMotor.getClosedLoopTarget(0);
     }
 }
