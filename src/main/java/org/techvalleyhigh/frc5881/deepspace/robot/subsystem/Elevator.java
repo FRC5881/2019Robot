@@ -4,6 +4,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Elevator extends Subsystem {
     //TODO: Find out if there is any better way to do this
@@ -82,10 +83,10 @@ public class Elevator extends Subsystem {
       elevatorSlaveMotor.set(ControlMode.Follower, 2);
        elevatorMasterMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
 
-      elevatorMasterMotor.config_kP(0, kP, 10);
-      elevatorMasterMotor.config_kI(0, kI, 10);
-      elevatorMasterMotor.config_kD(0, kD, 10);
-      elevatorMasterMotor.config_kF(0, kF, 10);
+      elevatorMasterMotor.config_kP(0, getElevator_kP(), 10);
+      elevatorMasterMotor.config_kI(0, getElevator_kI(), 10);
+      elevatorMasterMotor.config_kD(0, getElevator_kD(), 10);
+      elevatorMasterMotor.config_kF(0, getElevator_kF(), 10);
 
     }
 
@@ -147,6 +148,23 @@ public class Elevator extends Subsystem {
     }
 
     public double getSetpoint(){
-    return elevatorMasterMotor.getClosedLoopTarget(0);
+      return elevatorMasterMotor.getClosedLoopTarget(0);
     }
+
+    public double getElevator_kP() {
+      return SmartDashboard.getNumber("Elevator kP", 2.0);
+    }
+
+    public double getElevator_kI() {
+      return SmartDashboard.getNumber("Elevator kI", 0);
+    }
+
+    public double getElevator_kD(){
+      return SmartDashboard.getNumber("Elevator kD", 20);
+    }
+
+    public double getElevator_kF() {
+      return SmartDashboard.getNumber("Elevator kF", 0.076);
+    }
+
 }
