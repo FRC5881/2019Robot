@@ -3,10 +3,8 @@ package org.techvalleyhigh.frc5881.deepspace.robot.commands.Elevator;
 import edu.wpi.first.wpilibj.command.Command;
 import org.techvalleyhigh.frc5881.deepspace.robot.Robot;
 
-public class elevatorDown extends Command {
-
-    public elevatorDown(){
-
+public class ElevatorDown extends Command {
+    public ElevatorDown(){
     requires(Robot.elevator);
 }
 

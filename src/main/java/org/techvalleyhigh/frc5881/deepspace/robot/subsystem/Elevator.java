@@ -1,29 +1,25 @@
 package org.techvalleyhigh.frc5881.deepspace.robot.subsystem;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-// TODO: Probably should test this code and make sure it works.
 
 public class Elevator extends Subsystem {
 
     private ElevatorState elevatorState = ElevatorState.HIGH_HATCH;
 
     // TODO: Change the "deviceNumber" to whatever the actual number(s) on the talon(s) is(are).
-    // There are four motors because Ian is thinking of having four on the bot.
     private WPI_TalonSRX elevatorMasterMotor = new WPI_TalonSRX(2);
-    private WPI_TalonSRX elevatorSlaveMotor1 = new WPI_TalonSRX(3);
-    private WPI_TalonSRX elevatorSlaveMotor2 = new WPI_TalonSRX(4);
-    private WPI_TalonSRX elevatorSlaveMotor3 = new WPI_TalonSRX(5);
+    private WPI_TalonSRX elevatorSlaveMotor = new WPI_TalonSRX(3);
 
     // TODO: find out how many "ticks" it is till the top of the elevator
-    // If we actually reach these points we need to stop
-    private int topTicks = 1000;
+    public static final int topTicks = 1000;
+    public static final int bottomTicks = 0;
 
-    private int bottomTicks = 0;
 
-    // TODO: Find out what the actual amount of ticks to each is
+   // TODO: Find out what the actual amount of ticks to each is
     private int lowHatchTicks = 10;
     private int lowCargoTicks = 15;
     private int midHatchTicks = 50;
@@ -78,32 +74,25 @@ public class Elevator extends Subsystem {
     public Elevator() {
 
         super();
-    }
-
-    public Elevator(String name){
-
-        super(name);
+        SmartDashboard.putNumber("Elevator kP", 2);
+        SmartDashboard.putNumber("Elevator kI", 0);
+        SmartDashboard.putNumber("Elevator kD", 20);
+        SmartDashboard.putNumber("Elevator kF", 0.076);
         init();
     }
 
     private void init(){
+      elevatorSlaveMotor.set(ControlMode.Follower, 2);
+      elevatorMasterMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
 
-      // TODO: Find out what direction the four motors are going in and maybe switch this around
-      elevatorSlaveMotor1.follow(elevatorMasterMotor);
-      elevatorSlaveMotor2.follow(elevatorMasterMotor);
-      elevatorSlaveMotor3.follow(elevatorMasterMotor);
 
-      // Puts the PID values into Smart Dashboard
-      SmartDashboard.putNumber("Elevator kP", kP);
-      SmartDashboard.putNumber("Elevator kI", kI);
-      SmartDashboard.putNumber("Elevator kD", kD);
-      SmartDashboard.putNumber("Elevator kF", kF);
+      elevatorMasterMotor.config_kP(0, getElevator_kP(), 10);
 
-      // Sets the PID values of the elevator motors
-      elevatorMasterMotor.config_kP(0, kD);
-      elevatorMasterMotor.config_kI(0, kI);
-      elevatorMasterMotor.config_kD(0, kD);
-      elevatorMasterMotor.config_kF(0, kF);
+      elevatorMasterMotor.config_kI(0, getElevator_kI(), 10);
+
+      elevatorMasterMotor.config_kD(0, getElevator_kD(), 10);
+
+      elevatorMasterMotor.config_kF(0, getElevator_kF(), 10);
 
     }
 
@@ -115,68 +104,97 @@ public class Elevator extends Subsystem {
     public void elevatorUp(){
 
           if(ElevatorState.NONE.equals(elevatorState)){
-            elevatorMasterMotor.set(ControlMode.Position, lowHatchTicks);
+
+            setSetpoint(lowHatchTicks);
             elevatorState = ElevatorState.LOW_HATCH;
 
           } else if (ElevatorState.LOW_HATCH.equals(elevatorState)) {
 
-            elevatorMasterMotor.set(ControlMode.Position, lowCargoTicks);
+            setSetpoint(lowCargoTicks);
             elevatorState = ElevatorState.LOW_CARGO;
 
           } else if(ElevatorState.LOW_CARGO.equals(elevatorState)){
 
-            elevatorMasterMotor.set(ControlMode.Position, midHatchTicks);
+            setSetpoint(midHatchTicks);
             elevatorState = ElevatorState.MIDDLE_HATCH;
 
           } else if(ElevatorState.MIDDLE_HATCH.equals(elevatorState)){
 
-            elevatorMasterMotor.set(ControlMode.Position, midCargoTicks);
+            setSetpoint(midCargoTicks);
             elevatorState = ElevatorState.MIDDLE_CARGO;
 
           } else if(ElevatorState.MIDDLE_CARGO.equals(elevatorState)){
 
-            elevatorMasterMotor.set(ControlMode.Position, highHatchTicks);
+            setSetpoint(highHatchTicks);
             elevatorState = ElevatorState.HIGH_HATCH;
 
           } else if(ElevatorState.HIGH_HATCH.equals(elevatorState)){
 
-            elevatorMasterMotor.set(ControlMode.Position, highCargoTicks);
+            setSetpoint(highCargoTicks);
             elevatorState = ElevatorState.HIGH_CARGO;
+
           }
     }
 
     public void elevatorDown(){
 
-        if(ElevatorState.HIGH_CARGO.equals(elevatorState)){
+        if(ElevatorState.HIGH_CARGO.equals(elevatorState)) {
 
-          elevatorMasterMotor.set(ControlMode.Position, highHatchTicks);
+          setSetpoint(highHatchTicks);
           elevatorState = ElevatorState.HIGH_HATCH;
 
         } else if(ElevatorState.HIGH_HATCH.equals(elevatorState)){
 
-          elevatorMasterMotor.set(ControlMode.Position, midCargoTicks);
+          setSetpoint(midCargoTicks);
           elevatorState = ElevatorState.MIDDLE_CARGO;
 
         } else if(ElevatorState.MIDDLE_CARGO.equals(elevatorState)){
 
-          elevatorMasterMotor.set(ControlMode.Position, midHatchTicks);
+          setSetpoint(midHatchTicks);
           elevatorState = ElevatorState.MIDDLE_HATCH;
 
         } else if(ElevatorState.MIDDLE_HATCH.equals(elevatorState)){
 
-          elevatorMasterMotor.set(ControlMode.Position, lowCargoTicks);
+          setSetpoint(lowCargoTicks);
           elevatorState = ElevatorState.LOW_CARGO;
 
         } else if(ElevatorState.LOW_CARGO.equals(elevatorState)){
 
-          elevatorMasterMotor.set(ControlMode.Position, lowHatchTicks);
+          setSetpoint(lowHatchTicks);
           elevatorState = ElevatorState.LOW_HATCH;
 
         } else if(ElevatorState.LOW_HATCH.equals(elevatorState)){
 
-          elevatorMasterMotor.set(ControlMode.Position, bottomTicks);
+          setSetpoint(bottomTicks);
           elevatorState = ElevatorState.NONE;
 
         }
     }
+
+    public void setSetpoint(double setpoint) {
+      if(getSetpoint() >= bottomTicks && getSetpoint() <= topTicks) {
+        elevatorMasterMotor.set(ControlMode.Position, setpoint);
+      }
+    }
+
+    public double getSetpoint(){
+      return elevatorMasterMotor.getClosedLoopTarget(0);
+    }
+
+    public double getElevator_kP() {
+      return SmartDashboard.getNumber("Elevator kP", 2.0);
+    }
+
+    public double getElevator_kI() {
+      return SmartDashboard.getNumber("Elevator kI", 0);
+    }
+
+    public double getElevator_kD(){
+      return SmartDashboard.getNumber("Elevator kD", 20);
+    }
+
+    public double getElevator_kF() {
+      return SmartDashboard.getNumber("Elevator kF", 0.076);
+    }
+
 }
