@@ -100,6 +100,7 @@ public class Elevator extends Subsystem {
    * Also "sets the PID values"
    */
   private void init(){
+
       elevatorSlaveMotor.set(ControlMode.Follower, 2);
       elevatorMasterMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
 
