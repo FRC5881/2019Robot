@@ -6,6 +6,8 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+import static org.techvalleyhigh.frc5881.deepspace.robot.Robot.manipulator;
+
 public class Elevator extends Subsystem {
 
     private ElevatorState elevatorState = ElevatorState.HIGH_HATCH;
@@ -109,80 +111,92 @@ public class Elevator extends Subsystem {
     }
 
   /**
-   * Moves the elevator up.
+   * Moves the elevator up to the next possible level.
    */
   public void elevatorUp(){
 
-          if(ElevatorState.NONE.equals(elevatorState)){
+      if(manipulator.getMode().equals(Manipulator.ManipulatorState.HATCH)){
 
-            setSetpoint(lowHatchTicks);
-            elevatorState = ElevatorState.LOW_HATCH;
+        if(ElevatorState.NONE.equals(elevatorState)){
 
-          } else if (ElevatorState.LOW_HATCH.equals(elevatorState)) {
+              setSetpoint(lowHatchTicks);
+              elevatorState = ElevatorState.LOW_HATCH;
 
-            setSetpoint(lowCargoTicks);
-            elevatorState = ElevatorState.LOW_CARGO;
+            } else if (ElevatorState.LOW_HATCH.equals(elevatorState)) {
 
-          } else if(ElevatorState.LOW_CARGO.equals(elevatorState)){
+              setSetpoint(lowCargoTicks);
+              elevatorState = ElevatorState.LOW_CARGO;
 
-            setSetpoint(midHatchTicks);
-            elevatorState = ElevatorState.MIDDLE_HATCH;
+            } else if(ElevatorState.MIDDLE_HATCH.equals(elevatorState)){
 
-          } else if(ElevatorState.MIDDLE_HATCH.equals(elevatorState)){
+              setSetpoint(midCargoTicks);
+              elevatorState = ElevatorState.MIDDLE_CARGO;
 
-            setSetpoint(midCargoTicks);
-            elevatorState = ElevatorState.MIDDLE_CARGO;
+            } else if(ElevatorState.HIGH_HATCH.equals(elevatorState)){
 
-          } else if(ElevatorState.MIDDLE_CARGO.equals(elevatorState)){
+              setSetpoint(highCargoTicks);
+              elevatorState = ElevatorState.HIGH_CARGO;
 
-            setSetpoint(highHatchTicks);
-            elevatorState = ElevatorState.HIGH_HATCH;
+            }
+          } else if(manipulator.getMode().equals(Manipulator.ManipulatorState.CARGO)){
 
-          } else if(ElevatorState.HIGH_HATCH.equals(elevatorState)){
+            if(ElevatorState.LOW_CARGO.equals(elevatorState)){
 
-            setSetpoint(highCargoTicks);
-            elevatorState = ElevatorState.HIGH_CARGO;
+              setSetpoint(midHatchTicks);
+              elevatorState = ElevatorState.MIDDLE_HATCH;
 
+            }  else if(ElevatorState.MIDDLE_CARGO.equals(elevatorState)){
+
+              setSetpoint(highHatchTicks);
+              elevatorState = ElevatorState.HIGH_HATCH;
+
+            }
           }
     }
 
   /**
-   * Moves the elevator down.
+   * Moves the elevator down to the next possible state.
    */
   public void elevatorDown(){
 
-        if(ElevatorState.HIGH_CARGO.equals(elevatorState)) {
+    if (manipulator.getMode().equals(Manipulator.ManipulatorState.HATCH)) {
 
-          setSetpoint(highHatchTicks);
-          elevatorState = ElevatorState.HIGH_HATCH;
+      if (ElevatorState.HIGH_HATCH.equals(elevatorState)) {
 
-        } else if(ElevatorState.HIGH_HATCH.equals(elevatorState)){
+        setSetpoint(midCargoTicks);
+        elevatorState = ElevatorState.MIDDLE_CARGO;
 
-          setSetpoint(midCargoTicks);
-          elevatorState = ElevatorState.MIDDLE_CARGO;
+      } else if (ElevatorState.MIDDLE_HATCH.equals(elevatorState)) {
 
-        } else if(ElevatorState.MIDDLE_CARGO.equals(elevatorState)){
+        setSetpoint(lowCargoTicks);
+        elevatorState = ElevatorState.LOW_CARGO;
 
-          setSetpoint(midHatchTicks);
-          elevatorState = ElevatorState.MIDDLE_HATCH;
+      } else if (ElevatorState.LOW_HATCH.equals(elevatorState)) {
 
-        } else if(ElevatorState.MIDDLE_HATCH.equals(elevatorState)){
+        setSetpoint(bottomTicks);
+        elevatorState = ElevatorState.NONE;
 
-          setSetpoint(lowCargoTicks);
-          elevatorState = ElevatorState.LOW_CARGO;
+      }
+    } else if (manipulator.getMode().equals(Manipulator.ManipulatorState.CARGO)){
 
-        } else if(ElevatorState.LOW_CARGO.equals(elevatorState)){
+      if(ElevatorState.HIGH_CARGO.equals(elevatorState)) {
 
-          setSetpoint(lowHatchTicks);
-          elevatorState = ElevatorState.LOW_HATCH;
+        setSetpoint(highHatchTicks);
+        elevatorState = ElevatorState.HIGH_HATCH;
 
-        } else if(ElevatorState.LOW_HATCH.equals(elevatorState)){
+      } else if(ElevatorState.MIDDLE_CARGO.equals(elevatorState)){
 
-          setSetpoint(bottomTicks);
-          elevatorState = ElevatorState.NONE;
+        setSetpoint(midHatchTicks);
+        elevatorState = ElevatorState.MIDDLE_HATCH;
 
-        }
+      } else if(ElevatorState.LOW_CARGO.equals(elevatorState)){
+
+        setSetpoint(lowHatchTicks);
+        elevatorState = ElevatorState.LOW_HATCH;
+
+      }
     }
+  }
 
   public void setSetpoint(double setpoint) {
       if(getSetpoint() >= bottomTicks && getSetpoint() <= topTicks) {
