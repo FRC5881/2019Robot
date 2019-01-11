@@ -39,7 +39,7 @@ public class ArcadeDrive extends Command{
    */
   @Override
   protected void end() {
-    System.out.println("ArcadeDrive command ended... That shouldn't happen");
+    System.out.println("ArcadeDrive ended");
   }
 
   /**

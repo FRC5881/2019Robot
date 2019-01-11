@@ -1,7 +1,10 @@
 package org.techvalleyhigh.frc5881.deepspace.robot.commands.auto;
 
+import com.ctre.phoenix.motion.BufferedTrajectoryPointStream;
 import com.ctre.phoenix.motion.TrajectoryPoint;
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.techvalleyhigh.frc5881.deepspace.robot.Robot;
 import org.techvalleyhigh.frc5881.deepspace.robot.subsystem.DriveControl;
 
@@ -9,13 +12,16 @@ import org.techvalleyhigh.frc5881.deepspace.robot.subsystem.DriveControl;
  * Have drive motors follow a path defined by a PathFinder path
  */
 public class MotionProfile extends Command {
-    private TrajectoryPoint[] trajectoryPoints;
+    private TrajectoryPoint[] leftPoints, rightPoints;
 
-    public MotionProfile(TrajectoryPoint[] trajectoryPoints) {
-        // TODO: uncomment eventually
+    private BufferedTrajectoryPointStream leftStream = new BufferedTrajectoryPointStream();
+    private BufferedTrajectoryPointStream rightStream = new BufferedTrajectoryPointStream();
+
+    public MotionProfile(TrajectoryPoint[] leftPoints, TrajectoryPoint[] rightPoints) {
         requires(Robot.driveControl);
 
-        this.trajectoryPoints = trajectoryPoints;
+        this.leftPoints = leftPoints;
+        this.rightPoints = rightPoints;
     }
 
     /**
@@ -23,6 +29,12 @@ public class MotionProfile extends Command {
      */
     @Override
     protected void initialize() {
+        leftStream.Write(leftPoints);
+        rightStream.Write(rightPoints);
+
+        DriveControl.frontLeftMotor.startMotionProfile(leftStream, 50, ControlMode.MotionProfile);
+        DriveControl.frontRightMotor.startMotionProfile(rightStream, 50, ControlMode.MotionProfile);
+
         System.out.println("MotionProfile initialized");
     }
 
@@ -31,16 +43,17 @@ public class MotionProfile extends Command {
      */
     @Override
     protected void execute() {
-        //DriveControl.left.pushMotionProfileTrajectory()
+        SmartDashboard.putNumber("Left Error", DriveControl.frontLeftMotor.getClosedLoopError());
+        SmartDashboard.putNumber("Right Error", DriveControl.frontRightMotor.getClosedLoopError());
     }
 
     /**
      * Make this return true when this Command no longer needs to run execute()
-     * Since this is a drive command we never want it to end
      */
     @Override
     protected boolean isFinished() {
-        return false;
+        return DriveControl.frontLeftMotor.isMotionProfileFinished()
+                && DriveControl.frontRightMotor.isMotionProfileFinished();
     }
 
     /**
@@ -48,7 +61,10 @@ public class MotionProfile extends Command {
      */
     @Override
     protected void end() {
-        System.out.println("TestCommand command ended... That shouldn't happen");
+        System.out.println("MotionProfile Finished");
+
+        // Restart drive command
+        Robot.driveCommand.start();
     }
 
     /**
@@ -57,6 +73,7 @@ public class MotionProfile extends Command {
      */
     @Override
     protected void interrupted() {
+        System.out.println("MotionProfile interrupted... That shouldn't happen");
         end();
     }
 }
