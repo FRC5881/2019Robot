@@ -1,4 +1,4 @@
-package org.techvalleyhigh.frc5881.deepspace.robot.commands;
+package org.techvalleyhigh.frc5881.deepspace.robot.commands.auto;
 
 import com.ctre.phoenix.motion.TrajectoryPoint;
 import edu.wpi.first.wpilibj.command.Command;
@@ -31,7 +31,7 @@ public class MotionProfile extends Command {
      */
     @Override
     protected void execute() {
-        DriveControl.left.pushMotionProfileTrajectory()
+        //DriveControl.left.pushMotionProfileTrajectory()
     }
 
     /**
