@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.techvalleyhigh.frc5881.deepspace.robot.commands.Elevator.ElevatorSave;
 import org.techvalleyhigh.frc5881.deepspace.robot.commands.drive.ArcadeDrive;
 import org.techvalleyhigh.frc5881.deepspace.robot.subsystem.*;
 
@@ -58,10 +59,6 @@ public class Robot extends TimedRobot {
     oi = new OI();
 
     driveCommand = new ArcadeDrive();
-
-    SPI.Port port = SPI.Port.kOnboardCS0;
-    navX = new AHRS(port);
-
 
     SPI.Port port = SPI.Port.kOnboardCS0;
     navX = new AHRS(port);
