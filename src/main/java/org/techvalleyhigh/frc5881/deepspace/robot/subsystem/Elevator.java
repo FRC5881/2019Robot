@@ -8,6 +8,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import static org.techvalleyhigh.frc5881.deepspace.robot.Robot.manipulator;
 
+/**
+ * This class includes 2 methods in which are elevatorUp(), and elevatorDown().
+ */
 public class Elevator extends Subsystem {
 
     private ElevatorState elevatorState = ElevatorState.HIGH_HATCH;
@@ -17,8 +20,14 @@ public class Elevator extends Subsystem {
     private WPI_TalonSRX elevatorSlaveMotor = new WPI_TalonSRX(3);
 
     // TODO: find out how many "ticks" it is till the top of the elevator
-    public static final int topTicks = 1000;
-    public static final int bottomTicks = 0;
+  /**
+   * topTicks is (hopefully going to be) the most amount of ticks the elevator motor(s) can go before it over-extends.
+   */
+  public static final int topTicks = 1000;
+  /**
+   * bottomTicks is the least amount of ticks the elevator motor(s) be at before it tries to break something.
+   */
+  public static final int bottomTicks = 0;
 
 
    // TODO: Find out what the actual amount of ticks to each is
@@ -125,17 +134,12 @@ public class Elevator extends Subsystem {
             } else if (ElevatorState.LOW_HATCH.equals(elevatorState)) {
 
               setSetpoint(lowCargoTicks);
-              elevatorState = ElevatorState.LOW_CARGO;
+              elevatorState = ElevatorState.MIDDLE_HATCH;
 
             } else if(ElevatorState.MIDDLE_HATCH.equals(elevatorState)){
 
               setSetpoint(midCargoTicks);
-              elevatorState = ElevatorState.MIDDLE_CARGO;
-
-            } else if(ElevatorState.HIGH_HATCH.equals(elevatorState)){
-
-              setSetpoint(highCargoTicks);
-              elevatorState = ElevatorState.HIGH_CARGO;
+              elevatorState = ElevatorState.HIGH_HATCH;
 
             }
           } else if(manipulator.getMode().equals(Manipulator.ManipulatorState.CARGO)){
@@ -143,12 +147,12 @@ public class Elevator extends Subsystem {
             if(ElevatorState.LOW_CARGO.equals(elevatorState)){
 
               setSetpoint(midHatchTicks);
-              elevatorState = ElevatorState.MIDDLE_HATCH;
+              elevatorState = ElevatorState.MIDDLE_CARGO;
 
             }  else if(ElevatorState.MIDDLE_CARGO.equals(elevatorState)){
 
               setSetpoint(highHatchTicks);
-              elevatorState = ElevatorState.HIGH_HATCH;
+              elevatorState = ElevatorState.HIGH_CARGO;
 
             }
           }
@@ -164,12 +168,12 @@ public class Elevator extends Subsystem {
       if (ElevatorState.HIGH_HATCH.equals(elevatorState)) {
 
         setSetpoint(midCargoTicks);
-        elevatorState = ElevatorState.MIDDLE_CARGO;
+        elevatorState = ElevatorState.MIDDLE_HATCH;
 
       } else if (ElevatorState.MIDDLE_HATCH.equals(elevatorState)) {
 
         setSetpoint(lowCargoTicks);
-        elevatorState = ElevatorState.LOW_CARGO;
+        elevatorState = ElevatorState.LOW_HATCH;
 
       } else if (ElevatorState.LOW_HATCH.equals(elevatorState)) {
 
@@ -182,17 +186,17 @@ public class Elevator extends Subsystem {
       if(ElevatorState.HIGH_CARGO.equals(elevatorState)) {
 
         setSetpoint(highHatchTicks);
-        elevatorState = ElevatorState.HIGH_HATCH;
+        elevatorState = ElevatorState.HIGH_CARGO;
 
       } else if(ElevatorState.MIDDLE_CARGO.equals(elevatorState)){
 
         setSetpoint(midHatchTicks);
-        elevatorState = ElevatorState.MIDDLE_HATCH;
+        elevatorState = ElevatorState.MIDDLE_CARGO;
 
       } else if(ElevatorState.LOW_CARGO.equals(elevatorState)){
 
         setSetpoint(lowHatchTicks);
-        elevatorState = ElevatorState.LOW_HATCH;
+        elevatorState = ElevatorState.LOW_CARGO;
 
       }
     }
