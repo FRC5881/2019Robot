@@ -8,7 +8,8 @@ import org.techvalleyhigh.frc5881.deepspace.robot.commands.TestCommand;
 
 public class TestSubsystem extends Subsystem {
     // Initialize test motor as id 0
-    private WPI_TalonSRX testMotor = new WPI_TalonSRX(0);
+    private static WPI_TalonSRX testMotor = new WPI_TalonSRX(0);
+
     private TestCommand testCommand;
 
     public TestSubsystem() {

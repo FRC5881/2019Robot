@@ -1,9 +1,11 @@
 package org.techvalleyhigh.frc5881.deepspace.robot;
 
+import com.kauailabs.navx.frc.AHRS;
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.techvalleyhigh.frc5881.deepspace.robot.commands.TestCommand;
+import org.techvalleyhigh.frc5881.deepspace.robot.commands.drive.ArcadeDrive;
 import org.techvalleyhigh.frc5881.deepspace.robot.subsystem.*;
 
 /**
@@ -28,6 +30,11 @@ public class Robot extends TimedRobot {
   public static Intake intake;
   public static Manipulator manipulator;
 
+  public static AHRS navX;
+
+  // Commands
+  public static ArcadeDrive driveCommand;
+
   /**
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
@@ -42,7 +49,6 @@ public class Robot extends TimedRobot {
     intake = new Intake();
     manipulator = new Manipulator();
 
-
     /*
     OI must be constructed after subsystems. If the OI creates Commands
     (which it very likely will), subsystems are not guaranteed to be
@@ -50,6 +56,11 @@ public class Robot extends TimedRobot {
     pointers. Bad news. Don't move it.
      */
     oi = new OI();
+
+    driveCommand = new ArcadeDrive();
+
+    SPI.Port port = SPI.Port.kOnboardCS0;
+    navX = new AHRS(port);
 
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
@@ -66,6 +77,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+
   }
 
   /**
@@ -107,6 +119,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
+
   }
 
   /**
@@ -114,5 +127,12 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void testPeriodic() {
+    SmartDashboard.putNumber("X accel", navX.getRawAccelX());
+    SmartDashboard.putNumber("Y accel", navX.getRawAccelY());
+    SmartDashboard.putNumber("Z accel", navX.getRawAccelZ());
+
+    SmartDashboard.putNumber("X gyro", navX.getRawGyroX());
+    SmartDashboard.putNumber("Y gyro", navX.getRawGyroY());
+    SmartDashboard.putNumber("Z gyro", navX.getRawGyroZ());
   }
 }
