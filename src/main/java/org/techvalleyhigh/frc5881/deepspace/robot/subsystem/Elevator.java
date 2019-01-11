@@ -71,7 +71,10 @@ public class Elevator extends Subsystem {
         HIGH_CARGO
     }
 
-    public Elevator() {
+  /**
+   * Does the normal stuff but also adds the PID values to Smart Dashboard.
+   */
+  public Elevator() {
 
         super();
         SmartDashboard.putNumber("Elevator kP", 2);
@@ -81,7 +84,11 @@ public class Elevator extends Subsystem {
         init();
     }
 
-    private void init(){
+  /**
+   * Adds the encoder to the motor/ Talon
+   * Also "sets the PID values"
+   */
+  private void init(){
       elevatorSlaveMotor.set(ControlMode.Follower, 2);
       elevatorMasterMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
 
@@ -101,7 +108,10 @@ public class Elevator extends Subsystem {
 
     }
 
-    public void elevatorUp(){
+  /**
+   * Moves the elevator up.
+   */
+  public void elevatorUp(){
 
           if(ElevatorState.NONE.equals(elevatorState)){
 
@@ -136,7 +146,10 @@ public class Elevator extends Subsystem {
           }
     }
 
-    public void elevatorDown(){
+  /**
+   * Moves the elevator down.
+   */
+  public void elevatorDown(){
 
         if(ElevatorState.HIGH_CARGO.equals(elevatorState)) {
 
@@ -171,7 +184,7 @@ public class Elevator extends Subsystem {
         }
     }
 
-    public void setSetpoint(double setpoint) {
+  public void setSetpoint(double setpoint) {
       if(getSetpoint() >= bottomTicks && getSetpoint() <= topTicks) {
         elevatorMasterMotor.set(ControlMode.Position, setpoint);
       }
