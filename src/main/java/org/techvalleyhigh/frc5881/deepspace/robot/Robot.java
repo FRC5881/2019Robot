@@ -1,12 +1,11 @@
 package org.techvalleyhigh.frc5881.deepspace.robot;
 
 import com.kauailabs.navx.frc.AHRS;
-import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.techvalleyhigh.frc5881.deepspace.robot.commands.TestCommand;
+import org.techvalleyhigh.frc5881.deepspace.robot.commands.drive.ArcadeDrive;
 import org.techvalleyhigh.frc5881.deepspace.robot.subsystem.*;
 
 /**
@@ -33,6 +32,9 @@ public class Robot extends TimedRobot {
 
   public static AHRS navX;
 
+  // Commands
+  public static ArcadeDrive driveCommand;
+
   /**
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
@@ -54,6 +56,8 @@ public class Robot extends TimedRobot {
     pointers. Bad news. Don't move it.
      */
     oi = new OI();
+
+    driveCommand = new ArcadeDrive();
 
     SPI.Port port = SPI.Port.kOnboardCS0;
     navX = new AHRS(port);
