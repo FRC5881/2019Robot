@@ -125,7 +125,7 @@ public class Elevator extends Subsystem {
    */
   public void elevatorUp(){
 
-      if(manipulator.getMode().equals(Manipulator.ManipulatorState.HATCH)){
+      if(manipulator.getMode().equals(Manipulator.ManipulatorMode.HATCH)){
 
         if(ElevatorState.NONE.equals(elevatorState)){
 
@@ -143,7 +143,7 @@ public class Elevator extends Subsystem {
               elevatorState = ElevatorState.HIGH_HATCH;
 
             }
-          } else if(manipulator.getMode().equals(Manipulator.ManipulatorState.CARGO)){
+          } else if(manipulator.getMode().equals(Manipulator.ManipulatorMode.CARGO)){
 
             if(ElevatorState.LOW_CARGO.equals(elevatorState)){
 
@@ -164,7 +164,7 @@ public class Elevator extends Subsystem {
    */
   public void elevatorDown(){
 
-    if (manipulator.getMode().equals(Manipulator.ManipulatorState.HATCH)) {
+    if (manipulator.getMode().equals(Manipulator.ManipulatorMode.HATCH)) {
 
       if (ElevatorState.HIGH_HATCH.equals(elevatorState)) {
 
@@ -182,7 +182,7 @@ public class Elevator extends Subsystem {
         elevatorState = ElevatorState.NONE;
 
       }
-    } else if (manipulator.getMode().equals(Manipulator.ManipulatorState.CARGO)){
+    } else if (manipulator.getMode().equals(Manipulator.ManipulatorMode.CARGO)){
 
       if(ElevatorState.HIGH_CARGO.equals(elevatorState)) {
 
