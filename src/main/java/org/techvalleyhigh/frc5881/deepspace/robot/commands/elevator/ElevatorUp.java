@@ -1,4 +1,17 @@
 package org.techvalleyhigh.frc5881.deepspace.robot.commands.elevator;
 
-public class ElevatorUp {
+import edu.wpi.first.wpilibj.command.Command;
+import org.techvalleyhigh.frc5881.deepspace.robot.Robot;
+
+public class ElevatorUp extends Command {
+
+  @Override
+  protected boolean isFinished() {
+    return false;
+  }
+
+  @Override
+  protected void execute() {
+    Robot.elevator.elevatorUp();
+  }
 }

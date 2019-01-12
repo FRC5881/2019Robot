@@ -88,10 +88,10 @@ public class Elevator extends Subsystem {
   public Elevator() {
 
         super();
-        SmartDashboard.putNumber("Elevator kP", 2);
-        SmartDashboard.putNumber("Elevator kI", 0);
-        SmartDashboard.putNumber("Elevator kD", 20);
-        SmartDashboard.putNumber("Elevator kF", 0.076);
+        SmartDashboard.putNumber("elevator kP", 2);
+        SmartDashboard.putNumber("elevator kI", 0);
+        SmartDashboard.putNumber("elevator kD", 20);
+        SmartDashboard.putNumber("elevator kF", 0.076);
         init();
     }
 
@@ -214,19 +214,19 @@ public class Elevator extends Subsystem {
     }
 
     public double getElevator_kP() {
-      return SmartDashboard.getNumber("Elevator kP", 2.0);
+      return SmartDashboard.getNumber("elevator kP", 2.0);
     }
 
     public double getElevator_kI() {
-      return SmartDashboard.getNumber("Elevator kI", 0);
+      return SmartDashboard.getNumber("elevator kI", 0);
     }
 
     public double getElevator_kD(){
-      return SmartDashboard.getNumber("Elevator kD", 20);
+      return SmartDashboard.getNumber("elevator kD", 20);
     }
 
     public double getElevator_kF() {
-      return SmartDashboard.getNumber("Elevator kF", 0.076);
+      return SmartDashboard.getNumber("elevator kF", 0.076);
     }
 
 }
