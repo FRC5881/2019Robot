@@ -33,24 +33,12 @@ public class Elevator extends Subsystem {
 
 
     // TODO: Find out what the actual amount of ticks to each is
-    private int lowHatchTicks = 10;
-    private int lowCargoTicks = 15;
-    private int midHatchTicks = 50;
-    private int midCargoTicks = 55;
-    private int highHatchTicks = 100;
-    private int highCargoTicks = 105;
-
-    // TODO: Find the actual kP of the elevator motors
-    private int kP = 0;
-
-    // TODO: Find the actual kI of the elevator motors
-    private int kI = 0;
-
-    // TODO: Find the actual kD of the elevator motors
-    private int kD = 0;
-
-    // TODO: Find the actual kF of the elevator motors
-    private int kF = 0;
+    public static final double lowHatchTicks = 10;
+    public static final double lowCargoTicks = 15;
+    public static final double midHatchTicks = 50;
+    public static final double midCargoTicks = 55;
+    public static final double highHatchTicks = 100;
+    public static final double highCargoTicks = 105;
 
   /*
     The order of heights is: (greatest to least)
@@ -152,12 +140,12 @@ public class Elevator extends Subsystem {
 
             } else if (ElevatorState.LOW_HATCH.equals(elevatorState)) {
 
-              setSetpoint(lowCargoTicks);
+              setSetpoint(lowHatchTicks);
               elevatorState = ElevatorState.MIDDLE_HATCH;
 
             } else if(ElevatorState.MIDDLE_HATCH.equals(elevatorState)){
 
-              setSetpoint(midCargoTicks);
+              setSetpoint(highHatchTicks);
               elevatorState = ElevatorState.HIGH_HATCH;
 
             }
@@ -165,12 +153,12 @@ public class Elevator extends Subsystem {
 
             if(ElevatorState.LOW_CARGO.equals(elevatorState)){
 
-              setSetpoint(midHatchTicks);
+              setSetpoint(midCargoTicks);
               elevatorState = ElevatorState.MIDDLE_CARGO;
 
             }  else if(ElevatorState.MIDDLE_CARGO.equals(elevatorState)){
 
-              setSetpoint(highHatchTicks);
+              setSetpoint(highCargoTicks);
               elevatorState = ElevatorState.HIGH_CARGO;
 
             }
@@ -181,17 +169,17 @@ public class Elevator extends Subsystem {
    * Moves the elevator down to the next possible state.
    */
   public void elevatorDown(){
-
+        // Check if the manipulator mode is hatch
     if (manipulator.getMode().equals(Manipulator.ManipulatorMode.HATCH)) {
-
+        // If the elevator's height is "high hatch" then proceed
       if (ElevatorState.HIGH_HATCH.equals(elevatorState)) {
 
-        setSetpoint(midCargoTicks);
+        setSetpoint(midHatchTicks);
         elevatorState = ElevatorState.MIDDLE_HATCH;
 
       } else if (ElevatorState.MIDDLE_HATCH.equals(elevatorState)) {
 
-        setSetpoint(lowCargoTicks);
+        setSetpoint(lowHatchTicks);
         elevatorState = ElevatorState.LOW_HATCH;
 
       } else if (ElevatorState.LOW_HATCH.equals(elevatorState)) {
@@ -204,18 +192,18 @@ public class Elevator extends Subsystem {
 
       if(ElevatorState.HIGH_CARGO.equals(elevatorState)) {
 
-        setSetpoint(highHatchTicks);
-        elevatorState = ElevatorState.HIGH_CARGO;
+        setSetpoint(midCargoTicks);
+        elevatorState = ElevatorState.MIDDLE_CARGO;
 
       } else if(ElevatorState.MIDDLE_CARGO.equals(elevatorState)){
 
-        setSetpoint(midHatchTicks);
-        elevatorState = ElevatorState.MIDDLE_CARGO;
+        setSetpoint(lowCargoTicks);
+        elevatorState = ElevatorState.LOW_CARGO;
 
       } else if(ElevatorState.LOW_CARGO.equals(elevatorState)){
 
-        setSetpoint(lowHatchTicks);
-        elevatorState = ElevatorState.LOW_CARGO;
+        setSetpoint(bottomTicks);
+        elevatorState = ElevatorState.NONE;
 
       }
     }
