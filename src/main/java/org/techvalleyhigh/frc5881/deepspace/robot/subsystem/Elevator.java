@@ -81,10 +81,10 @@ public class Elevator extends Subsystem {
 
     private void init(){
        elevatorSlaveMotor.follow(elevatorMasterMotor);
-      SmartDashboard.putNumber("Elevator kP", kP);
-      SmartDashboard.putNumber("Elevator kI", kI);
-      SmartDashboard.putNumber("Elevator kD", kD);
-      SmartDashboard.putNumber("Elevator kF", kF);
+      SmartDashboard.putNumber("elevator kP", kP);
+      SmartDashboard.putNumber("elevator kI", kI);
+      SmartDashboard.putNumber("elevator kD", kD);
+      SmartDashboard.putNumber("elevator kF", kF);
       elevatorMasterMotor.config_kP(0, 2);
       elevatorMasterMotor.config_kI(0, 0);
       elevatorMasterMotor.config_kD(0, 20);
