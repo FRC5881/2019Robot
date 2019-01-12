@@ -15,9 +15,11 @@ public class Elevator extends Subsystem {
 
     private ElevatorState elevatorState = ElevatorState.HIGH_HATCH;
 
-    // TODO: Change the "deviceNumber" to whatever the actual number(s) on the talon(s) is(are).
+    // TODO: Change the "deviceNumber" to whatever the actual number on the talon is.
     private WPI_TalonSRX elevatorMasterMotor = new WPI_TalonSRX(2);
-    private WPI_TalonSRX elevatorSlaveMotor = new WPI_TalonSRX(3);
+    //  ||                                          ||
+    //  \/ is the talon for the four bar lift motor \/
+    private WPI_TalonSRX liftMotor = new WPI_TalonSRX(3);
 
     // TODO: find out how many "ticks" it is till the top of the elevator
   /**
@@ -92,6 +94,10 @@ public class Elevator extends Subsystem {
         SmartDashboard.putNumber("elevator kI", 0);
         SmartDashboard.putNumber("elevator kD", 20);
         SmartDashboard.putNumber("elevator kF", 0.076);
+        SmartDashboard.putNumber("lift kP", 2);
+        SmartDashboard.putNumber("lift kI", 0);
+        SmartDashboard.putNumber("lift kD", 20);
+        SmartDashboard.putNumber("lift kF", 0.076);
         init();
     }
 
@@ -101,7 +107,8 @@ public class Elevator extends Subsystem {
    */
   private void init(){
 
-      elevatorSlaveMotor.set(ControlMode.Follower, 2);
+      liftMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
+
       elevatorMasterMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
 
 
@@ -112,6 +119,14 @@ public class Elevator extends Subsystem {
       elevatorMasterMotor.config_kD(0, getElevator_kD(), 10);
 
       elevatorMasterMotor.config_kF(0, getElevator_kF(), 10);
+
+      liftMotor.config_kP(0, getLift_kP(), 10);
+
+      liftMotor.config_kI(0, getLift_kI(), 10);
+
+      liftMotor.config_kD(0, getLift_kD(), 10);
+
+      liftMotor.config_kF(0, getLift_kF(), 10);
 
     }
 
@@ -229,4 +244,19 @@ public class Elevator extends Subsystem {
       return SmartDashboard.getNumber("elevator kF", 0.076);
     }
 
+    public double getLift_kP() {
+    return SmartDashboard.getNumber("lift kP", 2.0);
+    }
+
+    public double getLift_kI() {
+    return SmartDashboard.getNumber("lift kI", 0);
+    }
+
+    public double getLift_kD(){
+    return SmartDashboard.getNumber("lift kD", 20);
+  }
+
+    public double getLift_kF() {
+    return SmartDashboard.getNumber("lift kF", 0.076);
+    }
 }
