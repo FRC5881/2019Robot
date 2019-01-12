@@ -22,17 +22,17 @@ public class Elevator extends Subsystem {
     private WPI_TalonSRX liftMotor = new WPI_TalonSRX(3);
 
     // TODO: find out how many "ticks" it is till the top of the elevator
-  /**
-   * topTicks is (hopefully going to be) the most amount of ticks the elevator motor(s) can go before it over-extends.
-   */
-  public static final int topTicks = 1000;
-  /**
-   * bottomTicks is the least amount of ticks the elevator motor(s) be at before it tries to break something.
-   */
-  public static final int bottomTicks = 0;
+    /**
+    * topTicks is (hopefully going to be) the most amount of ticks the elevator motor(s) can go before it over-extends.
+    */
+    public static final int topTicks = 1000;
+    /**
+    * bottomTicks is the least amount of ticks the elevator motor(s) be at before it tries to break something.
+    */
+    public static final int bottomTicks = 0;
 
 
-   // TODO: Find out what the actual amount of ticks to each is
+    // TODO: Find out what the actual amount of ticks to each is
     private int lowHatchTicks = 10;
     private int lowCargoTicks = 15;
     private int midHatchTicks = 50;
@@ -68,7 +68,10 @@ public class Elevator extends Subsystem {
     6. Low hatch
      */
 
-    public enum ElevatorState {
+  /**
+   * Is the state of the elevator
+   */
+  public enum ElevatorState {
         NONE,
 
         LOW_HATCH,
@@ -218,45 +221,108 @@ public class Elevator extends Subsystem {
     }
   }
 
+  /**
+   * Sets the height of the elevator
+   * Will not move the elevator if you want to move it below 0 ticks or above the top ticks number
+   * @param setpoint is the height (in ticks) of which you want the elevator to go to
+   */
   public void setSetpoint(double setpoint) {
       if(getSetpoint() >= bottomTicks && getSetpoint() <= topTicks) {
         elevatorMasterMotor.set(ControlMode.Position, setpoint);
       }
     }
 
-    public double getSetpoint(){
+  /**
+   * Gets the value of Setpoint
+   * @return returns the value of Setpoint
+   */
+  private double getSetpoint(){
       return elevatorMasterMotor.getClosedLoopTarget(0);
     }
 
-    public double getElevator_kP() {
+  /**
+   * Gets the value of Elevator_kP from Smart Dashboard
+   * @return Returns the value of Elevator_kP
+   */
+  private double getElevator_kP() {
       return SmartDashboard.getNumber("elevator kP", 2.0);
     }
 
-    public double getElevator_kI() {
+  /**
+   * Gets the value of Elevator_kI from Smart Dashboard
+   * @return Returns the value of Elevator_kI
+   */
+  private double getElevator_kI() {
       return SmartDashboard.getNumber("elevator kI", 0);
     }
 
-    public double getElevator_kD(){
+  /**
+   * Gets the value of Elevator_kD from Smart Dashboard
+   * @return Returns the value of Elevator_kD
+   */
+  private double getElevator_kD(){
       return SmartDashboard.getNumber("elevator kD", 20);
     }
 
-    public double getElevator_kF() {
+  /**
+   * Gets the value of Elevator_kF from Smart Dashboard
+   * @return Returns the value of Elevator_kF
+   */
+  private double getElevator_kF() {
       return SmartDashboard.getNumber("elevator kF", 0.076);
     }
 
-    public double getLift_kP() {
-    return SmartDashboard.getNumber("lift kP", 2.0);
+  /**
+   * Gets the value of Lift_kP from Smart Dashboard
+   * @return Returns the value of Lift_kP
+   */
+  private double getLift_kP() {
+     return SmartDashboard.getNumber("lift kP", 2.0);
     }
 
-    public double getLift_kI() {
-    return SmartDashboard.getNumber("lift kI", 0);
+  /**
+   * Gets the value of Lift_kI from Smart Dashboard
+   * @return Returns the value of Lift_kI
+   */
+  private double getLift_kI() {
+      return SmartDashboard.getNumber("lift kI", 0);
     }
 
-    public double getLift_kD(){
-    return SmartDashboard.getNumber("lift kD", 20);
+  /**
+   * Gets the value of Lift_kD from Smart Dashboard
+   * @return Returns the value of Lift_kD
+   */
+  private double getLift_kD(){
+     return SmartDashboard.getNumber("lift kD", 20);
+    }
+
+  /**
+   * Gets the value of Lift_kF from Smart Dashboard
+   * @return Returns the value of Lift_kF
+   */
+  private double getLift_kF() {
+      return SmartDashboard.getNumber("lift kF", 0.076);
+    }
+
+  /**
+   * Tells you how many ticks you need to turn a motor to go a certain amount of inches.
+   * @param inches is the amount of inches you want to convert to ticks.
+   * @return Returns the amount of ticks it takes to go the certain amount of inches.
+   */
+  private double getInchesToTicks(double inches){
+      // The amount of ticks that the given amount of inches will be
+      double ticks;
+      // Is the amount of inches per amount of ticks per rotation
+      double inches1;
+      // TODO: need to find out how many ticks per rotation the encoder has.
+      double ticksPerRotation = 1000;
+      // How many inches the lift moves per every full rotation
+      // TODO: need to find out how many inches the lift moves per rotation
+      double inchesMovedPerRotation = 0.5;
+      inches1 = inches * inchesMovedPerRotation;
+
+      ticks = inches1 / ticksPerRotation;
+
+      return ticks;
   }
-
-    public double getLift_kF() {
-    return SmartDashboard.getNumber("lift kF", 0.076);
-    }
 }
