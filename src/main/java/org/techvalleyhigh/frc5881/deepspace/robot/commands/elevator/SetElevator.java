@@ -4,18 +4,49 @@ import edu.wpi.first.wpilibj.command.Command;
 import org.techvalleyhigh.frc5881.deepspace.robot.Robot;
 
 public class SetElevator extends Command {
+  public SetElevator() {
+    requires(Robot.elevator);
+  }
+  public double setpoint;
+  /**
+   * Called just before this Command runs the first time
+   */
+  @Override
+  protected void initialize() {
+    System.out.println("Set elevator initialized");
+  }
 
   /**
-   * Is the double for the height of the elevator to go to.
+   * Called repeatedly when this Command is scheduled to run
    */
-  private double setpoint;
+  @Override
+  protected void execute() {
+    Robot.elevator.setSetpoint(setpoint);
+  }
 
+  /**
+   * Make this return true when this Command no longer needs to run execute()
+   * Since this is a drive command we never want it to end
+   */
   @Override
   protected boolean isFinished() {
     return false;
   }
 
-  protected void executed(){
-    Robot.elevator.setSetpoint(setpoint);
+  /**
+   * Called once after isFinished returns true OR the command is interrupted
+   */
+  @Override
+  protected void end() {
+    System.out.println("Set elevator command ended... That shouldn't happen");
+  }
+
+  /**
+   * Called when another command which requires one or more of the same
+   * subsystems is scheduled to run
+   */
+  @Override
+  protected void interrupted() {
+    end();
   }
 }
