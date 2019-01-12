@@ -1,4 +1,4 @@
-package org.techvalleyhigh.frc5881.deepspace.robot.commands;
+package org.techvalleyhigh.frc5881.deepspace.robot.commands.drive;
 
 import edu.wpi.first.wpilibj.command.Command;
 import org.techvalleyhigh.frc5881.deepspace.robot.Robot;
@@ -39,7 +39,7 @@ public class ArcadeDrive extends Command{
    */
   @Override
   protected void end() {
-    System.out.println("ArcadeDrive command ended... That shouldn't happen");
+    System.out.println("ArcadeDrive ended");
   }
 
   /**

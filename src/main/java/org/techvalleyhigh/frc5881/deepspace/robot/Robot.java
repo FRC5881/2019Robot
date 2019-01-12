@@ -1,10 +1,11 @@
 package org.techvalleyhigh.frc5881.deepspace.robot;
 
+import com.kauailabs.navx.frc.AHRS;
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.techvalleyhigh.frc5881.deepspace.robot.commands.ArcadeDrive;
-import org.techvalleyhigh.frc5881.deepspace.robot.commands.TestCommand;
+import org.techvalleyhigh.frc5881.deepspace.robot.commands.drive.ArcadeDrive;
 import org.techvalleyhigh.frc5881.deepspace.robot.subsystem.*;
 
 /**
@@ -28,6 +29,8 @@ public class Robot extends TimedRobot {
   public static Elevator elevator;
   public static Intake intake;
   public static Manipulator manipulator;
+
+  public static AHRS navX;
 
   // Commands
   public static ArcadeDrive driveCommand;
@@ -56,6 +59,9 @@ public class Robot extends TimedRobot {
 
     driveCommand = new ArcadeDrive();
 
+    SPI.Port port = SPI.Port.kOnboardCS0;
+    navX = new AHRS(port);
+
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
@@ -71,6 +77,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+
   }
 
   /**
@@ -112,6 +119,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
+
   }
 
   /**
@@ -119,5 +127,12 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void testPeriodic() {
+    SmartDashboard.putNumber("X accel", navX.getRawAccelX());
+    SmartDashboard.putNumber("Y accel", navX.getRawAccelY());
+    SmartDashboard.putNumber("Z accel", navX.getRawAccelZ());
+
+    SmartDashboard.putNumber("X gyro", navX.getRawGyroX());
+    SmartDashboard.putNumber("Y gyro", navX.getRawGyroY());
+    SmartDashboard.putNumber("Z gyro", navX.getRawGyroZ());
   }
 }
