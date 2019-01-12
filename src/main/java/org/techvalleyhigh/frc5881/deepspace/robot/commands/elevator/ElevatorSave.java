@@ -22,7 +22,7 @@ public class ElevatorSave extends Command {
    */
   @Override
   protected void execute() {
-    Robot.elevator.setSetpoint(Elevator.bottomTicks);
+    Robot.elevator.setElevator(Elevator.none[1], Elevator.none[2]);
   }
 
   /**

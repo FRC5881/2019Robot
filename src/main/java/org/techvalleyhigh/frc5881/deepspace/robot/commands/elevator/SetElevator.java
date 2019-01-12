@@ -21,7 +21,7 @@ public class SetElevator extends Command {
    */
   @Override
   protected void execute() {
-    Robot.elevator.setSetpoint(setpoint);
+    Robot.elevator.setSetpointElevator(setpoint);
   }
 
   /**

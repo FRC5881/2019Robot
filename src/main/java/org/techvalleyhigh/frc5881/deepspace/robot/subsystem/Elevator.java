@@ -6,6 +6,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+import static org.techvalleyhigh.frc5881.deepspace.robot.Robot.arm;
 import static org.techvalleyhigh.frc5881.deepspace.robot.Robot.manipulator;
 
 /**
@@ -20,25 +21,6 @@ public class Elevator extends Subsystem {
     //  ||                                          ||
     //  \/ is the talon for the four bar lift motor \/
     private WPI_TalonSRX liftMotor = new WPI_TalonSRX(3);
-
-    // TODO: find out how many "ticks" it is till the top of the elevator
-    /**
-    * topTicks is (hopefully going to be) the most amount of ticks the elevator motor(s) can go before it over-extends.
-    */
-    public static final int topTicks = 1000;
-    /**
-    * bottomTicks is the least amount of ticks the elevator motor(s) be at before it tries to break something.
-    */
-    public static final int bottomTicks = 0;
-
-
-    // TODO: Find out what the actual amount of ticks to each is
-    public static final double lowHatchTicks = 10;
-    public static final double lowCargoTicks = 15;
-    public static final double midHatchTicks = 50;
-    public static final double midCargoTicks = 55;
-    public static final double highHatchTicks = 100;
-    public static final double highCargoTicks = 105;
 
   /*
     The order of heights is: (greatest to least)
@@ -74,6 +56,43 @@ public class Elevator extends Subsystem {
 
         HIGH_CARGO
     }
+
+  // TODO: We need to figure out what the actual heights of these things will be.
+  /**
+   * For all of the following double[]'s the first double value is the required height for the elevator to move
+   * and the second value is the height that the lift is required to move.
+   */
+  public static final double[] none = {
+          0, 0
+  };
+
+  public static final double[] lowHatch = {
+          5, 5
+  };
+
+  public static final double[] lowCargo = {
+          5 , 5
+  };
+
+  public static final double[] midHatch = {
+          5, 5
+  };
+
+  public static final double[] midCargo = {
+          5, 5
+  };
+
+  public static final double[] highHatch = {
+          5, 5
+  };
+
+  public static final double[] highCargo = {
+          5, 5
+  };
+
+  public static final double[] top = {
+          5, 5
+  };
 
   /**
    * Does the normal stuff but also adds the PID values to Smart Dashboard.
@@ -130,35 +149,46 @@ public class Elevator extends Subsystem {
    * Moves the elevator up to the next possible level.
    */
   public void elevatorUp(){
+        // Checks if the arm mode is "hatch"
+      if(arm.isHatch()){
 
-      if(manipulator.getMode().equals(Manipulator.ManipulatorMode.HATCH)){
-
+          // Checks to see if the elevator state is "none"
         if(ElevatorState.NONE.equals(elevatorState)){
 
-              setSetpoint(lowHatchTicks);
+              setElevator(lowHatch[1], lowHatch[2]);
+              // Sets elevator state to "low hatch"
               elevatorState = ElevatorState.LOW_HATCH;
 
+              // If the elevator state is "low hatch" then proceed
             } else if (ElevatorState.LOW_HATCH.equals(elevatorState)) {
 
-              setSetpoint(lowHatchTicks);
+              setElevator(midHatch[1], midHatch[2]);
+              // Sets the elevator state to "middle hatch"
               elevatorState = ElevatorState.MIDDLE_HATCH;
 
+              // Checks if the elevator state is "middle hatch"
             } else if(ElevatorState.MIDDLE_HATCH.equals(elevatorState)){
 
-              setSetpoint(highHatchTicks);
+              setElevator(highHatch[1], highHatch[2]);
+              // Sets the elevator state to "high hatch"
               elevatorState = ElevatorState.HIGH_HATCH;
 
             }
-          } else if(manipulator.getMode().equals(Manipulator.ManipulatorMode.CARGO)){
+            // Checks if the arm mode is "cargo"
+          } else if(arm.isCargo()){
 
+                // If the elevator state is "low cargo" then proceed
             if(ElevatorState.LOW_CARGO.equals(elevatorState)){
 
-              setSetpoint(midCargoTicks);
+              setElevator(midCargo[1], midCargo[2]);
+              // Sets the elevator state to "middle cargo"
               elevatorState = ElevatorState.MIDDLE_CARGO;
 
+                // Checks if the elevator state is "middle cargo"
             }  else if(ElevatorState.MIDDLE_CARGO.equals(elevatorState)){
 
-              setSetpoint(highCargoTicks);
+              setElevator(highCargo[1], highCargo[2]);
+              // Sets the elevator state to "high cargo"
               elevatorState = ElevatorState.HIGH_CARGO;
 
             }
@@ -169,44 +199,71 @@ public class Elevator extends Subsystem {
    * Moves the elevator down to the next possible state.
    */
   public void elevatorDown(){
+
         // Check if the manipulator mode is hatch
-    if (manipulator.getMode().equals(Manipulator.ManipulatorMode.HATCH)) {
+    if (arm.isHatch()) {
+
         // If the elevator's height is "high hatch" then proceed
       if (ElevatorState.HIGH_HATCH.equals(elevatorState)) {
 
-        setSetpoint(midHatchTicks);
+        setElevator(midHatch[1], midHatch[2]);
+
+        // Sets the elevator state to "middle hatch"
         elevatorState = ElevatorState.MIDDLE_HATCH;
 
+        // Check if the elevator state is middle hatch
       } else if (ElevatorState.MIDDLE_HATCH.equals(elevatorState)) {
 
-        setSetpoint(lowHatchTicks);
+        setElevator(lowHatch[1], lowHatch[2]);
+
+        // Sets the elevator state to "low hatch"
         elevatorState = ElevatorState.LOW_HATCH;
 
+        // Checks if the elevator's state is "low hatch"
       } else if (ElevatorState.LOW_HATCH.equals(elevatorState)) {
 
-        setSetpoint(bottomTicks);
+        setElevator(none[1], none[2]);
+
+        // Sets the elevator state to none
         elevatorState = ElevatorState.NONE;
 
       }
-    } else if (manipulator.getMode().equals(Manipulator.ManipulatorMode.CARGO)){
 
+      // If the manipulator
+    } else if (arm.isCargo()){
+
+        // Checks if the elevator state is "high cargo"
       if(ElevatorState.HIGH_CARGO.equals(elevatorState)) {
 
-        setSetpoint(midCargoTicks);
+        setElevator(midCargo[2], midCargo[2]);
+
+        // Sets elevator state to "middle cargo"
         elevatorState = ElevatorState.MIDDLE_CARGO;
 
+        // Checks if the elevator state is "middle cargo"
       } else if(ElevatorState.MIDDLE_CARGO.equals(elevatorState)){
 
-        setSetpoint(lowCargoTicks);
+        setElevator(lowCargo[1], lowCargo[2]);
+
+        // Sets elevator state to "low cargo"
         elevatorState = ElevatorState.LOW_CARGO;
 
+        // Checks if elevator state is "low cargo"
       } else if(ElevatorState.LOW_CARGO.equals(elevatorState)){
 
-        setSetpoint(bottomTicks);
+        setElevator(none[1], none[2]);
+
+        // Sets the elevator state to "none"
         elevatorState = ElevatorState.NONE;
 
       }
     }
+  }
+
+  public void setElevator(double setpointElevator, double setpointLift){
+  setSetpointElevator(setpointElevator);
+  setSetpointLift(setpointLift);
+
   }
 
   /**
@@ -214,19 +271,36 @@ public class Elevator extends Subsystem {
    * Will not move the elevator if you want to move it below 0 ticks or above the top ticks number
    * @param setpoint is the height (in ticks) of which you want the elevator to go to
    */
-  public void setSetpoint(double setpoint) {
-      if(getSetpoint() >= bottomTicks && getSetpoint() <= topTicks) {
+  public void setSetpointElevator(double setpoint) {
+      if(getSetpointElevator() >= none[1] && getSetpointElevator() <= top[1]) {
         elevatorMasterMotor.set(ControlMode.Position, setpoint);
       }
     }
 
   /**
+   * Sets the height of the lift
+   * @param setpoint Is the height to which is need to get to
+   */
+  public void setSetpointLift(double setpoint){
+    if(getSetpointLift() >= none[1] && getSetpointLift() <= top[1]) {
+      liftMotor.set(ControlMode.Position, setpoint);
+    }
+  }
+
+  /**
    * Gets the value of Setpoint
    * @return returns the value of Setpoint
    */
-  private double getSetpoint(){
+  private double getSetpointElevator(){
       return elevatorMasterMotor.getClosedLoopTarget(0);
     }
+  /**
+   * Gets the value of Setpoint
+   * @return returns the value of Setpoint
+   */
+  private double getSetpointLift(){
+    return liftMotor.getClosedLoopTarget(0);
+  }
 
   /**
    * Gets the value of Elevator_kP from Smart Dashboard
