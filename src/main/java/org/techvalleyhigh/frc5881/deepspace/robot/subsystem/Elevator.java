@@ -7,7 +7,6 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import static org.techvalleyhigh.frc5881.deepspace.robot.Robot.arm;
-import static org.techvalleyhigh.frc5881.deepspace.robot.Robot.manipulator;
 
 /**
  * This class includes 2 methods in which are elevatorUp(), and elevatorDown().
@@ -20,7 +19,7 @@ public class Elevator extends Subsystem {
     private WPI_TalonSRX elevatorMasterMotor = new WPI_TalonSRX(2);
     //  ||                                          ||
     //  \/ is the talon for the four bar lift motor \/
-    private WPI_TalonSRX liftMotor = new WPI_TalonSRX(3);
+    private WPI_TalonSRX liftMasterMotor = new WPI_TalonSRX(3);
 
   /*
     The order of heights is: (greatest to least)
@@ -117,7 +116,7 @@ public class Elevator extends Subsystem {
    */
   private void init(){
 
-      liftMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
+      liftMasterMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
 
       elevatorMasterMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
 
@@ -130,13 +129,13 @@ public class Elevator extends Subsystem {
 
       elevatorMasterMotor.config_kF(0, getElevator_kF(), 10);
 
-      liftMotor.config_kP(0, getLift_kP(), 10);
+      liftMasterMotor.config_kP(0, getLift_kP(), 10);
 
-      liftMotor.config_kI(0, getLift_kI(), 10);
+      liftMasterMotor.config_kI(0, getLift_kI(), 10);
 
-      liftMotor.config_kD(0, getLift_kD(), 10);
+      liftMasterMotor.config_kD(0, getLift_kD(), 10);
 
-      liftMotor.config_kF(0, getLift_kF(), 10);
+      liftMasterMotor.config_kF(0, getLift_kF(), 10);
 
     }
 
@@ -155,21 +154,21 @@ public class Elevator extends Subsystem {
           // Checks to see if the elevator state is "none"
         if(ElevatorState.NONE.equals(elevatorState)){
 
-              setElevator(lowHatch[1], lowHatch[2]);
+              setElevator(lowHatch[0], lowHatch[1]);
               // Sets elevator state to "low hatch"
               elevatorState = ElevatorState.LOW_HATCH;
 
               // If the elevator state is "low hatch" then proceed
             } else if (ElevatorState.LOW_HATCH.equals(elevatorState)) {
 
-              setElevator(midHatch[1], midHatch[2]);
+              setElevator(midHatch[0], midHatch[1]);
               // Sets the elevator state to "middle hatch"
               elevatorState = ElevatorState.MIDDLE_HATCH;
 
               // Checks if the elevator state is "middle hatch"
             } else if(ElevatorState.MIDDLE_HATCH.equals(elevatorState)){
 
-              setElevator(highHatch[1], highHatch[2]);
+              setElevator(highHatch[0], highHatch[1]);
               // Sets the elevator state to "high hatch"
               elevatorState = ElevatorState.HIGH_HATCH;
 
@@ -180,14 +179,14 @@ public class Elevator extends Subsystem {
                 // If the elevator state is "low cargo" then proceed
             if(ElevatorState.LOW_CARGO.equals(elevatorState)){
 
-              setElevator(midCargo[1], midCargo[2]);
+              setElevator(midCargo[0], midCargo[1]);
               // Sets the elevator state to "middle cargo"
               elevatorState = ElevatorState.MIDDLE_CARGO;
 
                 // Checks if the elevator state is "middle cargo"
             }  else if(ElevatorState.MIDDLE_CARGO.equals(elevatorState)){
 
-              setElevator(highCargo[1], highCargo[2]);
+              setElevator(highCargo[0], highCargo[1]);
               // Sets the elevator state to "high cargo"
               elevatorState = ElevatorState.HIGH_CARGO;
 
@@ -200,13 +199,13 @@ public class Elevator extends Subsystem {
    */
   public void elevatorDown(){
 
-        // Check if the manipulator mode is hatch
+        // Check if the arm mode is "hatch"
     if (arm.isHatch()) {
 
         // If the elevator's height is "high hatch" then proceed
       if (ElevatorState.HIGH_HATCH.equals(elevatorState)) {
 
-        setElevator(midHatch[1], midHatch[2]);
+        setElevator(midHatch[0], midHatch[1]);
 
         // Sets the elevator state to "middle hatch"
         elevatorState = ElevatorState.MIDDLE_HATCH;
@@ -214,7 +213,7 @@ public class Elevator extends Subsystem {
         // Check if the elevator state is middle hatch
       } else if (ElevatorState.MIDDLE_HATCH.equals(elevatorState)) {
 
-        setElevator(lowHatch[1], lowHatch[2]);
+        setElevator(lowHatch[0], lowHatch[1]);
 
         // Sets the elevator state to "low hatch"
         elevatorState = ElevatorState.LOW_HATCH;
@@ -222,20 +221,20 @@ public class Elevator extends Subsystem {
         // Checks if the elevator's state is "low hatch"
       } else if (ElevatorState.LOW_HATCH.equals(elevatorState)) {
 
-        setElevator(none[1], none[2]);
+        setElevator(none[0], none[1]);
 
         // Sets the elevator state to none
         elevatorState = ElevatorState.NONE;
 
       }
 
-      // If the manipulator
+      // Checks if the arm mode is "cargo"
     } else if (arm.isCargo()){
 
         // Checks if the elevator state is "high cargo"
       if(ElevatorState.HIGH_CARGO.equals(elevatorState)) {
 
-        setElevator(midCargo[2], midCargo[2]);
+        setElevator(midCargo[0], midCargo[1]);
 
         // Sets elevator state to "middle cargo"
         elevatorState = ElevatorState.MIDDLE_CARGO;
@@ -243,7 +242,7 @@ public class Elevator extends Subsystem {
         // Checks if the elevator state is "middle cargo"
       } else if(ElevatorState.MIDDLE_CARGO.equals(elevatorState)){
 
-        setElevator(lowCargo[1], lowCargo[2]);
+        setElevator(lowCargo[0], lowCargo[1]);
 
         // Sets elevator state to "low cargo"
         elevatorState = ElevatorState.LOW_CARGO;
@@ -251,7 +250,7 @@ public class Elevator extends Subsystem {
         // Checks if elevator state is "low cargo"
       } else if(ElevatorState.LOW_CARGO.equals(elevatorState)){
 
-        setElevator(none[1], none[2]);
+        setElevator(none[0], none[1]);
 
         // Sets the elevator state to "none"
         elevatorState = ElevatorState.NONE;
@@ -260,10 +259,14 @@ public class Elevator extends Subsystem {
     }
   }
 
+  /**
+   * "Runs" setSetpointElevator and setSetpointLift with the appropriate parameters.
+   * @param setpointElevator Is the height of which the elevator is wanted to be moved to.
+   * @param setpointLift Is the desired height of which to have the lift go too.
+   */
   public void setElevator(double setpointElevator, double setpointLift){
-  setSetpointElevator(setpointElevator);
-  setSetpointLift(setpointLift);
-
+    setSetpointElevator(setpointElevator);
+    setSetpointLift(setpointLift);
   }
 
   /**
@@ -282,8 +285,8 @@ public class Elevator extends Subsystem {
    * @param setpoint Is the height to which is need to get to
    */
   public void setSetpointLift(double setpoint){
-    if(getSetpointLift() >= none[1] && getSetpointLift() <= top[1]) {
-      liftMotor.set(ControlMode.Position, setpoint);
+    if(getSetpointLift() >= none[2] && getSetpointLift() <= top[2]) {
+      liftMasterMotor.set(ControlMode.Position, setpoint);
     }
   }
 
@@ -299,7 +302,7 @@ public class Elevator extends Subsystem {
    * @return returns the value of Setpoint
    */
   private double getSetpointLift(){
-    return liftMotor.getClosedLoopTarget(0);
+    return liftMasterMotor.getClosedLoopTarget(0);
   }
 
   /**
