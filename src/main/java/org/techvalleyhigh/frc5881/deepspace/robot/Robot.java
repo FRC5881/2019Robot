@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.techvalleyhigh.frc5881.deepspace.robot.commands.drive.ArcadeDrive;
+import org.techvalleyhigh.frc5881.deepspace.robot.commands.drive.StopTipping;
 import org.techvalleyhigh.frc5881.deepspace.robot.subsystem.*;
 
 /**
@@ -77,7 +78,13 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    SmartDashboard.putNumber("X accel", navX.getRawAccelX());
+    SmartDashboard.putNumber("Y accel", navX.getRawAccelY());
+    SmartDashboard.putNumber("Z accel", navX.getRawAccelZ());
 
+    SmartDashboard.putNumber("X gyro", navX.getRawGyroX());
+    SmartDashboard.putNumber("Y gyro", navX.getRawGyroY());
+    SmartDashboard.putNumber("Z gyro", navX.getRawGyroZ());
   }
 
   /**
@@ -119,7 +126,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-
+    if (Math.abs(navX.getRawGyroY()) > 30) {
+      new StopTipping();
+    }
   }
 
   /**
@@ -127,12 +136,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void testPeriodic() {
-    SmartDashboard.putNumber("X accel", navX.getRawAccelX());
-    SmartDashboard.putNumber("Y accel", navX.getRawAccelY());
-    SmartDashboard.putNumber("Z accel", navX.getRawAccelZ());
 
-    SmartDashboard.putNumber("X gyro", navX.getRawGyroX());
-    SmartDashboard.putNumber("Y gyro", navX.getRawGyroY());
-    SmartDashboard.putNumber("Z gyro", navX.getRawGyroZ());
   }
 }

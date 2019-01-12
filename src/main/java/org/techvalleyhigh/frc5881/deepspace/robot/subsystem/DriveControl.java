@@ -1,9 +1,12 @@
 package org.techvalleyhigh.frc5881.deepspace.robot.subsystem;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import org.techvalleyhigh.frc5881.deepspace.robot.OI;
 import org.techvalleyhigh.frc5881.deepspace.robot.Robot;
 
@@ -38,7 +41,23 @@ public class DriveControl extends Subsystem {
   /**
    * Initialize SmartDashboard and other local variables
    */
-  public void init(){
+  public void init() {
+    frontLeftMotor.setName("Drive", "Front Left");
+    frontLeftMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
+    LiveWindow.add(frontLeftMotor);
+
+    frontRightMotor.setName("Drive", "Front Right");
+    frontRightMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
+    LiveWindow.add(frontRightMotor);
+
+    backLeftMotor.setName("Drive", "Back Left");
+    backLeftMotor.set(ControlMode.Follower, 1);
+    LiveWindow.add(backLeftMotor);
+
+    backRightMotor.setName("Drive", "Back Right");
+    backRightMotor.set(ControlMode.Follower, 2);
+    LiveWindow.add(backRightMotor);
+
     SpeedControllerGroup m_left = new SpeedControllerGroup(frontLeftMotor);
     SpeedControllerGroup m_right = new SpeedControllerGroup(frontRightMotor);
     robotDrive = new DifferentialDrive(m_right, m_left);
@@ -60,7 +79,7 @@ public class DriveControl extends Subsystem {
     double speed = Robot.oi.driverController.getRawAxis(OI.XBOX_LEFT_Y_AXIS);
     double turn = Robot.oi.driverController.getRawAxis(OI.XBOX_RIGHT_X_AXIS);
 
-    if(Math.abs(turn) < 0.1 || Math.abs(speed)< 0.1) {
+    if(Math.abs(turn) < 0.1 || Math.abs(speed) < 0.1) {
       return;
     }
 
