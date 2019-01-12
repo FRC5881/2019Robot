@@ -30,6 +30,7 @@ public class Robot extends TimedRobot {
   public static Elevator elevator;
   public static Intake intake;
   public static Manipulator manipulator;
+  public static Demogorgon demogorgon;
 
   public static AHRS navX;
 
@@ -49,6 +50,7 @@ public class Robot extends TimedRobot {
     elevator = new Elevator();
     intake = new Intake();
     manipulator = new Manipulator();
+    demogorgon = new Demogorgon();
 
     /*
     OI must be constructed after subsystems. If the OI creates Commands

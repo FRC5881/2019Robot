@@ -103,6 +103,12 @@ public class Climber extends Subsystem {
   public void backUp(){
     frontSolenoid.set(DoubleSolenoid.Value.kReverse);
   }
+
+  /**
+   * Toggle front piston
+   * if the piston is disengaged, engage it
+   * if the piston is engaged, disengage it
+   */
   public void frontToggle(){
     if (frontSolenoid.get() == DoubleSolenoid.Value.kForward) {
       frontUp();
@@ -112,6 +118,12 @@ public class Climber extends Subsystem {
       System.out.println("Front Solenoid is Off");
     }
   }
+
+  /**
+   * Toggle back piston
+   * If piston is disengaged, engage it
+   * If piston is engaged, disengaged is
+   */
   public void backToggle() {
     if (backSolenoid.get() == DoubleSolenoid.Value.kReverse) {
       backDown();
