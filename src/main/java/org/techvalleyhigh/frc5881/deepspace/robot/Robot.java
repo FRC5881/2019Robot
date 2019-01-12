@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.techvalleyhigh.frc5881.deepspace.robot.commands.elevator.ElevatorSave;
 import org.techvalleyhigh.frc5881.deepspace.robot.commands.drive.ArcadeDrive;
+import org.techvalleyhigh.frc5881.deepspace.robot.commands.drive.StopTipping;
 import org.techvalleyhigh.frc5881.deepspace.robot.subsystem.*;
 
 /**
@@ -30,6 +31,7 @@ public class Robot extends TimedRobot {
   public static Elevator elevator;
   public static Intake intake;
   public static Manipulator manipulator;
+  public static Arm arm;
 
   public static AHRS navX;
 
@@ -49,6 +51,7 @@ public class Robot extends TimedRobot {
     elevator = new Elevator();
     intake = new Intake();
     manipulator = new Manipulator();
+    arm = new Arm();
 
     /*
     OI must be constructed after subsystems. If the OI creates Commands
@@ -78,7 +81,13 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    SmartDashboard.putNumber("X accel", navX.getRawAccelX());
+    SmartDashboard.putNumber("Y accel", navX.getRawAccelY());
+    SmartDashboard.putNumber("Z accel", navX.getRawAccelZ());
 
+    SmartDashboard.putNumber("X gyro", navX.getRawGyroX());
+    SmartDashboard.putNumber("Y gyro", navX.getRawGyroY());
+    SmartDashboard.putNumber("Z gyro", navX.getRawGyroZ());
   }
 
   /**
@@ -120,6 +129,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
+    if (Math.abs(navX.getRawGyroY()) > 30) {
+      new StopTipping();
+    }
     if (navX.getRawGyroY() > 45) {
       new ElevatorSave();
     }
@@ -130,12 +142,5 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void testPeriodic() {
-    SmartDashboard.putNumber("X accel", navX.getRawAccelX());
-    SmartDashboard.putNumber("Y accel", navX.getRawAccelY());
-    SmartDashboard.putNumber("Z accel", navX.getRawAccelZ());
-
-    SmartDashboard.putNumber("X gyro", navX.getRawGyroX());
-    SmartDashboard.putNumber("Y gyro", navX.getRawGyroY());
-    SmartDashboard.putNumber("Z gyro", navX.getRawGyroZ());
   }
 }
