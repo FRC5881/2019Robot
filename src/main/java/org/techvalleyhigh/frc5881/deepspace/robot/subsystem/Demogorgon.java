@@ -25,16 +25,19 @@ public class Demogorgon extends Subsystem {
 
   /**
    * Name: Main
-   * Subsystem: demegorgon
+   * Subsystem: Demogorgon
    */
   public void init(){
-    mainSolenoid.setName ("demegorgon", "Main");
+    mainSolenoid.setName ("Demogorgon", "Main");
     LiveWindow.add(mainSolenoid);
   }
-  public void shootCargo(){
+
+  public void dropHatch(){
   }
-  public void grabCargo(){
+
+  public void grabHatch(){
   }
-  public void demogorgonFlip(){
+
+  public void flip(){
   }
 }
