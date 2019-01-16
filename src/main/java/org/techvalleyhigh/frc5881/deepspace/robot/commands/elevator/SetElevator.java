@@ -3,6 +3,9 @@ package org.techvalleyhigh.frc5881.deepspace.robot.commands.elevator;
 import edu.wpi.first.wpilibj.command.Command;
 import org.techvalleyhigh.frc5881.deepspace.robot.Robot;
 
+/**
+ * Sets the height of the elevator
+ */
 public class SetElevator extends Command {
   public SetElevator() {
     requires(Robot.elevator);
@@ -30,7 +33,11 @@ public class SetElevator extends Command {
    */
   @Override
   protected boolean isFinished() {
-    return false;
+    if(Robot.elevator.getSetpoint() == setpoint){
+      return true;
+    } else {
+      return false;
+    }
   }
 
   /**

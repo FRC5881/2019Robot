@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import static org.techvalleyhigh.frc5881.deepspace.robot.Robot.arm;
 
 /**
- * This class includes 2 methods in which are elevatorUp(), and elevatorDown().
+ * Contains methods to get the error of the motors, set the PIDs and even move the elevator and lift!
  */
 public class Elevator extends Subsystem {
 
@@ -61,44 +61,27 @@ public class Elevator extends Subsystem {
    * For all of the following double[]'s the first double value is the required height for the elevator to move
    * and the second value is the height that the lift is required to move.
    */
-  public static final double[] none = {
-          0, 0
-  };
+  public static final double[] none = {0, 0};
 
-  public static final double[] lowHatch = {
-          5, 5
-  };
+  public static final double[] lowHatch = {5, 5};
 
-  public static final double[] lowCargo = {
-          5 , 5
-  };
+  public static final double[] lowCargo = {5 , 5};
 
-  public static final double[] midHatch = {
-          5, 5
-  };
+  public static final double[] midHatch = {5, 5};
 
-  public static final double[] midCargo = {
-          5, 5
-  };
+  public static final double[] midCargo = {5, 5};
 
-  public static final double[] highHatch = {
-          5, 5
-  };
+  public static final double[] highHatch = {5, 5};
 
-  public static final double[] highCargo = {
-          5, 5
-  };
+  public static final double[] highCargo = {5, 5};
 
-  public static final double[] top = {
-          5, 5
-  };
+  public static final double[] top = {5, 5};
 
-  /**
-   * Does the normal stuff but also adds the PID values to Smart Dashboard.
-   */
+ /**
+  * Does the normal stuff but also adds the PID values to Smart Dashboard.
+  */
   public Elevator() {
         super();
-
         // Put numbers on SmartDashboard
         SmartDashboard.putNumber("elevator kP", 2);
         SmartDashboard.putNumber("elevator kI", 0);
@@ -108,37 +91,27 @@ public class Elevator extends Subsystem {
         SmartDashboard.putNumber("lift kI", 0);
         SmartDashboard.putNumber("lift kD", 20);
         SmartDashboard.putNumber("lift kF", 0.076);
-
         init();
     }
 
   /**
    * Adds the encoder to the motor/ Talon
-   * Also "sets the PID values"
+   * Also sets the PID values
    */
   private void init(){
-
       liftMasterMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
-
       elevatorMasterMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
 
 
       elevatorMasterMotor.config_kP(0, getElevator_kP(), 10);
-
       elevatorMasterMotor.config_kI(0, getElevator_kI(), 10);
-
       elevatorMasterMotor.config_kD(0, getElevator_kD(), 10);
-
       elevatorMasterMotor.config_kF(0, getElevator_kF(), 10);
 
       liftMasterMotor.config_kP(0, getLift_kP(), 10);
-
       liftMasterMotor.config_kI(0, getLift_kI(), 10);
-
       liftMasterMotor.config_kD(0, getLift_kD(), 10);
-
       liftMasterMotor.config_kF(0, getLift_kF(), 10);
-
     }
 
     @Override
@@ -152,46 +125,34 @@ public class Elevator extends Subsystem {
   public void elevatorUp(){
         // Checks if the arm mode is "hatch"
       if(arm.isHatch()){
-
           // Checks to see if the elevator state is "none"
         if(ElevatorState.NONE.equals(elevatorState)){
-
               setElevator(lowHatch);
               // Sets elevator state to "low hatch"
               elevatorState = ElevatorState.LOW_HATCH;
-
               // If the elevator state is "low hatch" then proceed
             } else if (ElevatorState.LOW_HATCH.equals(elevatorState)) {
-
               setElevator(midHatch);
               // Sets the elevator state to "middle hatch"
               elevatorState = ElevatorState.MIDDLE_HATCH;
-
               // Checks if the elevator state is "middle hatch"
             } else if(ElevatorState.MIDDLE_HATCH.equals(elevatorState)){
-
               setElevator(highHatch);
               // Sets the elevator state to "high hatch"
               elevatorState = ElevatorState.HIGH_HATCH;
-
             }
             // Checks if the arm mode is "cargo"
           } else if(arm.isCargo()){
-
                 // If the elevator state is "low cargo" then proceed
             if(ElevatorState.LOW_CARGO.equals(elevatorState)){
-
               setElevator(midCargo);
               // Sets the elevator state to "middle cargo"
               elevatorState = ElevatorState.MIDDLE_CARGO;
-
                 // Checks if the elevator state is "middle cargo"
             }  else if(ElevatorState.MIDDLE_CARGO.equals(elevatorState)){
-
               setElevator(highCargo);
               // Sets the elevator state to "high cargo"
               elevatorState = ElevatorState.HIGH_CARGO;
-
             }
           }
     }
@@ -200,65 +161,50 @@ public class Elevator extends Subsystem {
    * Moves the elevator down to the next possible state.
    */
   public void elevatorDown(){
-
         // Check if the arm mode is "hatch"
     if (arm.isHatch()) {
-
         // If the elevator's height is "high hatch" then proceed
       if (ElevatorState.HIGH_HATCH.equals(elevatorState)) {
-
         setElevator(midHatch);
-
         // Sets the elevator state to "middle hatch"
         elevatorState = ElevatorState.MIDDLE_HATCH;
-
         // Check if the elevator state is middle hatch
       } else if (ElevatorState.MIDDLE_HATCH.equals(elevatorState)) {
-
         setElevator(lowHatch);
-
         // Sets the elevator state to "low hatch"
         elevatorState = ElevatorState.LOW_HATCH;
-
         // Checks if the elevator's state is "low hatch"
       } else if (ElevatorState.LOW_HATCH.equals(elevatorState)) {
-
         setElevator(none);
-
         // Sets the elevator state to none
         elevatorState = ElevatorState.NONE;
-
       }
-
       // Checks if the arm mode is "cargo"
     } else if (arm.isCargo()){
-
         // Checks if the elevator state is "high cargo"
       if(ElevatorState.HIGH_CARGO.equals(elevatorState)) {
-
         setElevator(midCargo);
-
         // Sets elevator state to "middle cargo"
         elevatorState = ElevatorState.MIDDLE_CARGO;
-
         // Checks if the elevator state is "middle cargo"
       } else if(ElevatorState.MIDDLE_CARGO.equals(elevatorState)){
-
         setElevator(lowCargo);
-
         // Sets elevator state to "low cargo"
         elevatorState = ElevatorState.LOW_CARGO;
-
         // Checks if elevator state is "low cargo"
       } else if(ElevatorState.LOW_CARGO.equals(elevatorState)){
-
         setElevator(none);
-
         // Sets the elevator state to "none"
         elevatorState = ElevatorState.NONE;
-
       }
     }
+  }
+
+  /**
+   * Sets the elevator and lift height to the lowest setting as to prevent a high center of mass
+   */
+  public void saveElevator(){
+    setElevator(none);
   }
 
   /**
@@ -270,13 +216,13 @@ public class Elevator extends Subsystem {
     setSetpointElevator(setpoints[1]);
   }
 
-
   /**
    * Sets the height of the elevator
    * Will not move the elevator if you want to move it below 0 ticks or above the top ticks number
    * @param setpoint is the height (in ticks) of which you want the elevator to go to
    */
   public void setSetpointElevator(double setpoint) {
+        // Checks to see if the elevator is within safe operating heights
       if(getSetpointElevator() >= none[1] && getSetpointElevator() <= top[1]) {
         elevatorMasterMotor.set(ControlMode.Position, setpoint);
       }
@@ -287,9 +233,41 @@ public class Elevator extends Subsystem {
    * @param setpoint Is the height to which is need to get to
    */
   public void setSetpointLift(double setpoint){
+      // Checks to see if the lift is within safe operation heights
     if(getSetpointLift() >= none[2] && getSetpointLift() <= top[2]) {
       liftMasterMotor.set(ControlMode.Position, setpoint);
     }
+  }
+
+  public double getError(){
+    double averageError = getElevatorError() + getLiftError() / 2;
+    return averageError;
+  }
+
+  /**
+   * Gets the error of the elevator motor
+   * @return Returns the error of the elevator motor
+   */
+  public double getElevatorError(){
+    return elevatorMasterMotor.getErrorDerivative(2);
+  }
+
+  /**
+   * Gets the error of the lift motor
+   * @return Returns the error of the lift motor
+   */
+  public double getLiftError(){
+    return liftMasterMotor.getErrorDerivative(3);
+  }
+
+  /**
+   * Gets the total height of the elevator and lift together
+   * @return /\
+   *         ||
+   */
+  public double getSetpoint(){
+    double setpoint = getSetpointElevator() + getSetpointLift();
+    return setpoint;
   }
 
   /**
@@ -380,15 +358,12 @@ public class Elevator extends Subsystem {
       // The amount of ticks that the given amount of inches will be
       double ticks;
       // Is the amount of inches per amount of ticks per rotation
-      double inches1;
-      // TODO: need to find out how many ticks per rotation the encoder has.
       double ticksPerRotation = 1000;
-      // How many inches the lift moves per every full rotation
-      // TODO: need to find out how many inches the lift moves per rotation
       double inchesMovedPerRotation = 0.5;
-      inches1 = inches * inchesMovedPerRotation;
 
-      ticks = inches1 / ticksPerRotation;
+      // The part in parenthesis (hopefully) calculates how many rotations you would need to get to the next "closest" number
+      // Then it is multiplied by the amount of ticks per rotation as to make it into the amount of ticks.
+      ticks = (inches / inchesMovedPerRotation) * ticksPerRotation;
 
       return ticks;
   }

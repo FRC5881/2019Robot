@@ -3,7 +3,15 @@ package org.techvalleyhigh.frc5881.deepspace.robot.commands.elevator;
 import edu.wpi.first.wpilibj.command.Command;
 import org.techvalleyhigh.frc5881.deepspace.robot.Robot;
 
+/**
+ * When executed moves the elevator down to the next lowest level
+ * If it is at the lowest possible level it will do nothing
+ */
 public class ElevatorDown extends Command {
+  // TODO: Figure out what we actually want this number to be
+  // errorMax is the maximum error that we want from anything
+  private static final double errorMax = 1;
+
   public ElevatorDown() {
     requires(Robot.elevator);
   }
@@ -24,13 +32,13 @@ public class ElevatorDown extends Command {
     Robot.elevator.elevatorDown();
   }
 
-  /**
-   * Make this return true when this Command no longer needs to run execute()
-   * Since this is a drive command we never want it to end
-   */
   @Override
   protected boolean isFinished() {
-    return false;
+    if(Robot.elevator.getError() >= errorMax){
+      return true;
+    }else {
+      return false;
+    }
   }
 
   /**
@@ -38,7 +46,7 @@ public class ElevatorDown extends Command {
    */
   @Override
   protected void end() {
-    System.out.println("Elevator down command ended... That shouldn't happen");
+    System.out.println("Elevator down command ended");
   }
 
   /**
