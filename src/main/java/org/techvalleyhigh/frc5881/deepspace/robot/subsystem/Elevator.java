@@ -97,8 +97,9 @@ public class Elevator extends Subsystem {
    * Does the normal stuff but also adds the PID values to Smart Dashboard.
    */
   public Elevator() {
-
         super();
+
+        // Put numbers on SmartDashboard
         SmartDashboard.putNumber("elevator kP", 2);
         SmartDashboard.putNumber("elevator kI", 0);
         SmartDashboard.putNumber("elevator kD", 20);
@@ -107,6 +108,7 @@ public class Elevator extends Subsystem {
         SmartDashboard.putNumber("lift kI", 0);
         SmartDashboard.putNumber("lift kD", 20);
         SmartDashboard.putNumber("lift kF", 0.076);
+
         init();
     }
 
@@ -154,21 +156,21 @@ public class Elevator extends Subsystem {
           // Checks to see if the elevator state is "none"
         if(ElevatorState.NONE.equals(elevatorState)){
 
-              setElevator(lowHatch[0], lowHatch[1]);
+              setElevator(lowHatch);
               // Sets elevator state to "low hatch"
               elevatorState = ElevatorState.LOW_HATCH;
 
               // If the elevator state is "low hatch" then proceed
             } else if (ElevatorState.LOW_HATCH.equals(elevatorState)) {
 
-              setElevator(midHatch[0], midHatch[1]);
+              setElevator(midHatch);
               // Sets the elevator state to "middle hatch"
               elevatorState = ElevatorState.MIDDLE_HATCH;
 
               // Checks if the elevator state is "middle hatch"
             } else if(ElevatorState.MIDDLE_HATCH.equals(elevatorState)){
 
-              setElevator(highHatch[0], highHatch[1]);
+              setElevator(highHatch);
               // Sets the elevator state to "high hatch"
               elevatorState = ElevatorState.HIGH_HATCH;
 
@@ -179,14 +181,14 @@ public class Elevator extends Subsystem {
                 // If the elevator state is "low cargo" then proceed
             if(ElevatorState.LOW_CARGO.equals(elevatorState)){
 
-              setElevator(midCargo[0], midCargo[1]);
+              setElevator(midCargo);
               // Sets the elevator state to "middle cargo"
               elevatorState = ElevatorState.MIDDLE_CARGO;
 
                 // Checks if the elevator state is "middle cargo"
             }  else if(ElevatorState.MIDDLE_CARGO.equals(elevatorState)){
 
-              setElevator(highCargo[0], highCargo[1]);
+              setElevator(highCargo);
               // Sets the elevator state to "high cargo"
               elevatorState = ElevatorState.HIGH_CARGO;
 
@@ -205,7 +207,7 @@ public class Elevator extends Subsystem {
         // If the elevator's height is "high hatch" then proceed
       if (ElevatorState.HIGH_HATCH.equals(elevatorState)) {
 
-        setElevator(midHatch[0], midHatch[1]);
+        setElevator(midHatch);
 
         // Sets the elevator state to "middle hatch"
         elevatorState = ElevatorState.MIDDLE_HATCH;
@@ -213,7 +215,7 @@ public class Elevator extends Subsystem {
         // Check if the elevator state is middle hatch
       } else if (ElevatorState.MIDDLE_HATCH.equals(elevatorState)) {
 
-        setElevator(lowHatch[0], lowHatch[1]);
+        setElevator(lowHatch);
 
         // Sets the elevator state to "low hatch"
         elevatorState = ElevatorState.LOW_HATCH;
@@ -221,7 +223,7 @@ public class Elevator extends Subsystem {
         // Checks if the elevator's state is "low hatch"
       } else if (ElevatorState.LOW_HATCH.equals(elevatorState)) {
 
-        setElevator(none[0], none[1]);
+        setElevator(none);
 
         // Sets the elevator state to none
         elevatorState = ElevatorState.NONE;
@@ -234,7 +236,7 @@ public class Elevator extends Subsystem {
         // Checks if the elevator state is "high cargo"
       if(ElevatorState.HIGH_CARGO.equals(elevatorState)) {
 
-        setElevator(midCargo[0], midCargo[1]);
+        setElevator(midCargo);
 
         // Sets elevator state to "middle cargo"
         elevatorState = ElevatorState.MIDDLE_CARGO;
@@ -242,7 +244,7 @@ public class Elevator extends Subsystem {
         // Checks if the elevator state is "middle cargo"
       } else if(ElevatorState.MIDDLE_CARGO.equals(elevatorState)){
 
-        setElevator(lowCargo[0], lowCargo[1]);
+        setElevator(lowCargo);
 
         // Sets elevator state to "low cargo"
         elevatorState = ElevatorState.LOW_CARGO;
@@ -250,7 +252,7 @@ public class Elevator extends Subsystem {
         // Checks if elevator state is "low cargo"
       } else if(ElevatorState.LOW_CARGO.equals(elevatorState)){
 
-        setElevator(none[0], none[1]);
+        setElevator(none);
 
         // Sets the elevator state to "none"
         elevatorState = ElevatorState.NONE;
@@ -261,13 +263,13 @@ public class Elevator extends Subsystem {
 
   /**
    * "Runs" setSetpointElevator and setSetpointLift with the appropriate parameters.
-   * @param setpointElevator Is the height of which the elevator is wanted to be moved to.
-   * @param setpointLift Is the desired height of which to have the lift go too.
+   * @param setpoints double[2] both
    */
-  public void setElevator(double setpointElevator, double setpointLift){
-    setSetpointElevator(setpointElevator);
-    setSetpointLift(setpointLift);
+  public void setElevator(double[] setpoints) {
+    setSetpointLift(setpoints[0]);
+    setSetpointElevator(setpoints[1]);
   }
+
 
   /**
    * Sets the height of the elevator
