@@ -33,7 +33,7 @@ public class SetElevator extends Command {
    */
   @Override
   protected boolean isFinished() {
-    if(Robot.elevator.getSetpoint() == setpoint){
+    if(Robot.elevator.setpointReached(setpoint)){
       return true;
     } else {
       return false;

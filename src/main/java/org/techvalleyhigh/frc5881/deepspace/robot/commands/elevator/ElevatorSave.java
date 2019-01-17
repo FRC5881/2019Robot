@@ -3,6 +3,8 @@ package org.techvalleyhigh.frc5881.deepspace.robot.commands.elevator;
 import edu.wpi.first.wpilibj.command.Command;
 import org.techvalleyhigh.frc5881.deepspace.robot.Robot;
 
+import static org.techvalleyhigh.frc5881.deepspace.robot.subsystem.Elevator.none;
+
 /**
  * "Saves" the bot from tipping by lowering the elevator when we are tipping and not climbing
  */
@@ -33,8 +35,7 @@ public class ElevatorSave extends Command {
    */
   @Override
   protected boolean isFinished() {
-    // If the total height is 0 then it's finished.
-    if(Robot.elevator.getSetpoint() == 0){
+    if(Robot.elevator.setpointReached(none[1])){
       return true;
     } else {
       return false;

@@ -6,6 +6,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+import static java.lang.Math.abs;
 import static org.techvalleyhigh.frc5881.deepspace.robot.Robot.arm;
 
 /**
@@ -208,6 +209,20 @@ public class Elevator extends Subsystem {
   }
 
   /**
+   * Checks to see if the elevator and lift are at the desired location
+   * @param setpoint is the desired height to which the elevator and lift should go to
+   * @return Returns true if it has reached destination, returns false if it has not reached destination
+   */
+  public boolean setpointReached(double setpoint){
+    double goal = getSetpoint();
+    if(setpoint != goal){
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  /**
    * "Runs" setSetpointElevator and setSetpointLift with the appropriate parameters.
    * @param setpoints double[2] both
    */
@@ -240,7 +255,7 @@ public class Elevator extends Subsystem {
   }
 
   public double getError(){
-    double averageError = getElevatorError() + getLiftError() / 2;
+    double averageError = abs(getElevatorError()) + abs(getLiftError()) / 2;
     return averageError;
   }
 
