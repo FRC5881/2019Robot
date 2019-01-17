@@ -35,7 +35,7 @@ public class ElevatorSave extends Command {
    */
   @Override
   protected boolean isFinished() {
-    if(Robot.elevator.setpointReached(none[1])){
+    if(Robot.elevator.setpointReached(Robot.elevator.overallTarget())){
       return true;
     } else {
       return false;

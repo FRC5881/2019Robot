@@ -34,9 +34,9 @@ public class ElevatorDown extends Command {
 
   @Override
   protected boolean isFinished() {
-    if(Robot.elevator.getError() >= errorMax){
+    if(Robot.elevator.setpointReached(Robot.elevator.overallTarget())){
       return true;
-    }else {
+    } else {
       return false;
     }
   }

@@ -209,6 +209,14 @@ public class Elevator extends Subsystem {
   }
 
   /**
+   * Gets the total target height of the elevator and lift together
+   * @return Returns the sum of the elevator target height and the lift target height to get the total desired height
+   */
+  public double overallTarget(){
+    return elevatorTarget() + liftTarget();
+  }
+
+  /**
    * Checks to see if the elevator and lift are at the desired location
    * @param setpoint is the desired height to which the elevator and lift should go to
    * @return Returns true if it has reached destination, returns false if it has not reached destination
@@ -219,6 +227,50 @@ public class Elevator extends Subsystem {
       return false;
     } else {
       return true;
+    }
+  }
+
+  /**
+   * Checks to see if the amount of error in the elevator motors is acceptable
+   * @return Returns true if it is within the allowed range, returns false if it is not close enough
+   */
+  public boolean isElevatorAllowableError(){
+    double error1 = -5;
+    double error2 = 5;
+    if(getElevatorError() <= error2 && getElevatorError() >= error1){
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  /**
+   * Gets the target height of the elevator
+   * @return Returns the desired height of the elevator
+   */
+  private double elevatorTarget(){
+    return elevatorMasterMotor.getClosedLoopTarget(2);
+  }
+
+  /**
+   * Gets the target height of the lift
+   * @return Returns the desired height of the lift
+   */
+  private double liftTarget(){
+    return liftMasterMotor.getClosedLoopTarget(3);
+  }
+
+  /**
+   * Checks to see if te amount of error in the lift motors is acceptable
+   * @return Returns true if it is within the allowed range, returns false if it is not close enough
+   */
+  public boolean isLiftAllowableError(){
+    double error1 = -5;
+    double error2 = 5;
+    if(getLiftError() <= error2 && getLiftError() >= error1){
+      return true;
+    } else {
+      return false;
     }
   }
 
@@ -254,17 +306,12 @@ public class Elevator extends Subsystem {
     }
   }
 
-  public double getError(){
-    double averageError = abs(getElevatorError()) + abs(getLiftError()) / 2;
-    return averageError;
-  }
-
   /**
    * Gets the error of the elevator motor
    * @return Returns the error of the elevator motor
    */
   public double getElevatorError(){
-    return elevatorMasterMotor.getErrorDerivative(2);
+    return elevatorMasterMotor.getClosedLoopError(2);
   }
 
   /**
@@ -272,7 +319,7 @@ public class Elevator extends Subsystem {
    * @return Returns the error of the lift motor
    */
   public double getLiftError(){
-    return liftMasterMotor.getErrorDerivative(3);
+    return liftMasterMotor.getClosedLoopError(3);
   }
 
   /**
@@ -289,14 +336,14 @@ public class Elevator extends Subsystem {
    * Gets the value of Setpoint
    * @return returns the value of Setpoint
    */
-  private double getSetpointElevator(){
+  public double getSetpointElevator(){
       return elevatorMasterMotor.getClosedLoopTarget(0);
     }
   /**
    * Gets the value of Setpoint
    * @return returns the value of Setpoint
    */
-  private double getSetpointLift(){
+  public double getSetpointLift(){
     return liftMasterMotor.getClosedLoopTarget(0);
   }
 
@@ -363,7 +410,6 @@ public class Elevator extends Subsystem {
   private double getLift_kF() {
       return SmartDashboard.getNumber("lift kF", 0.076);
     }
-
   /**
    * Tells you how many ticks you need to turn a motor to go a certain amount of inches.
    * @param inches is the amount of inches you want to convert to ticks.
