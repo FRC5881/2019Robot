@@ -85,8 +85,8 @@ public class Climber extends Subsystem {
     double turn = Robot.oi.driverController.getRawAxis(OI.XBOX_RIGHT_X_AXIS);
 
     if(Math.abs(turn) < 0.1 || Math.abs(speed) < 0.1) {
-      speed = 0 ;
-      turn = 0 ;
+      speed = 0;
+      turn = 0;
     }
 
     rawArcadeDrive(turn, speed);
