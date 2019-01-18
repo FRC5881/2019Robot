@@ -20,7 +20,7 @@ public class DriveSave extends Command {
   @Override
   protected void initialize() {
     speed = Math.copySign(DriveControl.REVERSE_TIPPING, -DriveControl.frontLeftMotor.getSelectedSensorVelocity());
-    System.out.println("ArcadeDrive Command initialized");
+    System.out.println("DriveSave Command initialized");
 
   }
 
@@ -46,7 +46,7 @@ public class DriveSave extends Command {
    */
   @Override
   protected void end() {
-    System.out.println("ArcadeDrive ended");
+    System.out.println("DriveSave ended");
   }
 
   /**

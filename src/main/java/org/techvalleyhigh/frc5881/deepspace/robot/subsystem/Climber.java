@@ -129,7 +129,7 @@ public class Climber extends Subsystem {
   public void backToggle() {
     if (backSolenoid.get() == DoubleSolenoid.Value.kReverse) {
       backDown();
-    }else if (frontSolenoid.get() == DoubleSolenoid.Value.kForward){
+    }else if (backSolenoid.get() == DoubleSolenoid.Value.kForward){
       backUp();
     }else{
       System.out.println("Back Solenoid is off");
