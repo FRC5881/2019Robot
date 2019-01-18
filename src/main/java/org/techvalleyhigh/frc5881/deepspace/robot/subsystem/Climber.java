@@ -91,6 +91,48 @@ public class Climber extends Subsystem {
     rawArcadeDrive(turn, speed);
   }
 
+  public void frontDown(){
+    frontSolenoid.set(DoubleSolenoid.Value.kForward);
+  }
+  public void frontUp(){
+    frontSolenoid.set(DoubleSolenoid.Value.kReverse);
+  }
+  public void backDown(){
+    frontSolenoid.set(DoubleSolenoid.Value.kForward);
+  }
+  public void backUp(){
+    frontSolenoid.set(DoubleSolenoid.Value.kReverse);
+  }
+
+  /**
+   * Toggle front piston
+   * if the piston is disengaged, engage it
+   * if the piston is engaged, disengage it
+   */
+  public void frontToggle(){
+    if (frontSolenoid.get() == DoubleSolenoid.Value.kForward) {
+      frontUp();
+    } else if (frontSolenoid.get() == DoubleSolenoid.Value.kReverse) {
+      frontDown();
+    } else {
+      System.out.println("Front Solenoid is Off");
+    }
+  }
+
+  /**
+   * Toggle back piston
+   * If piston is disengaged, engage it
+   * If piston is engaged, disengaged is
+   */
+  public void backToggle() {
+    if (backSolenoid.get() == DoubleSolenoid.Value.kReverse) {
+      backDown();
+    }else if (frontSolenoid.get() == DoubleSolenoid.Value.kForward){
+      backUp();
+    }else{
+      System.out.println("Back Solenoid is off");
+    }
+  }
   public ClimberMode getState() {
     return state;
   }
