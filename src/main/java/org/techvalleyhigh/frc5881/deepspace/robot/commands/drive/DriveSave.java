@@ -4,6 +4,9 @@ import edu.wpi.first.wpilibj.command.Command;
 import org.techvalleyhigh.frc5881.deepspace.robot.Robot;
 import org.techvalleyhigh.frc5881.deepspace.robot.subsystem.DriveControl;
 
+/**
+ * When bot tips drive backwards
+ */
 public class DriveSave extends Command {
   private double speed;
 

@@ -5,7 +5,7 @@ import org.techvalleyhigh.frc5881.deepspace.robot.Robot;
 import org.techvalleyhigh.frc5881.deepspace.robot.subsystem.Climber;
 
 /**
- *
+ *Drive the climber motors
  */
 public class ClimberDrive extends Command {
   public ClimberDrive() {

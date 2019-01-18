@@ -48,18 +48,18 @@ public class Climber extends Subsystem {
   }
 
   public void init() {
-    leftMotor.setName("Climber", "Left");
+    leftMotor.setName("Climber", "LeftMotor");
     leftMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
     LiveWindow.add(leftMotor);
 
-    rightMotor.setName("Climber", "Right");
+    rightMotor.setName("Climber", "RightMotor");
     rightMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
     LiveWindow.add(rightMotor);
 
-    frontSolenoid.setName ("Climber", "Front");
+    frontSolenoid.setName ("Climber", "FrontPiston");
     LiveWindow.add(frontSolenoid);
 
-    backSolenoid.setName("Climber", "back");
+    backSolenoid.setName("Climber", "backPiston");
     LiveWindow.add(frontSolenoid);
 
     SpeedControllerGroup m_left = new SpeedControllerGroup(leftMotor);
