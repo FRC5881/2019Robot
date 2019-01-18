@@ -129,9 +129,11 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
+    // If the bot is at an angle of greater than 30 degrees then run stop tipping
     if (Math.abs(navX.getRawGyroY()) > 30) {
       new StopTipping();
     }
+    // If the bot is at an angle of greater than 45 degrees then do elevator save.
     if (navX.getRawGyroY() > 45) {
       new ElevatorSave();
     }

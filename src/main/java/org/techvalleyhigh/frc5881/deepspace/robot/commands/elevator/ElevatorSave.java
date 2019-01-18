@@ -33,11 +33,7 @@ public class ElevatorSave extends Command {
    */
   @Override
   protected boolean isFinished() {
-    if(Robot.elevator.isSetpointReached()){
-      return true;
-    } else {
-      return false;
-    }
+    return Robot.elevator.isSetpointReached();
   }
 
   /**
