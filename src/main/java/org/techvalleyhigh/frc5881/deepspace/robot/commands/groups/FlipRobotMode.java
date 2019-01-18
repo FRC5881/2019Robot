@@ -11,7 +11,5 @@ public class FlipRobotMode extends CommandGroup {
   public FlipRobotMode() {
     addParallel(new ArmFlip());
     addParallel(new ElevatorFlip());
-
-
   }
 }
