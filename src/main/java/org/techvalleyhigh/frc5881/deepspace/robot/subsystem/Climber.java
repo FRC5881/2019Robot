@@ -85,7 +85,8 @@ public class Climber extends Subsystem {
     double turn = Robot.oi.driverController.getRawAxis(OI.XBOX_RIGHT_X_AXIS);
 
     if(Math.abs(turn) < 0.1 || Math.abs(speed) < 0.1) {
-      return;
+      speed = 0 ;
+      turn = 0 ;
     }
 
     rawArcadeDrive(turn, speed);
@@ -98,10 +99,10 @@ public class Climber extends Subsystem {
     frontSolenoid.set(DoubleSolenoid.Value.kReverse);
   }
   public void backDown(){
-    frontSolenoid.set(DoubleSolenoid.Value.kForward);
+    backSolenoid.set(DoubleSolenoid.Value.kForward);
   }
   public void backUp(){
-    frontSolenoid.set(DoubleSolenoid.Value.kReverse);
+    backSolenoid.set(DoubleSolenoid.Value.kReverse);
   }
 
   /**
