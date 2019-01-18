@@ -7,18 +7,24 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
+
+/**
+ * Subsystem that has everything to do with the arm
+ */
 public class Arm extends Subsystem {
 
   //Define motor
   private static WPI_TalonSRX armMotor = new WPI_TalonSRX(5);
 
   //The maximum and minimum numbers of ticks for how far the arm can move
-  private static final int maxTicks = 0;
-  private static final int minTicks = 200;
+  private static final int MAX_TICKS = 0;
+  private static final int MIN_TICKS = 200;
 
   //TODO: Find cargo and hatch ticks
-  public static final int cargoTicks = 10;
-  public static final int hatchTicks = 15;
+  public static final int CARGO_TICKS = 10;
+  public static final int HATCH_TICKS = 15;
+
+  public static final int MAX_ERROR = 50;
 
 
   @Override
@@ -47,30 +53,33 @@ public class Arm extends Subsystem {
    * If setPoint is more than maxTicks, it will be equal to maxTicks
   */
   public void setArmMotor (double setPoint){
-    if (setPoint < minTicks) setPoint = minTicks;
-    if (setPoint > maxTicks) setPoint = maxTicks;
+    if (setPoint < MIN_TICKS) setPoint = MIN_TICKS;
+    if (setPoint > MAX_TICKS) setPoint = MAX_TICKS;
 
     armMotor.set(ControlMode.Position, setPoint);
   }
 
   /**
-   * set arm to target cargo or hatch
+   * set arm to target cargo
    */
   public void setToCargoTicks(){
-    setArmMotor(cargoTicks);
+    setArmMotor(CARGO_TICKS);
   }
 
+  /**
+   * set arm to target hatch
+   */
   public void setToHatchTicks(){
-    setArmMotor(hatchTicks);
+    setArmMotor(HATCH_TICKS);
   }
 
   /**
    * flip arm setpoint from cargo to hatch and vice versa
    */
   public void flip() {
-    if(getSetPoint() == hatchTicks) {
+    if(getSetPoint() == HATCH_TICKS) {
       setToCargoTicks();
-    } else if(getSetPoint() == cargoTicks){
+    } else if(getSetPoint() == CARGO_TICKS){
       setToHatchTicks();
     }
   }
@@ -80,15 +89,39 @@ public class Arm extends Subsystem {
    * returns if it's true or false
    */
   public boolean isCargo() {
-    return getSetPoint() == cargoTicks;
+    return getSetPoint() == CARGO_TICKS;
   }
 
+  /**
+   * identifies which mode the arm is in, cargo or hatch
+   * @return if it's true or false
+   */
   public boolean isHatch() {
-    return getSetPoint() == hatchTicks;
+    return getSetPoint() == HATCH_TICKS;
   }
 
-
+  /**
+   * Gets current setpoint of the arm motor
+   * @return double setpoint
+   */
   public double getSetPoint() {
     return armMotor.getClosedLoopTarget();
   }
+
+  /**
+   * Gets how far the arm is from the setpoint
+   * @return double error
+   */
+  public double getError() {
+    return armMotor.getClosedLoopError();
+  }
+
+  /**
+   * Gets the position of the arm
+   * @return double position
+   */
+  public double getPosition() {
+    return armMotor.getSelectedSensorPosition();
+  }
+
 }
