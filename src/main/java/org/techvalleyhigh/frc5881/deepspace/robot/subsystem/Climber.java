@@ -16,7 +16,7 @@ public class Climber extends Subsystem {
   public static WPI_TalonSRX leftMotor = new WPI_TalonSRX(5);
   public static WPI_TalonSRX rightMotor = new WPI_TalonSRX(6);
 
-  private DifferentialDrive clibmerDrive;
+  private DifferentialDrive climberDrive;
 
   // Current mode of the climber
   private ClimberMode state = ClimberMode.NONE;
@@ -26,9 +26,10 @@ public class Climber extends Subsystem {
    */
   public enum ClimberMode {
     NONE,
-    ENGADED,
-    DISENGADED
+    ENGAGED,
+    DISENGAGED,
   }
+
 
   /**
    * Initialize the default command for a subsystem By default subsystems have no default command,
@@ -47,23 +48,23 @@ public class Climber extends Subsystem {
   }
 
   public void init() {
-    leftMotor.setName("Clibmer", "Left");
+    leftMotor.setName("Climber", "Left");
     leftMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
     LiveWindow.add(leftMotor);
 
-    rightMotor.setName("Clibmer", "Right");
+    rightMotor.setName("Climber", "Right");
     rightMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
     LiveWindow.add(rightMotor);
 
-    frontSolenoid.setName ("Clibmer", "Front");
+    frontSolenoid.setName ("Climber", "Front");
     LiveWindow.add(frontSolenoid);
 
-    backSolenoid.setName("Clibmer", "back");
+    backSolenoid.setName("Climber", "back");
     LiveWindow.add(frontSolenoid);
 
     SpeedControllerGroup m_left = new SpeedControllerGroup(leftMotor);
     SpeedControllerGroup m_right = new SpeedControllerGroup(rightMotor);
-    clibmerDrive = new DifferentialDrive(m_right, m_left);
+    climberDrive = new DifferentialDrive(m_right, m_left);
   }
 
   /**
@@ -72,8 +73,8 @@ public class Climber extends Subsystem {
    * @param turn Turn rate -1 left -> 1 right
    */
   public void rawArcadeDrive(double speed, double turn){
-    if (state == ClimberMode.ENGADED) {
-      clibmerDrive.arcadeDrive(speed, turn, true);
+    if (state == ClimberMode.ENGAGED) {
+      climberDrive.arcadeDrive(speed, turn, true);
     }
   }
 
