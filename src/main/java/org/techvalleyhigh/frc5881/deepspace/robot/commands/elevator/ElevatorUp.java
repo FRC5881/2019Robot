@@ -4,10 +4,6 @@ import edu.wpi.first.wpilibj.command.Command;
 import org.techvalleyhigh.frc5881.deepspace.robot.Robot;
 
 public class ElevatorUp extends Command {
-  // TODO: Figure out what we actually want this number to be
-  // errorMax is the maximum error that we want from anything
-  private static final double errorMax = 5;
-
   public ElevatorUp() {
     requires(Robot.elevator);
   }
@@ -34,7 +30,7 @@ public class ElevatorUp extends Command {
    */
   @Override
   protected boolean isFinished() {
-    if(Robot.elevator.setpointReached(Robot.elevator.overallTarget())){
+    if(Robot.elevator.isSetpointReached()){
       return true;
     } else {
       return false;

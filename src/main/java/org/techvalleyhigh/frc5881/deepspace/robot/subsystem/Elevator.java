@@ -5,9 +5,7 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
-import static java.lang.Math.abs;
-import static org.techvalleyhigh.frc5881.deepspace.robot.Robot.arm;
+import org.techvalleyhigh.frc5881.deepspace.robot.Robot;
 
 /**
  * Contains methods to get the error of the motors, set the PIDs and even move the elevator and lift!
@@ -125,7 +123,7 @@ public class Elevator extends Subsystem {
    */
   public void elevatorUp(){
         // Checks if the arm mode is "hatch"
-      if(arm.isHatch()){
+      if(Robot.arm.isHatch()){
           // Checks to see if the elevator state is "none"
         if(ElevatorState.NONE.equals(elevatorState)){
               setElevator(lowHatch);
@@ -143,7 +141,7 @@ public class Elevator extends Subsystem {
               elevatorState = ElevatorState.HIGH_HATCH;
             }
             // Checks if the arm mode is "cargo"
-          } else if(arm.isCargo()){
+          } else if(Robot.arm.isCargo()){
                 // If the elevator state is "low cargo" then proceed
             if(ElevatorState.LOW_CARGO.equals(elevatorState)){
               setElevator(midCargo);
@@ -163,7 +161,7 @@ public class Elevator extends Subsystem {
    */
   public void elevatorDown(){
         // Check if the arm mode is "hatch"
-    if (arm.isHatch()) {
+    if (Robot.arm.isHatch()) {
         // If the elevator's height is "high hatch" then proceed
       if (ElevatorState.HIGH_HATCH.equals(elevatorState)) {
         setElevator(midHatch);
@@ -181,7 +179,7 @@ public class Elevator extends Subsystem {
         elevatorState = ElevatorState.NONE;
       }
       // Checks if the arm mode is "cargo"
-    } else if (arm.isCargo()){
+    } else if (Robot.arm.isCargo()){
         // Checks if the elevator state is "high cargo"
       if(ElevatorState.HIGH_CARGO.equals(elevatorState)) {
         setElevator(midCargo);
@@ -218,12 +216,11 @@ public class Elevator extends Subsystem {
 
   /**
    * Checks to see if the elevator and lift are at the desired location
-   * @param setpoint is the desired height to which the elevator and lift should go to
    * @return Returns true if it has reached destination, returns false if it has not reached destination
    */
-  public boolean setpointReached(double setpoint){
+  public boolean isSetpointReached(){
     double goal = getSetpoint();
-    if(setpoint != goal){
+    if(overallTarget() != goal){
       return false;
     } else {
       return true;
@@ -235,9 +232,8 @@ public class Elevator extends Subsystem {
    * @return Returns true if it is within the allowed range, returns false if it is not close enough
    */
   public boolean isElevatorAllowableError(){
-    double error1 = -5;
-    double error2 = 5;
-    if(getElevatorError() <= error2 && getElevatorError() >= error1){
+    double error = 5;
+    if(getElevatorError() <= error && getElevatorError() >= -error){
       return true;
     } else {
       return false;
@@ -265,9 +261,8 @@ public class Elevator extends Subsystem {
    * @return Returns true if it is within the allowed range, returns false if it is not close enough
    */
   public boolean isLiftAllowableError(){
-    double error1 = -5;
-    double error2 = 5;
-    if(getLiftError() <= error2 && getLiftError() >= error1){
+    double error = 5;
+    if(getLiftError() <= error && getLiftError() >= -error){
       return true;
     } else {
       return false;

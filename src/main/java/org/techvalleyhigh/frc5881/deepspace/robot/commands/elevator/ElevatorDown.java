@@ -8,9 +8,6 @@ import org.techvalleyhigh.frc5881.deepspace.robot.Robot;
  * If it is at the lowest possible level it will do nothing
  */
 public class ElevatorDown extends Command {
-  // TODO: Figure out what we actually want this number to be
-  // errorMax is the maximum error that we want from anything
-  private static final double errorMax = 1;
 
   public ElevatorDown() {
     requires(Robot.elevator);
@@ -34,7 +31,7 @@ public class ElevatorDown extends Command {
 
   @Override
   protected boolean isFinished() {
-    if(Robot.elevator.setpointReached(Robot.elevator.overallTarget())){
+    if(Robot.elevator.isSetpointReached()){
       return true;
     } else {
       return false;
