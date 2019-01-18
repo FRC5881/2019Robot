@@ -3,6 +3,7 @@ package org.techvalleyhigh.frc5881.deepspace.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import org.techvalleyhigh.frc5881.deepspace.robot.commands.groups.FlipRobotMode;
 
 /**
  * Controls operator interfaces, such as controllers (and a few buttons)
@@ -41,7 +42,7 @@ public class OI {
         // Define controllers as joysticks
         driverController = new Joystick(0);
 
-        // Assign EACH xBox controller button
+        // Assign EACH XBox controller button
         driveControllerButtonA = new JoystickButton(driverController, BUTTON_A);
         driveControllerButtonB = new JoystickButton(driverController, BUTTON_B);
         driveControllerButtonX = new JoystickButton(driverController, BUTTON_X);
@@ -54,6 +55,9 @@ public class OI {
         // Turns the rumble off in case it was left on
         driverController.setRumble(GenericHID.RumbleType.kLeftRumble, 0);
         driverController.setRumble(GenericHID.RumbleType.kRightRumble, 0);
+
+        // When the "Y" button is pressed change the arm mode
+        driveControllerButtonY.whenPressed(new FlipRobotMode());
     }
 
     /**
