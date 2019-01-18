@@ -5,6 +5,8 @@ import org.techvalleyhigh.frc5881.deepspace.robot.Robot;
 import org.techvalleyhigh.frc5881.deepspace.robot.subsystem.DriveControl;
 
 public class StopTipping extends Command {
+  private double speed;
+
   public StopTipping() {
     requires(Robot.driveControl);
   }
@@ -14,8 +16,9 @@ public class StopTipping extends Command {
    */
   @Override
   protected void initialize() {
-    DriveControl.frontLeftMotor.getSelectedSensorVelocity();
+    speed = Math.copySign(DriveControl.reverseTipping, -DriveControl.frontLeftMotor.getSelectedSensorVelocity());
     System.out.println("ArcadeDrive Command initialized");
+
   }
 
   /**
@@ -23,7 +26,7 @@ public class StopTipping extends Command {
    */
   @Override
   protected void execute() {
-    Robot.driveControl.arcadeJoystickInputs();
+    Robot.driveControl.rawArcadeDrive(speed, 0);
   }
 
   /**
@@ -32,7 +35,7 @@ public class StopTipping extends Command {
    */
   @Override
   protected boolean isFinished() {
-    return (Math.abs(Robot.navX.getRawGyroY()) < 10);
+    return Math.abs(Robot.navX.getRawGyroY()) < 10;
   }
 
   /**
