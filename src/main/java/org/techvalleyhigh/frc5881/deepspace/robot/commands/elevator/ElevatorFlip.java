@@ -1,15 +1,15 @@
-package org.techvalleyhigh.frc5881.deepspace.robot.commands.arm;
+package org.techvalleyhigh.frc5881.deepspace.robot.commands.elevator;
 
 import edu.wpi.first.wpilibj.command.Command;
 import org.techvalleyhigh.frc5881.deepspace.robot.Robot;
-import org.techvalleyhigh.frc5881.deepspace.robot.subsystem.Arm;
 
 /**
- * Sets arm to be positioned to pick up cargo
+ * Changes the elevator height
  */
-public class ArmSetCargo extends Command {
-  public ArmSetCargo() {
-    requires(Robot.arm);
+public class ElevatorFlip extends Command {
+
+  public ElevatorFlip() {
+    requires(Robot.elevator);
   }
 
   /**
@@ -17,22 +17,20 @@ public class ArmSetCargo extends Command {
    */
   @Override
   protected void initialize() {
-    Robot.arm.setToCargoTicks();
-    System.out.println("ArmSetCargo Command initialized");
+    System.out.println("Elevator flip initialized");
   }
 
   /**
    * Called repeatedly when this Command is scheduled to run
    */
   @Override
-  protected void execute() {  }
+  protected void execute() {
+    Robot.elevator.elevatorFlip();
+  }
 
-  /**
-   * Make this return true when this Command no longer needs to run execute()
-   */
   @Override
   protected boolean isFinished() {
-    return Robot.arm.getError() < Arm.MAX_ERROR;
+    return Robot.elevator.isSetpointReached();
   }
 
   /**
@@ -40,7 +38,7 @@ public class ArmSetCargo extends Command {
    */
   @Override
   protected void end() {
-    System.out.println("ArmSetCargo ended");
+    System.out.println("Elevator flip command ended");
   }
 
   /**
@@ -51,5 +49,4 @@ public class ArmSetCargo extends Command {
   protected void interrupted() {
     end();
   }
-
 }
