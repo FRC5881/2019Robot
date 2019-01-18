@@ -31,9 +31,7 @@ public class ArmFlip extends Command {
    * Make this return true when this Command no longer needs to run execute()
    */
   @Override
-  protected boolean isFinished() {
-   return Robot.arm.getError() < Arm.MAX_ERROR;
-  }
+  protected boolean isFinished() { return Math.abs(Robot.arm.getError()) < Arm.MAX_ERROR; }
 
   /**
    * Called once after isFinished returns true OR the command is interrupted
