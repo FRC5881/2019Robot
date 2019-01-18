@@ -79,14 +79,16 @@ public class DriveControl extends Subsystem {
     double speed = Robot.oi.driverController.getRawAxis(OI.XBOX_LEFT_Y_AXIS);
     double turn = Robot.oi.driverController.getRawAxis(OI.XBOX_RIGHT_X_AXIS);
 
-    if(Math.abs(turn) < 0.1 || Math.abs(speed) < 0.1) {
-      speed = 0 ;
+    if(Math.abs(turn) < 0.1) {
       turn = 0;
+    }
+    if(Math.abs(speed) < 0.1) {
+      speed = 0;
     }
 
     rawArcadeDrive(turn, speed);
   }
-  public static final double reverseTipping = 0.5;
+  public static final double REVERSE_TIPPING = 0.5;
 
 
 }
