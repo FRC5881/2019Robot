@@ -4,12 +4,11 @@ import edu.wpi.first.wpilibj.command.Command;
 import org.techvalleyhigh.frc5881.deepspace.robot.Robot;
 
 /**
- * When executed moves the elevator down to the next lowest level
- * If it is at the lowest possible level it will do nothing
+ * Changes the elevator height
  */
-public class ElevatorDown extends Command {
+public class ElevatorFlip extends Command {
 
-  public ElevatorDown() {
+  public ElevatorFlip() {
     requires(Robot.elevator);
   }
 
@@ -18,7 +17,7 @@ public class ElevatorDown extends Command {
    */
   @Override
   protected void initialize() {
-    System.out.println("Elevator down initialized");
+    System.out.println("Elevator flip initialized");
   }
 
   /**
@@ -26,7 +25,7 @@ public class ElevatorDown extends Command {
    */
   @Override
   protected void execute() {
-    Robot.elevator.elevatorDown();
+    Robot.elevator.elevatorFlip();
   }
 
   @Override
@@ -39,7 +38,7 @@ public class ElevatorDown extends Command {
    */
   @Override
   protected void end() {
-    System.out.println("Elevator down command ended");
+    System.out.println("Elevator flip command ended");
   }
 
   /**

@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.techvalleyhigh.frc5881.deepspace.robot.commands.elevator.ElevatorSave;
 import org.techvalleyhigh.frc5881.deepspace.robot.commands.drive.ArcadeDrive;
 import org.techvalleyhigh.frc5881.deepspace.robot.commands.drive.StopTipping;
 import org.techvalleyhigh.frc5881.deepspace.robot.subsystem.*;
@@ -29,8 +30,8 @@ public class Robot extends TimedRobot {
   public static DriveControl driveControl;
   public static Elevator elevator;
   public static Intake intake;
-  public static Manipulator manipulator;
   public static Arm arm;
+  public static Demogorgon demogorgon;
 
   public static AHRS navX;
 
@@ -49,7 +50,7 @@ public class Robot extends TimedRobot {
     driveControl = new DriveControl();
     elevator = new Elevator();
     intake = new Intake();
-    manipulator = new Manipulator();
+    demogorgon = new Demogorgon();
     arm = new Arm();
 
     /*
@@ -128,8 +129,13 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
+    // If the bot is at an angle of greater than 30 degrees then run stop tipping
     if (Math.abs(navX.getRawGyroY()) > 30) {
       new StopTipping();
+    }
+    // If the bot is at an angle of greater than 45 degrees then do elevator save.
+    if (navX.getRawGyroY() > 45) {
+      new ElevatorSave();
     }
   }
 
@@ -138,6 +144,5 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void testPeriodic() {
-
   }
 }
