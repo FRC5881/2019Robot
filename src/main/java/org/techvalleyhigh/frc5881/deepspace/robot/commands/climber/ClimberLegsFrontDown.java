@@ -1,22 +1,20 @@
 package org.techvalleyhigh.frc5881.deepspace.robot.commands.climber;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.InstantCommand;
 import org.techvalleyhigh.frc5881.deepspace.robot.Robot;
-import org.techvalleyhigh.frc5881.deepspace.robot.subsystem.Climber;
 
 /**
- * Retracts back clibmer legs
+ * Extends front climber legs
  */
-public class ClibmerLegsBackDown extends InstantCommand {
+public class ClimberLegsFrontDown extends InstantCommand {
   private static Runnable runnable = new Runnable() {
     @Override
     public void run() {
-      Robot.climber.backDown();
+      Robot.climber.frontDown();
     }
   };
 
-  public ClibmerLegsBackDown() {
+  public ClimberLegsFrontDown() {
     super(Robot.climber, runnable);
   }
 }

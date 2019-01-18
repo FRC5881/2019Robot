@@ -2,9 +2,13 @@ package org.techvalleyhigh.frc5881.deepspace.robot.commands.climber;
 
 import edu.wpi.first.wpilibj.command.Command;
 import org.techvalleyhigh.frc5881.deepspace.robot.Robot;
+import org.techvalleyhigh.frc5881.deepspace.robot.subsystem.Climber;
 
-public class ClibmerDrive extends Command {
-  public ClibmerDrive() {
+/**
+ *
+ */
+public class ClimberDrive extends Command {
+  public ClimberDrive() {
     requires(Robot.climber);
   }
 
@@ -13,7 +17,7 @@ public class ClibmerDrive extends Command {
    */
   @Override
   protected void initialize() {
-    System.out.println("ClibmerDrive Command initialized");
+    System.out.println("ClimberDrive Command initialized");
   }
 
   /**
@@ -30,7 +34,7 @@ public class ClibmerDrive extends Command {
    */
   @Override
   protected boolean isFinished() {
-    return false;
+      return Robot.climber.getState() != Climber.ClimberMode.ENGAGED;
   }
 
   /**
@@ -38,7 +42,7 @@ public class ClibmerDrive extends Command {
    */
   @Override
   protected void end() {
-    System.out.println("ClibmerDrive ended");
+    System.out.println("ClimberDrive ended");
   }
 
   /**

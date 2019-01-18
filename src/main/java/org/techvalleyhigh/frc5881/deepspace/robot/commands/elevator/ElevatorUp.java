@@ -38,7 +38,7 @@ public class ElevatorUp extends Command {
    */
   @Override
   protected void end() {
-    System.out.println("Elevator up command ended... That shouldn't happen");
+    System.out.println("Elevator up command ended");
   }
 
   /**

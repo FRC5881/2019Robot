@@ -4,10 +4,10 @@ import edu.wpi.first.wpilibj.command.Command;
 import org.techvalleyhigh.frc5881.deepspace.robot.Robot;
 import org.techvalleyhigh.frc5881.deepspace.robot.subsystem.DriveControl;
 
-public class StopTipping extends Command {
+public class DriveSave extends Command {
   private double speed;
 
-  public StopTipping() {
+  public DriveSave() {
     requires(Robot.driveControl);
   }
 
