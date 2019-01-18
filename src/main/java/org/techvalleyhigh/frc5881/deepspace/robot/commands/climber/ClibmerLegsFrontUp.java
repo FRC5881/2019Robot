@@ -5,10 +5,13 @@ import edu.wpi.first.wpilibj.command.InstantCommand;
 import org.techvalleyhigh.frc5881.deepspace.robot.Robot;
 import org.techvalleyhigh.frc5881.deepspace.robot.subsystem.Climber;
 
-public class FrontUp extends InstantCommand {
+/**
+ * Extends front clibmer legs
+ */
+public class ClibmerLegsFrontUp extends InstantCommand {
   private static Runnable runnable = () -> Robot.climber.frontUp();
 
-  public FrontUp() {
+  public ClibmerLegsFrontUp() {
       super(Robot.climber, runnable);
   }
 }
