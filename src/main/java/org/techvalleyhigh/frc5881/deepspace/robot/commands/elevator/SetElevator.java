@@ -2,15 +2,20 @@ package org.techvalleyhigh.frc5881.deepspace.robot.commands.elevator;
 
 import edu.wpi.first.wpilibj.command.Command;
 import org.techvalleyhigh.frc5881.deepspace.robot.Robot;
+import org.techvalleyhigh.frc5881.deepspace.robot.subsystem.Elevator;
 
 /**
  * Sets the height of the elevator
  */
 public class SetElevator extends Command {
-  public SetElevator() {
+  private Elevator.ElevatorState target;
+
+  public SetElevator(Elevator.ElevatorState state) {
+    target = state;
+
     requires(Robot.elevator);
   }
-  public double setpoint;
+
   /**
    * Called just before this Command runs the first time
    */
@@ -24,7 +29,7 @@ public class SetElevator extends Command {
    */
   @Override
   protected void execute() {
-    Robot.elevator.setSetpointElevator(setpoint);
+    Robot.elevator.setElevator(target);
   }
 
   /**
