@@ -7,12 +7,7 @@ import org.techvalleyhigh.frc5881.deepspace.robot.Robot;
  * Retracts back climber legs
  */
 public class ClimberLegsBackUp extends InstantCommand {
-  private static Runnable runnable = new Runnable() {
-    @Override
-    public void run() {
-      Robot.climber.backUp();
-    }
-  };
+  private static Runnable runnable = () -> Robot.climber.backUp();
 
   public ClimberLegsBackUp() {
     super(Robot.climber, runnable);
