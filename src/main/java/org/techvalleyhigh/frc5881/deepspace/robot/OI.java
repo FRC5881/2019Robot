@@ -41,6 +41,20 @@ public class OI {
 
 
     public OI() {
+        /*
+        Drive is left thumb stick (forward and backward)
+        Turning is on the right thumb stick (left and right)
+        "Y" swaps the arm mode (DONE)
+        Right bumper moves elevator up (DONE)
+        Left bumper moves elevator down (DONE)
+        "A" grabs hatch/ cargo
+        "B" drops hatch/ cargo
+        Select toggles front climber
+        Start toggles back climber
+        Right thumb stick drives climber (up and down)
+        "X" aborts the docking
+         */
+
         // Define controllers as joysticks
         driverController = new Joystick(0);
 
@@ -58,12 +72,17 @@ public class OI {
         driverController.setRumble(GenericHID.RumbleType.kLeftRumble, 0);
         driverController.setRumble(GenericHID.RumbleType.kRightRumble, 0);
 
+        // When the "A" button is pressed grab hatch/ cargo
+        // TODO: Finish demogorgon/ hatch and cargo grabber code
+
         // When the "Y" button is pressed change the arm mode
         driveControllerButtonY.whenPressed(new SwitchRobotMode());
 
         // When the left/ right bumper is pressed lower or raise the elevator
         driveControllerLeftBumper.whenPressed(new ElevatorDown());
         driveControllerRightBumper.whenPressed(new ElevatorUp());
+
+        //
     }
 
     /**

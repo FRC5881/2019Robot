@@ -12,6 +12,8 @@ import org.techvalleyhigh.frc5881.deepspace.robot.Robot;
  */
 public class Elevator extends Subsystem {
 
+    public boolean isFired = false;
+
     public ElevatorState elevatorState = ElevatorState.HIGH_HATCH;
 
     // TODO: Change the "deviceNumber" to whatever the actual number on the talon is.
@@ -236,40 +238,32 @@ public class Elevator extends Subsystem {
     switch (elevatorState) {
       case FLOOR:
         setElevator(ElevatorState.FLOOR);
+        isFired = true;
         break;
       case LOW_HATCH:
         setElevator(ElevatorState.LOW_HATCH);
+        isFired = true;
         break;
       case LOW_CARGO:
         setElevator(ElevatorState.LOW_CARGO);
+        isFired = true;
         break;
       case MIDDLE_HATCH:
         setElevator(ElevatorState.MIDDLE_HATCH);
+        isFired = true;
         break;
       case MIDDLE_CARGO:
         setElevator(ElevatorState.MIDDLE_CARGO);
+        isFired = true;
         break;
       case HIGH_HATCH:
         setElevator(ElevatorState.HIGH_HATCH);
+        isFired = true;
         break;
       case HIGH_CARGO:
         setElevator(ElevatorState.HIGH_CARGO);
+        isFired = true;
         break;
-    }
-
-    if(Robot.elevator.elevatorState.equals(Elevator.ElevatorState.HIGH_CARGO)) {
-
-      elevatorState = ElevatorState.HIGH_CARGO;
-    } else if(Robot.elevator.elevatorState.equals(Elevator.ElevatorState.HIGH_HATCH)){
-
-    } else if(Robot.elevator.elevatorState.equals(Elevator.ElevatorState.MIDDLE_CARGO)){
-      Robot.elevator.elevatorState.equals(Elevator.ElevatorState.MIDDLE_HATCH);
-    } else if(Robot.elevator.elevatorState.equals(Elevator.ElevatorState.MIDDLE_HATCH)){
-      Robot.elevator.elevatorState.equals(Elevator.ElevatorState.MIDDLE_CARGO);
-    } else if(Robot.elevator.elevatorState.equals(Elevator.ElevatorState.LOW_CARGO)){
-      Robot.elevator.elevatorState.equals(Elevator.ElevatorState.LOW_HATCH);
-    } else if(Robot.elevator.elevatorState.equals(Elevator.ElevatorState.LOW_HATCH)){
-      Robot.elevator.elevatorState.equals(Elevator.ElevatorState.LOW_CARGO);
     }
   }
 
@@ -316,30 +310,37 @@ public class Elevator extends Subsystem {
       case FLOOR:
         elevatorMasterMotor.set(ControlMode.Position, Floor[1]);
         liftMasterMotor.set(ControlMode.Position, Floor[2]);
+        elevatorState = ElevatorState.FLOOR;
         break;
       case LOW_HATCH:
         elevatorMasterMotor.set(ControlMode.Position, Low_Hatch[1]);
         liftMasterMotor.set(ControlMode.Position, Low_Hatch[2]);
+        elevatorState = ElevatorState.LOW_HATCH;
         break;
       case LOW_CARGO:
         elevatorMasterMotor.set(ControlMode.Position, Low_Cargo[1]);
         liftMasterMotor.set(ControlMode.Position, Low_Cargo[2]);
+        elevatorState = ElevatorState.LOW_CARGO;
         break;
       case MIDDLE_HATCH:
         elevatorMasterMotor.set(ControlMode.Position, Mid_Hatch[1]);
         liftMasterMotor.set(ControlMode.Position, Mid_Hatch[2]);
+        elevatorState = ElevatorState.MIDDLE_HATCH;
         break;
       case MIDDLE_CARGO:
         elevatorMasterMotor.set(ControlMode.Position, Mid_Cargo[1]);
         liftMasterMotor.set(ControlMode.Position, Mid_Cargo[2]);
+        elevatorState = ElevatorState.MIDDLE_CARGO;
         break;
       case HIGH_HATCH:
         elevatorMasterMotor.set(ControlMode.Position, High_Hatch[1]);
         liftMasterMotor.set(ControlMode.Position, High_Hatch[2]);
+        elevatorState = ElevatorState.HIGH_HATCH;
         break;
       case HIGH_CARGO:
         elevatorMasterMotor.set(ControlMode.Position, High_Cargo[1]);
         liftMasterMotor.set(ControlMode.Position, High_Cargo[2]);
+        elevatorState = ElevatorState.HIGH_CARGO;
         break;
     }
   }
