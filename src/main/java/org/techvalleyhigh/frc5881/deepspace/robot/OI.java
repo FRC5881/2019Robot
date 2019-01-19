@@ -3,6 +3,9 @@ package org.techvalleyhigh.frc5881.deepspace.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import org.techvalleyhigh.frc5881.deepspace.robot.commands.climber.ClimberLegsBackToggle;
+import org.techvalleyhigh.frc5881.deepspace.robot.commands.climber.ClimberLegsFrontToggle;
+import org.techvalleyhigh.frc5881.deepspace.robot.commands.demegorgon.DropHatch;
 import org.techvalleyhigh.frc5881.deepspace.robot.commands.elevator.ElevatorDown;
 import org.techvalleyhigh.frc5881.deepspace.robot.commands.elevator.ElevatorUp;
 import org.techvalleyhigh.frc5881.deepspace.robot.commands.groups.SwitchRobotMode;
@@ -49,7 +52,7 @@ public class OI {
         Left bumper moves elevator down (DONE)
         "A" grabs hatch/ cargo
         "B" drops hatch/ cargo
-        Select toggles front climber
+        Back toggles front climber
         Start toggles back climber
         Right thumb stick drives climber (up and down)
         "X" aborts the docking
@@ -75,6 +78,12 @@ public class OI {
         // When the "A" button is pressed grab hatch/ cargo
         // TODO: Finish demogorgon/ hatch and cargo grabber code
 
+        // When the "B" button is pressed drop the hatch/ cargo
+        // TODO: Finish demogorgon/ hatch and cargo dropping code
+
+        // When the "X" button is pressed abort docking
+        // TODO: Make a command to abort docking
+
         // When the "Y" button is pressed change the arm mode
         driveControllerButtonY.whenPressed(new SwitchRobotMode());
 
@@ -82,7 +91,11 @@ public class OI {
         driveControllerLeftBumper.whenPressed(new ElevatorDown());
         driveControllerRightBumper.whenPressed(new ElevatorUp());
 
-        //
+        // When the "Back" button is pressed toggle front climber
+        driveControllerBackButton.whenPressed(new ClimberLegsFrontToggle());
+
+        // When the "Start" button is pressed toggle back climber
+        driveControllerStartButton.whenPressed(new ClimberLegsBackToggle());
     }
 
     /**
