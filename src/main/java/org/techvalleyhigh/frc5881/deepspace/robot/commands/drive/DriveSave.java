@@ -4,6 +4,9 @@ import edu.wpi.first.wpilibj.command.Command;
 import org.techvalleyhigh.frc5881.deepspace.robot.Robot;
 import org.techvalleyhigh.frc5881.deepspace.robot.subsystem.DriveControl;
 
+/**
+ * Controls everything to do with telling the bot to not TIP
+ */
 public class DriveSave extends Command {
   private double speed;
 
