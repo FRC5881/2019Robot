@@ -51,11 +51,9 @@ public class DriveControl extends Subsystem {
     LiveWindow.add(frontRightMotor);
 
     backLeftMotor.setName("Drive", "Back Left");
-    backLeftMotor.set(ControlMode.Follower, 1);
     LiveWindow.add(backLeftMotor);
 
     backRightMotor.setName("Drive", "Back Right");
-    backRightMotor.set(ControlMode.Follower, 2);
     LiveWindow.add(backRightMotor);
 
     SpeedControllerGroup m_left = new SpeedControllerGroup(frontLeftMotor);
