@@ -48,7 +48,7 @@ public class StopTipping extends Command {
    */
   @Override
   protected void end() {
-    System.out.println("StopTipping - Robot Saved");
+    System.out.println("DriveSave ended");
   }
 
   /**

@@ -40,19 +40,19 @@ public class Elevator extends Subsystem {
    * Is the state of the elevator
    */
   public enum ElevatorState {
-        NONE,
+    FLOOR,
 
-        LOW_HATCH,
+    LOW_HATCH,
 
-        LOW_CARGO,
+    LOW_CARGO,
 
-        MIDDLE_HATCH,
+    MIDDLE_HATCH,
 
-        MIDDLE_CARGO,
+    MIDDLE_CARGO,
 
-        HIGH_HATCH,
+    HIGH_HATCH,
 
-        HIGH_CARGO
+    HIGH_CARGO
     }
 
   // TODO: We need to figure out what the actual heights of these things will be.
@@ -60,7 +60,7 @@ public class Elevator extends Subsystem {
    * For all of the following double[]'s the first double value is the required height for the elevator to move
    * and the second value is the height that the lift is required to move.
    */
-  public static final double[] None = {0, 0};
+  public static final double[] Floor = {0, 0};
 
   public static final double[] Low_Hatch = {5, 5};
 
@@ -124,8 +124,8 @@ public class Elevator extends Subsystem {
   public void elevatorUp(){
         // Checks if the arm mode is "hatch"
       if(Robot.arm.isHatch()){
-          // Checks to see if the elevator state is "None"
-        if(ElevatorState.NONE.equals(elevatorState)){
+          // Checks to see if the elevator state is "Floor"
+        if(ElevatorState.FLOOR.equals(elevatorState)){
               setElevator(Low_Hatch);
               // Sets elevator state to "low hatch"
               elevatorState = ElevatorState.LOW_HATCH;
@@ -174,9 +174,9 @@ public class Elevator extends Subsystem {
         elevatorState = ElevatorState.LOW_HATCH;
         // Checks if the elevator's state is "low hatch"
       } else if (ElevatorState.LOW_HATCH.equals(elevatorState)) {
-        setElevator(None);
-        // Sets the elevator state to None
-        elevatorState = ElevatorState.NONE;
+        setElevator(Floor);
+        // Sets the elevator state to Floor
+        elevatorState = ElevatorState.FLOOR;
       }
       // Checks if the arm mode is "cargo"
     } else if (Robot.arm.isCargo()){
@@ -192,9 +192,9 @@ public class Elevator extends Subsystem {
         elevatorState = ElevatorState.LOW_CARGO;
         // Checks if elevator state is "low cargo"
       } else if(ElevatorState.LOW_CARGO.equals(elevatorState)){
-        setElevator(None);
-        // Sets the elevator state to "None"
-        elevatorState = ElevatorState.NONE;
+        setElevator(Floor);
+        // Sets the elevator state to "Floor"
+        elevatorState = ElevatorState.FLOOR;
       }
     }
   }
@@ -203,7 +203,7 @@ public class Elevator extends Subsystem {
    * Sets the elevator and lift height to the lowest setting as to prevent a high center of mass
    */
   public void saveElevator(){
-    setElevator(None);
+    setElevator(Floor);
   }
 
   /**
@@ -280,10 +280,39 @@ public class Elevator extends Subsystem {
    */
   public boolean isLiftAllowableError(){
     double error = 5;
-    if(getLiftError() <= error && getLiftError() >= -error){
-      return true;
-    } else {
-      return false;
+    return getLiftError() <= error && getLiftError() >= -error;
+  }
+
+  public void setElevator(ElevatorState state) {
+    switch (state) {
+      case FLOOR:
+        elevatorMasterMotor.set(ControlMode.Position, Floor[1]);
+        liftMasterMotor.set(ControlMode.Position, Floor[2]);
+        break;
+      case LOW_HATCH:
+        elevatorMasterMotor.set(ControlMode.Position, Low_Hatch[1]);
+        liftMasterMotor.set(ControlMode.Position, Low_Hatch[2]);
+        break;
+      case LOW_CARGO:
+        elevatorMasterMotor.set(ControlMode.Position, Low_Cargo[1]);
+        liftMasterMotor.set(ControlMode.Position, Low_Cargo[2]);
+        break;
+      case MIDDLE_HATCH:
+        elevatorMasterMotor.set(ControlMode.Position, Mid_Hatch[1]);
+        liftMasterMotor.set(ControlMode.Position, Mid_Hatch[2]);
+        break;
+      case MIDDLE_CARGO:
+        elevatorMasterMotor.set(ControlMode.Position, Mid_Cargo[1]);
+        liftMasterMotor.set(ControlMode.Position, Mid_Cargo[2]);
+        break;
+      case HIGH_HATCH:
+        elevatorMasterMotor.set(ControlMode.Position, High_Hatch[1]);
+        liftMasterMotor.set(ControlMode.Position, High_Hatch[2]);
+        break;
+      case HIGH_CARGO:
+        elevatorMasterMotor.set(ControlMode.Position, High_Cargo[1]);
+        liftMasterMotor.set(ControlMode.Position, High_Cargo[2]);
+        break;
     }
   }
 
@@ -303,7 +332,7 @@ public class Elevator extends Subsystem {
    */
   public void setSetpointElevator(double setpoint) {
         // Checks to see if the elevator is within safe operating heights
-      if(getSetpointElevator() >= None[1] && getSetpointElevator() <= Top[1]) {
+      if(getSetpointElevator() >= Floor[1] && getSetpointElevator() <= Top[1]) {
         elevatorMasterMotor.set(ControlMode.Position, setpoint);
       }
     }
@@ -314,7 +343,7 @@ public class Elevator extends Subsystem {
    */
   public void setSetpointLift(double setpoint){
       // Checks to see if the lift is within safe operation heights
-    if(getSetpointLift() >= None[2] && getSetpointLift() <= Top[2]) {
+    if(getSetpointLift() >= Floor[2] && getSetpointLift() <= Top[2]) {
       liftMasterMotor.set(ControlMode.Position, setpoint);
     }
   }

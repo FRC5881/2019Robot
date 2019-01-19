@@ -18,14 +18,11 @@ public class ElevatorFlip extends Command {
   @Override
   protected void initialize() {
     System.out.println("Elevator flip initialized");
+    Robot.elevator.elevatorFlip();
   }
 
-  /**
-   * Called repeatedly when this Command is scheduled to run
-   */
   @Override
   protected void execute() {
-    Robot.elevator.elevatorFlip();
   }
 
   @Override
