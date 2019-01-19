@@ -229,11 +229,37 @@ public class Elevator extends Subsystem {
     }
   }
 
+
   public void elevatorFlip(){
-    if(Robot.elevator.elevatorState.equals(Elevator.ElevatorState.HIGH_CARGO)){
-      Robot.elevator.elevatorState.equals(Elevator.ElevatorState.HIGH_HATCH);
+    switch (elevatorState) {
+      case FLOOR:
+        setElevator(ElevatorState.FLOOR);
+        break;
+      case LOW_HATCH:
+        setElevator(ElevatorState.LOW_HATCH);
+        break;
+      case LOW_CARGO:
+        setElevator(ElevatorState.LOW_CARGO);
+        break;
+      case MIDDLE_HATCH:
+        setElevator(ElevatorState.MIDDLE_HATCH);
+        break;
+      case MIDDLE_CARGO:
+        setElevator(ElevatorState.MIDDLE_CARGO);
+        break;
+      case HIGH_HATCH:
+        setElevator(ElevatorState.HIGH_HATCH);
+        break;
+      case HIGH_CARGO:
+        setElevator(ElevatorState.HIGH_CARGO);
+        break;
+    }
+
+    if(Robot.elevator.elevatorState.equals(Elevator.ElevatorState.HIGH_CARGO)) {
+
+      elevatorState = ElevatorState.HIGH_CARGO;
     } else if(Robot.elevator.elevatorState.equals(Elevator.ElevatorState.HIGH_HATCH)){
-      Robot.elevator.elevatorState.equals(Elevator.ElevatorState.HIGH_CARGO);
+
     } else if(Robot.elevator.elevatorState.equals(Elevator.ElevatorState.MIDDLE_CARGO)){
       Robot.elevator.elevatorState.equals(Elevator.ElevatorState.MIDDLE_HATCH);
     } else if(Robot.elevator.elevatorState.equals(Elevator.ElevatorState.MIDDLE_HATCH)){

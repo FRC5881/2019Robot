@@ -3,7 +3,7 @@ package org.techvalleyhigh.frc5881.deepspace.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import org.techvalleyhigh.frc5881.deepspace.robot.commands.groups.FlipRobotMode;
+import org.techvalleyhigh.frc5881.deepspace.robot.commands.groups.SwitchRobotMode;
 
 /**
  * Controls operator interfaces, such as controllers (and a few buttons)
@@ -57,7 +57,7 @@ public class OI {
         driverController.setRumble(GenericHID.RumbleType.kRightRumble, 0);
 
         // When the "Y" button is pressed change the arm mode
-        driveControllerButtonY.whenPressed(new FlipRobotMode());
+        driveControllerButtonY.whenPressed(new SwitchRobotMode());
     }
 
     /**
