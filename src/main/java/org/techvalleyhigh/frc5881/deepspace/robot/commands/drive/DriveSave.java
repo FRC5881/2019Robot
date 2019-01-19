@@ -19,6 +19,8 @@ public class DriveSave extends Command {
    */
   @Override
   protected void initialize() {
+    // TODO: Check Axis once RoboRIO finds a home
+
     // Drive in the direction of the tipping
     if (Robot.navX.getRawGyroY() > 0) {
       speed = DriveControl.TIPPING_SPEED;
@@ -43,6 +45,8 @@ public class DriveSave extends Command {
    */
   @Override
   protected boolean isFinished() {
+    // TODO: Check the Gyro Y
+
     return Math.abs(Robot.navX.getRawGyroY()) < 10;
   }
 

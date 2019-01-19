@@ -9,6 +9,8 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import org.techvalleyhigh.frc5881.deepspace.robot.OI;
 import org.techvalleyhigh.frc5881.deepspace.robot.Robot;
+import org.techvalleyhigh.frc5881.deepspace.robot.commands.climber.ClimberLegsBackUp;
+import org.techvalleyhigh.frc5881.deepspace.robot.commands.drive.DriveSave;
 
 /**
  * Subsystem controls everything to do with our 4 legged climber
@@ -41,7 +43,8 @@ public class Climber extends Subsystem {
    */
   @Override
   protected void initDefaultCommand() {
-
+    ClimberLegsBackUp climberLegsBackUp = new ClimberLegsBackUp();
+    climberLegsBackUp.start();
   }
 
   public Climber(){
