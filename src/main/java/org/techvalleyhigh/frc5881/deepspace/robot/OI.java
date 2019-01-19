@@ -3,6 +3,8 @@ package org.techvalleyhigh.frc5881.deepspace.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import org.techvalleyhigh.frc5881.deepspace.robot.commands.elevator.ElevatorDown;
+import org.techvalleyhigh.frc5881.deepspace.robot.commands.elevator.ElevatorUp;
 import org.techvalleyhigh.frc5881.deepspace.robot.commands.groups.SwitchRobotMode;
 
 /**
@@ -58,6 +60,10 @@ public class OI {
 
         // When the "Y" button is pressed change the arm mode
         driveControllerButtonY.whenPressed(new SwitchRobotMode());
+
+        // When the left/ right bumper is pressed lower or raise the elevator
+        driveControllerLeftBumper.whenPressed(new ElevatorDown());
+        driveControllerRightBumper.whenPressed(new ElevatorUp());
     }
 
     /**

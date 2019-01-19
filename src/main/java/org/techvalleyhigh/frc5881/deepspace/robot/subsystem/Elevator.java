@@ -229,7 +229,9 @@ public class Elevator extends Subsystem {
     }
   }
 
-
+  /**
+   * If elevatorFlip is equal to one thing than set elevator to that height
+   */
   public void elevatorFlip(){
     switch (elevatorState) {
       case FLOOR:
