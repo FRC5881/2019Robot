@@ -7,8 +7,8 @@ import org.techvalleyhigh.frc5881.deepspace.robot.commands.elevator.ElevatorFlip
 /**
  * Will change the mode of the arm.
  */
-public class FlipRobotMode extends CommandGroup {
-  public FlipRobotMode() {
+public class SwitchRobotMode extends CommandGroup {
+  public SwitchRobotMode() {
     addParallel(new ArmFlip());
     addParallel(new ElevatorFlip());
   }

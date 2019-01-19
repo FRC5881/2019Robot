@@ -46,7 +46,7 @@ public class SetElevator extends Command {
    */
   @Override
   protected void end() {
-    System.out.println("Set elevator command ended... That shouldn't happen");
+    System.out.println("Set elevator command ended");
   }
 
   /**
