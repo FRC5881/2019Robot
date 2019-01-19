@@ -53,8 +53,12 @@ public class Arm extends Subsystem {
    * If setPoint is more than maxTicks, it will be equal to maxTicks
   */
   public void setArmMotor (double setPoint){
-    if (setPoint < MIN_TICKS) setPoint = MIN_TICKS;
-    if (setPoint > MAX_TICKS) setPoint = MAX_TICKS;
+    if (setPoint < MIN_TICKS) {
+      setPoint = MIN_TICKS;
+    }
+    if (setPoint > MAX_TICKS) {
+      setPoint = MAX_TICKS;
+    }
 
     armMotor.set(ControlMode.Position, setPoint);
   }
@@ -81,20 +85,23 @@ public class Arm extends Subsystem {
       setToCargoTicks();
     } else if(getSetPoint() == CARGO_TICKS){
       setToHatchTicks();
+    } else {
+      // Default to cargo
+      setToCargoTicks();
     }
   }
 
   /**
-   * identifies which mode it is in, cargo or hatch
-   * returns if it's true or false
+   * identifies if arm is in cargo mode
+   * @return true if cargo, false otherwise
    */
   public boolean isCargo() {
     return getSetPoint() == CARGO_TICKS;
   }
 
   /**
-   * identifies which mode the arm is in, cargo or hatch
-   * @return if it's true or false
+   * identifies if arm is in hatch mode
+   * @return true if cargo, false otherwise
    */
   public boolean isHatch() {
     return getSetPoint() == HATCH_TICKS;

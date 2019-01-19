@@ -10,6 +10,9 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import org.techvalleyhigh.frc5881.deepspace.robot.OI;
 import org.techvalleyhigh.frc5881.deepspace.robot.Robot;
 
+/**
+ * Subsystem controls everything to do with our 4 legged climber
+ */
 public class Climber extends Subsystem {
   public static DoubleSolenoid frontSolenoid = new DoubleSolenoid(20, 5, 4);
   public static DoubleSolenoid backSolenoid = new DoubleSolenoid(20, 5, 4);
@@ -48,19 +51,19 @@ public class Climber extends Subsystem {
   }
 
   public void init() {
-    leftMotor.setName("Climber", "LeftMotor");
+    leftMotor.setName("Climber", "Left Motor");
     leftMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
     LiveWindow.add(leftMotor);
 
-    rightMotor.setName("Climber", "RightMotor");
+    rightMotor.setName("Climber", "Right Motor");
     rightMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
     LiveWindow.add(rightMotor);
 
-    frontSolenoid.setName ("Climber", "FrontPiston");
+    frontSolenoid.setName ("Climber", "Front Piston");
     LiveWindow.add(frontSolenoid);
 
-    backSolenoid.setName("Climber", "backPiston");
-    LiveWindow.add(frontSolenoid);
+    backSolenoid.setName("Climber", "Back Piston");
+    LiveWindow.add(backSolenoid);
 
     SpeedControllerGroup m_left = new SpeedControllerGroup(leftMotor);
     SpeedControllerGroup m_right = new SpeedControllerGroup(rightMotor);
