@@ -16,9 +16,14 @@ public class StopTipping extends Command {
    */
   @Override
   protected void initialize() {
-    speed = Math.copySign(DriveControl.reverseTipping, -DriveControl.frontLeftMotor.getSelectedSensorVelocity());
-    System.out.println("ArcadeDrive Command initialized");
+    // Drive in the direction of the tipping
+    if (Robot.navX.getRawGyroY() > 0) {
+      speed = DriveControl.TIPPING_SPEED;
+    } else {
+      speed = -DriveControl.TIPPING_SPEED;
+    }
 
+    System.out.println("StopTipping Command initialized");
   }
 
   /**
@@ -43,7 +48,7 @@ public class StopTipping extends Command {
    */
   @Override
   protected void end() {
-    System.out.println("ArcadeDrive ended");
+    System.out.println("StopTipping - Robot Saved");
   }
 
   /**

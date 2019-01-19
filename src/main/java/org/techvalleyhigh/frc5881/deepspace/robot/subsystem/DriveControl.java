@@ -86,7 +86,7 @@ public class DriveControl extends Subsystem {
 
     rawArcadeDrive(turn, speed);
   }
-  public static final double reverseTipping = 0.5;
+  public static final double TIPPING_SPEED = 0.5;
 
 
 }

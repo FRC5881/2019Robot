@@ -84,9 +84,12 @@ public class Climber extends Subsystem {
     double speed = Robot.oi.driverController.getRawAxis(OI.XBOX_LEFT_Y_AXIS);
     double turn = Robot.oi.driverController.getRawAxis(OI.XBOX_RIGHT_X_AXIS);
 
-    if(Math.abs(turn) < 0.1 || Math.abs(speed) < 0.1) {
-      speed = 0 ;
-      turn = 0 ;
+    if (Math.abs(turn) < 0.1) {
+      turn = 0;
+    }
+
+    if (Math.abs(speed) < 0.1) {
+      speed = 0;
     }
 
     rawArcadeDrive(turn, speed);
@@ -95,12 +98,15 @@ public class Climber extends Subsystem {
   public void frontDown(){
     frontSolenoid.set(DoubleSolenoid.Value.kForward);
   }
+
   public void frontUp(){
     frontSolenoid.set(DoubleSolenoid.Value.kReverse);
   }
+
   public void backDown(){
     backSolenoid.set(DoubleSolenoid.Value.kForward);
   }
+
   public void backUp(){
     backSolenoid.set(DoubleSolenoid.Value.kReverse);
   }
@@ -128,9 +134,9 @@ public class Climber extends Subsystem {
   public void backToggle() {
     if (backSolenoid.get() == DoubleSolenoid.Value.kReverse) {
       backDown();
-    }else if (frontSolenoid.get() == DoubleSolenoid.Value.kForward){
+    } else if (frontSolenoid.get() == DoubleSolenoid.Value.kForward){
       backUp();
-    }else{
+    } else{
       System.out.println("Back Solenoid is off");
     }
   }
