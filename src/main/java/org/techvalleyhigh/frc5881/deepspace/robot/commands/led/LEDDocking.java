@@ -1,14 +1,11 @@
-package org.techvalleyhigh.frc5881.deepspace.robot.commands.elevator;
+package org.techvalleyhigh.frc5881.deepspace.robot.commands.led;
 
 import edu.wpi.first.wpilibj.command.Command;
 import org.techvalleyhigh.frc5881.deepspace.robot.Robot;
 
-/**
- * Makes the elevator go up
- */
-public class ElevatorUp extends Command {
-  public ElevatorUp() {
-    requires(Robot.elevator);
+public class LEDDocking extends Command {
+  public LEDDocking() {
+    requires(Robot.led);
   }
 
   /**
@@ -16,7 +13,7 @@ public class ElevatorUp extends Command {
    */
   @Override
   protected void initialize() {
-    System.out.println("Elevator up initialized");
+    System.out.println("LED docking initialized");
   }
 
   /**
@@ -24,16 +21,16 @@ public class ElevatorUp extends Command {
    */
   @Override
   protected void execute() {
-    Robot.elevator.elevatorUp();
   }
 
   /**
    * Make this return true when this Command no longer needs to run execute()
-   * Since this is a drive command we never want it to end
+   * Since this is a subsystem it should end at some point
    */
   @Override
   protected boolean isFinished() {
-    return Robot.elevator.isSetpointReached();
+    // TODO: Figure out how we are going to know when we are done docking
+    return false;
   }
 
   /**
@@ -41,7 +38,7 @@ public class ElevatorUp extends Command {
    */
   @Override
   protected void end() {
-    System.out.println("Elevator up command ended");
+    System.out.println("LED docking command ended");
   }
 
   /**

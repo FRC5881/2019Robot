@@ -32,6 +32,7 @@ public class Robot extends TimedRobot {
   public static Intake intake;
   public static Arm arm;
   public static Demogorgon demogorgon;
+  public static LED led;
 
   public static AHRS navX;
 
