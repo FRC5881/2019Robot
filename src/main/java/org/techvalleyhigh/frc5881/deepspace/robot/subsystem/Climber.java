@@ -15,7 +15,7 @@ import org.techvalleyhigh.frc5881.deepspace.robot.Robot;
  */
 public class Climber extends Subsystem {
   public static DoubleSolenoid frontSolenoid = new DoubleSolenoid(20, 5, 4);
-  public static DoubleSolenoid backSolenoid = new DoubleSolenoid(20, 5, 4);
+  public static DoubleSolenoid backSolenoid = new DoubleSolenoid(20, 2, 3);
   public static WPI_TalonSRX leftMotor = new WPI_TalonSRX(5);
   public static WPI_TalonSRX rightMotor = new WPI_TalonSRX(6);
 
