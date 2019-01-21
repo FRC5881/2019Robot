@@ -8,12 +8,8 @@ import org.techvalleyhigh.frc5881.deepspace.robot.Robot;
  * if they are up make them down
  */
 public class ClimberLegsFrontToggle extends InstantCommand {
-  public static Runnable runnable = new Runnable() {
-    @Override
-    public void run() {
-      Robot.climber.frontToggle();
-    }
-  };
+  private static Runnable runnable = () -> Robot.climber.frontToggle();
+
   public ClimberLegsFrontToggle() {
     super(Robot.climber, runnable);
   }

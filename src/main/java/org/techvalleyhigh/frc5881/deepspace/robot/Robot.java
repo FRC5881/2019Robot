@@ -143,7 +143,7 @@ public class Robot extends TimedRobot {
       DriveSave driveSave = new DriveSave();
       driveSave.start();
     }
-    // If the bot is at an angle of greater than 45 degrees then do elevator save.
+    // If the bot is at an angle of greater than 30 degrees then do elevator save.
     if (navX.getRawGyroY() > 30) {
       ElevatorSave elevatorSave = new ElevatorSave();
       elevatorSave.start();
