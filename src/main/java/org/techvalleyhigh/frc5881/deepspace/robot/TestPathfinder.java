@@ -17,7 +17,7 @@ public class TestPathfinder {
   private static double WHEEL_BASE = 0.6;  // m
 
   private Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC,
-          Trajectory.Config.SAMPLES_HIGH, TIMESTEP, MAX_VELOCITY, MAX_ACCEL, MAX_JERK);
+          Trajectory.Config.SAMPLES_FAST, TIMESTEP, MAX_VELOCITY, MAX_ACCEL, MAX_JERK);
 
   public void testNear() {
     Date start = new Date();
@@ -26,7 +26,9 @@ public class TestPathfinder {
             new Waypoint(5.245520487492751, 7.651055166118179, Math.atan2(1.2419427540433503, 1.9539899330282036))
     };
 
-    SmartDashboard.putString("Near", runTest(start, wps));
+    System.out.println(runTest(start, wps));
+    start = new Date();
+    System.out.println(runTestNoTank(start, wps));
   }
 
   public void testMid() {
@@ -36,7 +38,9 @@ public class TestPathfinder {
             new Waypoint(5.791975299271824, 7.352988905147776, Math.atan2(1.2253835173227703, -0.016559236720577353))
     };
 
-    SmartDashboard.putString("Mid", runTest(start, wps));
+    System.out.println(runTest(start, wps));
+    start = new Date();
+    System.out.println(runTestNoTank(start, wps));
   }
 
   public void testFar() {
@@ -46,7 +50,9 @@ public class TestPathfinder {
             new Waypoint(6.354989347771477,7.667614402838758, Math.atan2(0.8279618360288996, -1.5068905415725977))
     };
 
-    SmartDashboard.putString("Far", runTest(start, wps));
+    System.out.println(runTest(start, wps));
+    start = new Date();
+    System.out.println(runTestNoTank(start, wps));
   }
 
   private String runTest(Date start, Waypoint[] wps) {
@@ -59,5 +65,12 @@ public class TestPathfinder {
 
     long elapsed = new Date().getTime() - start.getTime();
     return "Dur: " + elapsed + "ms - L/R Segments: " + left.length() + "/" + right.length();
+  }
+
+  private String runTestNoTank(Date start, Waypoint[] wps) {
+    Trajectory trajectory = Pathfinder.generate(wps, config);
+
+    long elapsed = new Date().getTime() - start.getTime();
+    return "Dur: " + elapsed + "ms - Segments: " + trajectory.length();
   }
 }

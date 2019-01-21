@@ -65,11 +65,6 @@ public class Robot extends TimedRobot {
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
-
-    TestPathfinder testPathfinder = new TestPathfinder();
-    testPathfinder.testFar();
-    testPathfinder.testMid();
-    testPathfinder.testNear();
   }
 
   /**
@@ -139,5 +134,28 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("X gyro", navX.getRawGyroX());
     SmartDashboard.putNumber("Y gyro", navX.getRawGyroY());
     SmartDashboard.putNumber("Z gyro", navX.getRawGyroZ());
+  }
+
+  @Override
+  public void disabledInit() {
+    TestPathfinder testPathfinder = new TestPathfinder();
+    testPathfinder.testFar();
+    testPathfinder.testMid();
+    testPathfinder.testNear();
+  }
+
+  @Override
+  public void teleopInit() {
+
+  }
+
+  @Override
+  public void testInit() {
+
+  }
+
+  @Override
+  public void disabledPeriodic() {
+
   }
 }
