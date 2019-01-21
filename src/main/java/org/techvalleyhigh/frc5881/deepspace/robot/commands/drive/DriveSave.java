@@ -4,6 +4,9 @@ import edu.wpi.first.wpilibj.command.Command;
 import org.techvalleyhigh.frc5881.deepspace.robot.Robot;
 import org.techvalleyhigh.frc5881.deepspace.robot.subsystem.DriveControl;
 
+/**
+ * Controls everything to do with telling the bot to not TIP
+ */
 public class DriveSave extends Command {
   private double speed;
 
@@ -16,6 +19,8 @@ public class DriveSave extends Command {
    */
   @Override
   protected void initialize() {
+    // TODO: Check Axis once RoboRIO finds a home
+
     // Drive in the direction of the tipping
     if (Robot.navX.getRawGyroY() > 0) {
       speed = DriveControl.TIPPING_SPEED;
@@ -40,6 +45,8 @@ public class DriveSave extends Command {
    */
   @Override
   protected boolean isFinished() {
+    // TODO: Check the Gyro Y
+
     return Math.abs(Robot.navX.getRawGyroY()) < 10;
   }
 
