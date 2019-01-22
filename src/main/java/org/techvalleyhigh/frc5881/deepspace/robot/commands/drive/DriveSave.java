@@ -1,19 +1,17 @@
-package org.techvalleyhigh.frc5881.deepspace.robot.commands.elevator;
+package org.techvalleyhigh.frc5881.deepspace.robot.commands.drive;
 
 import edu.wpi.first.wpilibj.command.Command;
 import org.techvalleyhigh.frc5881.deepspace.robot.Robot;
-import org.techvalleyhigh.frc5881.deepspace.robot.subsystem.Elevator;
+import org.techvalleyhigh.frc5881.deepspace.robot.subsystem.DriveControl;
 
 /**
- * Sets the height of the elevator
+ * Controls everything to do with telling the bot to not TIP
  */
-public class SetElevator extends Command {
-  private Elevator.ElevatorState target;
+public class DriveSave extends Command {
+  private double speed;
 
-  public SetElevator(Elevator.ElevatorState state) {
-    target = state;
-
-    requires(Robot.elevator);
+  public DriveSave() {
+    requires(Robot.driveControl);
   }
 
   /**
@@ -21,7 +19,16 @@ public class SetElevator extends Command {
    */
   @Override
   protected void initialize() {
-    System.out.println("Set elevator initialized");
+    // TODO: Check Axis once RoboRIO finds a home
+
+    // Drive in the direction of the tipping
+    if (Robot.navX.getRawGyroY() > 0) {
+      speed = DriveControl.TIPPING_SPEED;
+    } else {
+      speed = -DriveControl.TIPPING_SPEED;
+    }
+
+    System.out.println("DriveSave Command initialized");
   }
 
   /**
@@ -29,7 +36,7 @@ public class SetElevator extends Command {
    */
   @Override
   protected void execute() {
-    Robot.elevator.setElevator(target);
+    Robot.driveControl.rawArcadeDrive(speed, 0);
   }
 
   /**
@@ -38,7 +45,9 @@ public class SetElevator extends Command {
    */
   @Override
   protected boolean isFinished() {
-    return Robot.elevator.isSetpointReached();
+    // TODO: Check the Gyro Y
+
+    return Math.abs(Robot.navX.getRawGyroY()) < 10;
   }
 
   /**
@@ -46,7 +55,9 @@ public class SetElevator extends Command {
    */
   @Override
   protected void end() {
-    System.out.println("Set elevator command ended");
+    // Restart the drive command
+    Robot.driveCommand.start();
+    System.out.println("DriveSave ended");
   }
 
   /**

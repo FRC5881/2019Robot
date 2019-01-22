@@ -1,11 +1,15 @@
-package org.techvalleyhigh.frc5881.deepspace.robot.commands.elevator;
+package org.techvalleyhigh.frc5881.deepspace.robot.commands.arm;
 
 import edu.wpi.first.wpilibj.command.Command;
 import org.techvalleyhigh.frc5881.deepspace.robot.Robot;
+import org.techvalleyhigh.frc5881.deepspace.robot.subsystem.Arm;
 
-public class ElevatorUp extends Command {
-  public ElevatorUp() {
-    requires(Robot.elevator);
+/**
+ * Sets arm to be positioned to pick up hatches
+ */
+public class ArmSetHatch extends Command {
+  public ArmSetHatch() {
+    requires(Robot.arm);
   }
 
   /**
@@ -13,32 +17,28 @@ public class ElevatorUp extends Command {
    */
   @Override
   protected void initialize() {
-    System.out.println("Elevator up initialized");
+    Robot.arm.setToHatchTicks();
+    System.out.println("ArmSetHatch Command initialized");
   }
 
   /**
    * Called repeatedly when this Command is scheduled to run
    */
   @Override
-  protected void execute() {
-    Robot.elevator.elevatorUp();
-  }
+  protected void execute() {  }
 
   /**
    * Make this return true when this Command no longer needs to run execute()
-   * Since this is a drive command we never want it to end
    */
   @Override
-  protected boolean isFinished() {
-    return Robot.elevator.isSetpointReached();
-  }
+  protected boolean isFinished() { return Math.abs(Robot.arm.getError()) < Arm.MAX_ERROR; }
 
   /**
    * Called once after isFinished returns true OR the command is interrupted
    */
   @Override
   protected void end() {
-    System.out.println("Elevator up command ended");
+    System.out.println("ArmSetHatch ended");
   }
 
   /**
@@ -49,4 +49,5 @@ public class ElevatorUp extends Command {
   protected void interrupted() {
     end();
   }
+
 }

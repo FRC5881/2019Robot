@@ -3,8 +3,12 @@ package org.techvalleyhigh.frc5881.deepspace.robot.commands.elevator;
 import edu.wpi.first.wpilibj.command.Command;
 import org.techvalleyhigh.frc5881.deepspace.robot.Robot;
 
-public class ElevatorUp extends Command {
-  public ElevatorUp() {
+/**
+ * Changes the elevator height
+ */
+public class ElevatorFlip extends Command {
+
+  public ElevatorFlip() {
     requires(Robot.elevator);
   }
 
@@ -13,21 +17,16 @@ public class ElevatorUp extends Command {
    */
   @Override
   protected void initialize() {
-    System.out.println("Elevator up initialized");
+    System.out.println("Elevator flip initialized");
   }
 
-  /**
-   * Called repeatedly when this Command is scheduled to run
-   */
   @Override
   protected void execute() {
-    Robot.elevator.elevatorUp();
+    if(!Robot.elevator.isFired){
+      Robot.elevator.elevatorFlip();
+    }
   }
 
-  /**
-   * Make this return true when this Command no longer needs to run execute()
-   * Since this is a drive command we never want it to end
-   */
   @Override
   protected boolean isFinished() {
     return Robot.elevator.isSetpointReached();
@@ -38,7 +37,7 @@ public class ElevatorUp extends Command {
    */
   @Override
   protected void end() {
-    System.out.println("Elevator up command ended");
+    System.out.println("Elevator flip command ended");
   }
 
   /**

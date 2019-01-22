@@ -1,11 +1,15 @@
-package org.techvalleyhigh.frc5881.deepspace.robot.commands.elevator;
+package org.techvalleyhigh.frc5881.deepspace.robot.commands.climber;
 
 import edu.wpi.first.wpilibj.command.Command;
 import org.techvalleyhigh.frc5881.deepspace.robot.Robot;
+import org.techvalleyhigh.frc5881.deepspace.robot.subsystem.Climber;
 
-public class ElevatorUp extends Command {
-  public ElevatorUp() {
-    requires(Robot.elevator);
+/**
+ *Drive the climber motors
+ */
+public class ClimberDrive extends Command {
+  public ClimberDrive() {
+    requires(Robot.climber);
   }
 
   /**
@@ -13,7 +17,7 @@ public class ElevatorUp extends Command {
    */
   @Override
   protected void initialize() {
-    System.out.println("Elevator up initialized");
+    System.out.println("ClimberDrive Command initialized");
   }
 
   /**
@@ -21,7 +25,7 @@ public class ElevatorUp extends Command {
    */
   @Override
   protected void execute() {
-    Robot.elevator.elevatorUp();
+    Robot.climber.arcadeJoystickInputs();
   }
 
   /**
@@ -30,7 +34,7 @@ public class ElevatorUp extends Command {
    */
   @Override
   protected boolean isFinished() {
-    return Robot.elevator.isSetpointReached();
+      return Robot.climber.getState() != Climber.ClimberMode.ENGAGED;
   }
 
   /**
@@ -38,7 +42,7 @@ public class ElevatorUp extends Command {
    */
   @Override
   protected void end() {
-    System.out.println("Elevator up command ended");
+    System.out.println("ClimberDrive ended");
   }
 
   /**
@@ -50,3 +54,5 @@ public class ElevatorUp extends Command {
     end();
   }
 }
+
+

@@ -5,7 +5,9 @@ import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.techvalleyhigh.frc5881.deepspace.robot.commands.elevator.ElevatorSave;
 import org.techvalleyhigh.frc5881.deepspace.robot.commands.drive.ArcadeDrive;
+import org.techvalleyhigh.frc5881.deepspace.robot.commands.drive.DriveSave;
 import org.techvalleyhigh.frc5881.deepspace.robot.subsystem.*;
 
 /**
@@ -28,7 +30,8 @@ public class Robot extends TimedRobot {
   public static DriveControl driveControl;
   public static Elevator elevator;
   public static Intake intake;
-  public static Manipulator manipulator;
+  public static Arm arm;
+  public static Demogorgon demogorgon;
 
   public static AHRS navX;
 
@@ -47,7 +50,8 @@ public class Robot extends TimedRobot {
     driveControl = new DriveControl();
     elevator = new Elevator();
     intake = new Intake();
-    manipulator = new Manipulator();
+    demogorgon = new Demogorgon();
+    arm = new Arm();
 
     /*
     OI must be constructed after subsystems. If the OI creates Commands
@@ -77,7 +81,13 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    SmartDashboard.putNumber("X accel", navX.getRawAccelX());
+    SmartDashboard.putNumber("Y accel", navX.getRawAccelY());
+    SmartDashboard.putNumber("Z accel", navX.getRawAccelZ());
 
+    SmartDashboard.putNumber("X gyro", navX.getRawGyroX());
+    SmartDashboard.putNumber("Y gyro", navX.getRawGyroY());
+    SmartDashboard.putNumber("Z gyro", navX.getRawGyroZ());
   }
 
   /**
@@ -115,11 +125,29 @@ public class Robot extends TimedRobot {
   }
 
   /**
+   * Initialization code for teleop mode should go here.
+   */
+  @Override
+  public void teleopInit() {
+    // Start the drive command
+    driveCommand.start();
+  }
+
+  /**
    * This function is called periodically during operator control.
    */
   @Override
   public void teleopPeriodic() {
-
+    // If the bot is at an angle of greater than 30 degrees then run stop tipping
+    if (Math.abs(navX.getRawGyroY()) > 30) {
+      DriveSave driveSave = new DriveSave();
+      driveSave.start();
+    }
+    // If the bot is at an angle of greater than 30 degrees then do elevator save.
+    if (navX.getRawGyroY() > 30) {
+      ElevatorSave elevatorSave = new ElevatorSave();
+      elevatorSave.start();
+    }
   }
 
   /**
@@ -127,12 +155,5 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void testPeriodic() {
-    SmartDashboard.putNumber("X accel", navX.getRawAccelX());
-    SmartDashboard.putNumber("Y accel", navX.getRawAccelY());
-    SmartDashboard.putNumber("Z accel", navX.getRawAccelZ());
-
-    SmartDashboard.putNumber("X gyro", navX.getRawGyroX());
-    SmartDashboard.putNumber("Y gyro", navX.getRawGyroY());
-    SmartDashboard.putNumber("Z gyro", navX.getRawGyroZ());
   }
 }
