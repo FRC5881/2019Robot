@@ -5,7 +5,6 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import org.techvalleyhigh.frc5881.deepspace.robot.commands.climber.ClimberLegsBackToggle;
 import org.techvalleyhigh.frc5881.deepspace.robot.commands.climber.ClimberLegsFrontToggle;
-import org.techvalleyhigh.frc5881.deepspace.robot.commands.demegorgon.DropHatch;
 import org.techvalleyhigh.frc5881.deepspace.robot.commands.elevator.ElevatorDown;
 import org.techvalleyhigh.frc5881.deepspace.robot.commands.elevator.ElevatorUp;
 import org.techvalleyhigh.frc5881.deepspace.robot.commands.groups.SwitchRobotMode;
@@ -76,10 +75,10 @@ public class OI {
         driverController.setRumble(GenericHID.RumbleType.kRightRumble, 0);
 
         // When the "A" button is pressed grab hatch/ cargo
-        // TODO: Finish demogorgon/ hatch and cargo grabber code
+        // TODO: Finish upsideDown/ hatch and cargo grabber code
 
         // When the "B" button is pressed drop the hatch/ cargo
-        // TODO: Finish demogorgon/ hatch and cargo dropping code
+        // TODO: Finish upsideDown/ hatch and cargo dropping code
 
         // When the "X" button is pressed abort docking
         // TODO: Make a command to abort docking

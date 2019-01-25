@@ -4,7 +4,10 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
-public class Demogorgon extends Subsystem {
+/**
+ * Houses a majority of the code for "Upside Down" (a.k.a the hatch grabber)
+ */
+public class UpsideDown extends Subsystem {
   /**
    * Initialize the default command for a subsystem By default subsystems have no default command,
    * but if they do, the default command is set with this method. It is called on all Subsystems by
@@ -17,7 +20,8 @@ public class Demogorgon extends Subsystem {
 
   public static DoubleSolenoid mainSolenoid = new DoubleSolenoid(20, 0, 1);
 
-  public Demogorgon() {
+
+  public UpsideDown() {
     super();
 
     init();
@@ -25,19 +29,40 @@ public class Demogorgon extends Subsystem {
 
   /**
    * Name: Main
-   * Subsystem: Demogorgon
+   * Subsystem: UpsideDown
    */
   public void init(){
-    mainSolenoid.setName ("Demogorgon", "Main");
+    mainSolenoid.setName ("UpsideDown", "Main");
     LiveWindow.add(mainSolenoid);
   }
 
+  /**
+   * Drops the hatch
+   */
   public void dropHatch(){
+    mainSolenoid.set(DoubleSolenoid.Value.kReverse);
   }
 
+  /**
+   * Grabs the hatch
+   */
   public void grabHatch(){
+    mainSolenoid.set(DoubleSolenoid.Value.kForward);
   }
 
-  public void flip(){
+  /**
+   * Changes whether or not upside down is holding a hatch or not.
+   */
+  public void toggle(){
+    switch(mainSolenoid.get()){
+      case kOff:
+        break;
+      case kForward:
+        mainSolenoid.set(DoubleSolenoid.Value.kReverse);
+        break;
+      case kReverse:
+        mainSolenoid.set(DoubleSolenoid.Value.kForward);
+        break;
+    }
   }
 }

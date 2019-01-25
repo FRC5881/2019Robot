@@ -31,7 +31,7 @@ public class Robot extends TimedRobot {
   public static Elevator elevator;
   public static Intake intake;
   public static Arm arm;
-  public static Demogorgon demogorgon;
+  public static UpsideDown upsideDown;
   public static LED led;
 
   public static AHRS navX;
@@ -51,7 +51,7 @@ public class Robot extends TimedRobot {
     driveControl = new DriveControl();
     elevator = new Elevator();
     intake = new Intake();
-    demogorgon = new Demogorgon();
+    upsideDown = new UpsideDown();
     arm = new Arm();
 
     /*
