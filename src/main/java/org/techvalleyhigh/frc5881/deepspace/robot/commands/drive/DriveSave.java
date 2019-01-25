@@ -55,6 +55,8 @@ public class DriveSave extends Command {
    */
   @Override
   protected void end() {
+    // Restart the drive command
+    Robot.driveCommand.start();
     System.out.println("DriveSave ended");
   }
 

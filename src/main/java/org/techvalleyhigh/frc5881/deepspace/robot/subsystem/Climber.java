@@ -9,32 +9,34 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import org.techvalleyhigh.frc5881.deepspace.robot.OI;
 import org.techvalleyhigh.frc5881.deepspace.robot.Robot;
-import org.techvalleyhigh.frc5881.deepspace.robot.commands.climber.ClimberLegsBackUp;
-import org.techvalleyhigh.frc5881.deepspace.robot.commands.drive.DriveSave;
+import org.techvalleyhigh.frc5881.deepspace.robot.commands.climber.ClimberDrive;
+import org.techvalleyhigh.frc5881.deepspace.robot.commands.climber.ClimberLegsAllUp;
 
 /**
  * Subsystem controls everything to do with our 4 legged climber
  */
 public class Climber extends Subsystem {
-  public static DoubleSolenoid frontSolenoid = new DoubleSolenoid(20, 5, 4);
-  public static DoubleSolenoid backSolenoid = new DoubleSolenoid(20, 5, 4);
+  public static DoubleSolenoid frontSolenoid = new DoubleSolenoid(20, 2, 3);
+  public static DoubleSolenoid backSolenoid = new DoubleSolenoid(20, 4, 5);
   public static WPI_TalonSRX leftMotor = new WPI_TalonSRX(5);
   public static WPI_TalonSRX rightMotor = new WPI_TalonSRX(6);
 
-  private DifferentialDrive climberDrive;
+  // Differential drive to handle arcade drive
+  private DifferentialDrive climberDriveBase;
+
+  // Climber arcade drive command
+  private ClimberDrive driveCommand;
 
   // Current mode of the climber
-  private ClimberMode state = ClimberMode.NONE;
+  private ClimberMode state = ClimberMode.DISENGAGED;
 
   /**
    * Enum for the different modes of the climber
    */
   public enum ClimberMode {
-    NONE,
     ENGAGED,
-    DISENGAGED,
+    DISENGAGED
   }
-
 
   /**
    * Initialize the default command for a subsystem By default subsystems have no default command,
@@ -43,8 +45,8 @@ public class Climber extends Subsystem {
    */
   @Override
   protected void initDefaultCommand() {
-    ClimberLegsBackUp climberLegsBackUp = new ClimberLegsBackUp();
-    climberLegsBackUp.start();
+    // Make sure that all the climber legs are retracted
+    new ClimberLegsAllUp().start();
   }
 
   public Climber(){
@@ -70,7 +72,7 @@ public class Climber extends Subsystem {
 
     SpeedControllerGroup m_left = new SpeedControllerGroup(leftMotor);
     SpeedControllerGroup m_right = new SpeedControllerGroup(rightMotor);
-    climberDrive = new DifferentialDrive(m_right, m_left);
+    climberDriveBase = new DifferentialDrive(m_right, m_left);
   }
 
   /**
@@ -80,7 +82,7 @@ public class Climber extends Subsystem {
    */
   public void rawArcadeDrive(double speed, double turn){
     if (state == ClimberMode.ENGAGED) {
-      climberDrive.arcadeDrive(speed, turn, true);
+      climberDriveBase.arcadeDrive(speed, turn, true);
     }
   }
 
@@ -104,10 +106,18 @@ public class Climber extends Subsystem {
 
   public void frontDown(){
     frontSolenoid.set(DoubleSolenoid.Value.kForward);
+
+    // The front wheels are powered
+    setState(ClimberMode.ENGAGED);
+
+    // Start driving
+    driveCommand.start();
   }
 
   public void frontUp(){
     frontSolenoid.set(DoubleSolenoid.Value.kReverse);
+    // The front wheels are powered
+    setState(ClimberMode.DISENGAGED);
   }
 
   public void backDown(){
