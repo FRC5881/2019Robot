@@ -116,7 +116,7 @@ public class Arm extends Subsystem {
   }
 
   /**
-   * Gets how far the arm is from the set point.
+   * Gets how far the arm is from the setpoint
    * @return double error
    */
   public double getError() {
