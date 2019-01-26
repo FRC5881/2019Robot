@@ -1,7 +1,6 @@
 package org.techvalleyhigh.frc5881.deepspace.robot.commands.drive;
 
 import edu.wpi.first.wpilibj.command.Command;
-import org.techvalleyhigh.frc5881.deepspace.robot.OI;
 import org.techvalleyhigh.frc5881.deepspace.robot.Robot;
 
 public class RampedArcadeDrive extends Command {
@@ -22,7 +21,7 @@ public class RampedArcadeDrive extends Command {
    */
   @Override
   protected void execute() {
-    Robot.driveControl.rawArcadeDrive(Robot.oi.driverController.getRawAxis(OI.XBOX_LEFT_Y_AXIS), Robot.oi.driverController.getRawAxis(OI.XBOX_RIGHT_X_AXIS));
+    Robot.driveControl.rampedArcadeDrive();
   }
 
   /**
