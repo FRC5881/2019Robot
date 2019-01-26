@@ -3,6 +3,9 @@ package org.techvalleyhigh.frc5881.deepspace.robot.commands.intake;
 import org.techvalleyhigh.frc5881.deepspace.robot.Robot;
 import edu.wpi.first.wpilibj.command.Command;
 
+/**
+ *Command to drop cargo
+ */
 public class DropCargo extends Command{
 
   public DropCargo() {
