@@ -66,16 +66,12 @@ public class UpsideDown extends Subsystem {
    * Changes whether or not upside down is holding a hatch or not.
    */
   public void toggle(){
-    switch(mainSolenoid.get()){
-      case kOff:
-        mainSolenoid.set(DoubleSolenoid.Value.kForward);
-        break;
-      case kForward:
-        mainSolenoid.set(DoubleSolenoid.Value.kReverse);
-        break;
-      case kReverse:
-        mainSolenoid.set(DoubleSolenoid.Value.kForward);
-        break;
+    if (getState().equals(UpsideDownMode.DISENGAGED)) {
+      grabHatch();
+    }else if (getState().equals(UpsideDownMode.ENGAGED)) {
+      dropHatch();
+    }else{
+      System.out.println("Upside Down is off");
     }
   }
 
