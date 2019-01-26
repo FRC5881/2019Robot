@@ -89,8 +89,8 @@ public class DriveControl extends Subsystem {
    * Implements arcade drive with joystick inputs
    */
   public void arcadeJoystickInputs (){
-    double speed = Robot.oi.driverController.getRawAxis(OI.XBOX_LEFT_Y_AXIS);
-    double turn = Robot.oi.driverController.getRawAxis(OI.XBOX_RIGHT_X_AXIS);
+    double speed = Robot.oi.driverController.getRawAxis(OI.XBOX_LEFT_Y_AXIS) * getYAxisSensitivity();
+    double turn = Robot.oi.driverController.getRawAxis(OI.XBOX_RIGHT_X_AXIS) * getXAxisSensitivity();
 
     if(Math.abs(turn) < 0.1) {
       turn = 0;
@@ -106,7 +106,7 @@ public class DriveControl extends Subsystem {
    * Ramps the voltage of the motors
    */
   public void rampedArcadeDrive(){
-    double speed = Robot.oi.driverController.getRawAxis(OI.XBOX_LEFT_Y_AXIS);
+    double speed = Robot.oi.driverController.getRawAxis(OI.XBOX_LEFT_Y_AXIS) * getYAxisSensitivity();
     double turn = Robot.oi.driverController.getRawAxis(OI.XBOX_RIGHT_X_AXIS);
 
     // Slow down turn rate linearly to elevator height
