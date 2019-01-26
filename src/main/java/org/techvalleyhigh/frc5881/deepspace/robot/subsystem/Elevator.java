@@ -100,6 +100,7 @@ public class Elevator extends Subsystem {
    * Also sets the PID values
    */
   private void init(){
+
       liftMasterMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
       elevatorMasterMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
 
@@ -108,6 +109,11 @@ public class Elevator extends Subsystem {
       elevatorMasterMotor.config_kI(0, getElevator_kI(), 10);
       elevatorMasterMotor.config_kD(0, getElevator_kD(), 10);
       elevatorMasterMotor.config_kF(0, getElevator_kF(), 10);
+
+      // TODO: Find out what the max amperage should be
+      elevatorMasterMotor.configPeakCurrentLimit(24);
+      liftMasterMotor.configPeakCurrentLimit(24);
+      elevatorMasterMotor.configPeakCurrentDuration(2000);
 
       liftMasterMotor.config_kP(0, getLift_kP(), 10);
       liftMasterMotor.config_kI(0, getLift_kI(), 10);
