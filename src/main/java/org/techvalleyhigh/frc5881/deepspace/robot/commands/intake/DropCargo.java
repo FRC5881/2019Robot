@@ -1,18 +1,20 @@
-package org.techvalleyhigh.frc5881.deepspace.robot.commands.drive;
+package org.techvalleyhigh.frc5881.deepspace.robot.commands.intake;
 
-import edu.wpi.first.wpilibj.command.Command;
 import org.techvalleyhigh.frc5881.deepspace.robot.Robot;
+import edu.wpi.first.wpilibj.command.Command;
 
-public class ArcadeDrive extends Command{
+public class DropCargo extends Command{
 
-  public ArcadeDrive() {requires(Robot.driveControl);}
+  public DropCargo() {
+    requires(Robot.intake);
+  }
 
   /**
    * Called just before this Command runs the first time
    */
   @Override
   protected void initialize() {
-    System.out.println("ArcadeDrive Command initialized");
+    System.out.println("DropCargo Command initialized");
   }
 
   /**
@@ -20,12 +22,11 @@ public class ArcadeDrive extends Command{
    */
   @Override
   protected void execute() {
-    Robot.driveControl.arcadeJoystickInputs();
+    Robot.intake.spinOutInput();
   }
 
   /**
    * Make this return true when this Command no longer needs to run execute()
-   * Since this is a drive command we never want it to end
    */
   @Override
   protected boolean isFinished() {
@@ -37,7 +38,7 @@ public class ArcadeDrive extends Command{
    */
   @Override
   protected void end() {
-    System.out.println("ArcadeDrive ended");
+    System.out.println("DropCargo ended");
   }
 
   /**
@@ -48,4 +49,5 @@ public class ArcadeDrive extends Command{
   protected void interrupted() {
     end();
   }
+
 }
