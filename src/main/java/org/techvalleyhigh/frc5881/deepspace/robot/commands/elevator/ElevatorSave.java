@@ -16,7 +16,7 @@ public class ElevatorSave extends Command {
    */
   @Override
   protected void initialize() {
-    System.out.println("Elevator save initialized");
+    System.out.println("elevator save initialized");
   }
 
   /**
@@ -41,7 +41,7 @@ public class ElevatorSave extends Command {
    */
   @Override
   protected void end() {
-    System.out.println("Elevator save command finished");
+    System.out.println("elevator save command finished");
   }
 
   /**
