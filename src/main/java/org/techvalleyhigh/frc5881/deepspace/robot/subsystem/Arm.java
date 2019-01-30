@@ -113,7 +113,7 @@ public class Arm extends Subsystem {
    */
   public double getSetPoint() {
     return armMotor.getClosedLoopTarget();
-}
+  }
 
   /**
    * Gets how far the arm is from the setpoint
