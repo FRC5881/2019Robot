@@ -5,7 +5,9 @@ import org.techvalleyhigh.frc5881.deepspace.robot.Robot;
 
 public class ArcadeDrive extends Command{
 
-  public ArcadeDrive() {requires(Robot.driveControl);}
+  public ArcadeDrive() {
+    requires(Robot.driveControl);
+  }
 
   /**
    * Called just before this Command runs the first time

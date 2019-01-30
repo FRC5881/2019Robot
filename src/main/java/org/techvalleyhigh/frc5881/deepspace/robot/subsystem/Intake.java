@@ -47,4 +47,11 @@ public class Intake extends Subsystem {
     intakeMotor.set(-SPEED);
   }
 
+  /**
+   * Stops intake motor
+   */
+  public void stop() {
+    intakeMotor.stopMotor();
+  }
+
 }

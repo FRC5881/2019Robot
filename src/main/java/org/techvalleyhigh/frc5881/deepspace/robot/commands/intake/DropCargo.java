@@ -42,6 +42,7 @@ public class DropCargo extends Command{
   @Override
   protected void end() {
     System.out.println("DropCargo ended");
+    Robot.intake.intakeMotor.stopMotor();
   }
 
   /**
