@@ -43,6 +43,7 @@ public class PathUtil {
              new Waypoint(x, y, finalAngle)
         };
 
+
         // Return the calculate trajectory
         return Pathfinder.generate(wps, defaultConfig);
     }

@@ -17,7 +17,7 @@ public class ElevatorFlip extends Command {
    */
   @Override
   protected void initialize() {
-    System.out.println("Elevator flip initialized");
+    System.out.println("elevator flip initialized");
   }
 
   @Override
@@ -37,7 +37,7 @@ public class ElevatorFlip extends Command {
    */
   @Override
   protected void end() {
-    System.out.println("Elevator flip command ended");
+    System.out.println("elevator flip command ended");
   }
 
   /**

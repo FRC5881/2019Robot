@@ -16,7 +16,7 @@ public class ElevatorUp extends Command {
    */
   @Override
   protected void initialize() {
-    System.out.println("Elevator up initialized");
+    System.out.println("elevator up initialized");
   }
 
   /**
@@ -41,7 +41,7 @@ public class ElevatorUp extends Command {
    */
   @Override
   protected void end() {
-    System.out.println("Elevator up command ended");
+    System.out.println("elevator up command ended");
   }
 
   /**
