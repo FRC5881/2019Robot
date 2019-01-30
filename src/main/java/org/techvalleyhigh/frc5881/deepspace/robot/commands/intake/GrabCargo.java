@@ -42,7 +42,7 @@ public class GrabCargo extends Command {
     @Override
     protected void end() {
       System.out.println("GrabCargo ended");
-      Robot.intake.intakeMotor.stopMotor();
+      Robot.intake.stop();
 
     }
 
