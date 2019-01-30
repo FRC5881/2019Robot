@@ -9,6 +9,7 @@ import org.techvalleyhigh.frc5881.deepspace.robot.commands.demegorgon.DropHatch;
 import org.techvalleyhigh.frc5881.deepspace.robot.commands.elevator.ElevatorDown;
 import org.techvalleyhigh.frc5881.deepspace.robot.commands.elevator.ElevatorUp;
 import org.techvalleyhigh.frc5881.deepspace.robot.commands.groups.SwitchRobotMode;
+import org.techvalleyhigh.frc5881.deepspace.robot.commands.intake.DropCargo;
 
 /**
  * Controls operator interfaces, such as controllers (and a few buttons)
@@ -80,6 +81,7 @@ public class OI {
 
         // When the "B" button is pressed drop the hatch/ cargo
         // TODO: Finish demogorgon/ hatch and cargo dropping code
+        driveControllerButtonB.whileHeld(new DropCargo());
 
         // When the "X" button is pressed abort docking
         // TODO: Make a command to abort docking
