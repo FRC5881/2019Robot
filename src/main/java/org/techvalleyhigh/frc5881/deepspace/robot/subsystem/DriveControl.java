@@ -64,9 +64,9 @@ public class DriveControl extends Subsystem {
     backRightMotor.set(ControlMode.Follower, 2);
     LiveWindow.add(backRightMotor);
 
-    SmartDashboard.putNumber("Low dV", 1);
-    SmartDashboard.putNumber("Middle dV", 1);
-    SmartDashboard.putNumber("High dV", 1);
+    SmartDashboard.putNumber("Low dV per every 20 milliseconds", 1);
+    SmartDashboard.putNumber("Middle dV per every 20 milliseconds", 1);
+    SmartDashboard.putNumber("High dV per every 20 milliseconds", 1);
 
     SmartDashboard.putNumber(X_AXIS_SENSITIVITY, .8);
     SmartDashboard.putNumber(Y_AXIS_SENSITIVITY, -1);
@@ -169,15 +169,15 @@ public class DriveControl extends Subsystem {
   }
 
   public double getLowDV() {
-    return SmartDashboard.getNumber("Low dV", 1);
+    return SmartDashboard.getNumber("Low dV per every 20 milliseconds", 1);
   }
 
   public double getMiddleDV(){
-    return SmartDashboard.getNumber("Middle dV", 1);
+    return SmartDashboard.getNumber("Middle dV per every 20 milliseconds", 1);
   }
 
   public double getHighDV(){
-    return SmartDashboard.getNumber("High dV", 1);
+    return SmartDashboard.getNumber("High dV per every 20 milliseconds", 1);
   }
 
   public double getXAxisSensitivity() {

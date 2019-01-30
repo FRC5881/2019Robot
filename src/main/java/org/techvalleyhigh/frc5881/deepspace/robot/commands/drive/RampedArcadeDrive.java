@@ -29,7 +29,7 @@ public class RampedArcadeDrive extends Command {
 
   /**
    * Make this return true when this Command no longer needs to run execute()
-   * Since this is a drive command we never want it to end
+   * We want this to end when we dock.
    */
   @Override
   protected boolean isFinished() {
@@ -41,7 +41,8 @@ public class RampedArcadeDrive extends Command {
    */
   @Override
   protected void end() {
-    System.out.println("Ramped arcade drive command ended... That shouldn't happen");
+    System.out.println("Ramped arcade drive command ended");
+    Robot.driveControl.rampedArcadeDrive();
   }
 
   /**
