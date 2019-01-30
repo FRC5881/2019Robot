@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.command.InstantCommand;
 import org.techvalleyhigh.frc5881.deepspace.robot.Robot;
 
 /**
- * Changes the "state" of Upside Down.
+ * Toggles between drop or grab
  */
 public class UpsideDownFlip extends InstantCommand {
   private static Runnable runnable = () -> Robot.upsideDown.toggle();
