@@ -1,14 +1,14 @@
-package org.techvalleyhigh.frc5881.deepspace.robot.commands.drive;
+package org.techvalleyhigh.frc5881.deepspace.robot.commands.led;
 
 import edu.wpi.first.wpilibj.command.Command;
 import org.techvalleyhigh.frc5881.deepspace.robot.Robot;
 
 /**
- * Ramps the voltage of the motors.
+ * Changes the state of the LED docking
  */
-public class RampedArcadeDrive extends Command {
-  public RampedArcadeDrive() {
-    requires(Robot.driveControl);
+public class LEDDocking extends Command {
+  public LEDDocking() {
+    requires(Robot.led);
   }
 
   /**
@@ -16,7 +16,7 @@ public class RampedArcadeDrive extends Command {
    */
   @Override
   protected void initialize() {
-    System.out.println("Ramped arcade drive initialized");
+    System.out.println("LED docking initialized");
   }
 
   /**
@@ -24,15 +24,15 @@ public class RampedArcadeDrive extends Command {
    */
   @Override
   protected void execute() {
-    Robot.driveControl.rampedArcadeDrive();
   }
 
   /**
    * Make this return true when this Command no longer needs to run execute()
-   * We want this to end when we dock.
+   * Since this is a subsystem it should end at some point
    */
   @Override
   protected boolean isFinished() {
+    // TODO: Figure out how we are going to know when we are done docking
     return false;
   }
 
@@ -41,8 +41,7 @@ public class RampedArcadeDrive extends Command {
    */
   @Override
   protected void end() {
-    System.out.println("Ramped arcade drive command ended");
-    Robot.driveControl.rampedArcadeDrive();
+    System.out.println("LED docking command ended");
   }
 
   /**

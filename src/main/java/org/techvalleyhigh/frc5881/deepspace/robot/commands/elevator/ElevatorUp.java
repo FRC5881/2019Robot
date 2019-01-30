@@ -3,6 +3,9 @@ package org.techvalleyhigh.frc5881.deepspace.robot.commands.elevator;
 import edu.wpi.first.wpilibj.command.Command;
 import org.techvalleyhigh.frc5881.deepspace.robot.Robot;
 
+/**
+ * Makes the elevator go up
+ */
 public class ElevatorUp extends Command {
   public ElevatorUp() {
     requires(Robot.elevator);
