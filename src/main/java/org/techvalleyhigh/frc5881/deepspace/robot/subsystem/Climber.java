@@ -18,8 +18,8 @@ import org.techvalleyhigh.frc5881.deepspace.robot.commands.climber.ClimberLegsAl
 public class Climber extends Subsystem {
   public static DoubleSolenoid frontSolenoid = new DoubleSolenoid(20, 2, 3);
   public static DoubleSolenoid backSolenoid = new DoubleSolenoid(20, 4, 5);
-  public static WPI_TalonSRX leftMotor = new WPI_TalonSRX(5);
-  public static WPI_TalonSRX rightMotor = new WPI_TalonSRX(6);
+  //public static WPI_TalonSRX leftMotor = new WPI_TalonSRX(16);
+  //public static WPI_TalonSRX rightMotor = new WPI_TalonSRX(17);
 
   // Differential drive to handle arcade drive
   private DifferentialDrive climberDriveBase;
@@ -56,13 +56,13 @@ public class Climber extends Subsystem {
   }
 
   public void init() {
-    leftMotor.setName("Climber", "Left Motor");
-    leftMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
-    LiveWindow.add(leftMotor);
+    //leftMotor.setName("Climber", "Left Motor");
+    //leftMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
+    //LiveWindow.add(leftMotor);
 
-    rightMotor.setName("Climber", "Right Motor");
-    rightMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
-    LiveWindow.add(rightMotor);
+    //rightMotor.setName("Climber", "Right Motor");
+    //rightMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
+    //LiveWindow.add(rightMotor);
 
     frontSolenoid.setName ("Climber", "Front Piston");
     LiveWindow.add(frontSolenoid);
@@ -70,9 +70,9 @@ public class Climber extends Subsystem {
     backSolenoid.setName("Climber", "Back Piston");
     LiveWindow.add(backSolenoid);
 
-    SpeedControllerGroup m_left = new SpeedControllerGroup(leftMotor);
-    SpeedControllerGroup m_right = new SpeedControllerGroup(rightMotor);
-    climberDriveBase = new DifferentialDrive(m_right, m_left);
+    //SpeedControllerGroup m_left = new SpeedControllerGroup(leftMotor);
+    //SpeedControllerGroup m_right = new SpeedControllerGroup(rightMotor);
+    //climberDriveBase = new DifferentialDrive(m_right, m_left);
   }
 
   /**

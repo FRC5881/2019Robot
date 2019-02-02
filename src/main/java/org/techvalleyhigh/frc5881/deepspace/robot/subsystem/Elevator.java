@@ -17,10 +17,10 @@ public class Elevator extends Subsystem {
     public ElevatorState elevatorState = ElevatorState.HIGH_HATCH;
 
     // TODO: Change the "deviceNumber" to whatever the actual number on the talon is.
-    private WPI_TalonSRX elevatorMasterMotor = new WPI_TalonSRX(2);
+    private WPI_TalonSRX elevatorMasterMotor = new WPI_TalonSRX(5);
     //  ||                                          ||
     //  \/ is the talon for the four bar lift motor \/
-    private WPI_TalonSRX liftMasterMotor = new WPI_TalonSRX(3);
+    private WPI_TalonSRX liftMasterMotor = new WPI_TalonSRX(6);
 
   /*
     The order of heights is: (greatest to least)
@@ -83,6 +83,7 @@ public class Elevator extends Subsystem {
   */
   public Elevator() {
         super();
+
         // Put numbers on SmartDashboard
         SmartDashboard.putNumber("elevator kP", 2);
         SmartDashboard.putNumber("elevator kI", 0);
@@ -92,6 +93,7 @@ public class Elevator extends Subsystem {
         SmartDashboard.putNumber("lift kI", 0);
         SmartDashboard.putNumber("lift kD", 20);
         SmartDashboard.putNumber("lift kF", 0.076);
+
         init();
     }
 
@@ -102,7 +104,6 @@ public class Elevator extends Subsystem {
   private void init(){
       liftMasterMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
       elevatorMasterMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
-
 
       elevatorMasterMotor.config_kP(0, getElevator_kP(), 10);
       elevatorMasterMotor.config_kI(0, getElevator_kI(), 10);
@@ -124,27 +125,27 @@ public class Elevator extends Subsystem {
    * Moves the elevator up to the next possible level.
    */
   public void elevatorUp(){
-        // Checks if the arm mode is "hatch"
-      if(Robot.arm.isHatch()){
-          // Checks to see if the elevator state is "Floor"
+    // Checks if the arm mode is "hatch"
+    if(true) {
+      // Checks to see if the elevator state is "Floor"
         if(ElevatorState.FLOOR.equals(elevatorState)){
-              setElevator(Low_Hatch);
-            } else if (ElevatorState.LOW_HATCH.equals(elevatorState)) {
-              setElevator(Mid_Hatch);
-              // Checks if the elevator state is "middle hatch"
-            } else if(ElevatorState.MIDDLE_HATCH.equals(elevatorState)){
-              setElevator(High_Hatch);
-            }
-            // Checks if the arm mode is "cargo"
-          } else if(Robot.arm.isCargo()){
-                // If the elevator state is "low cargo" then proceed
-            if(ElevatorState.LOW_CARGO.equals(elevatorState)){
-              setElevator(Mid_Cargo);
-                // Checks if the elevator state is "middle cargo"
-            }  else if(ElevatorState.MIDDLE_CARGO.equals(elevatorState)){
-              setElevator(High_Cargo);
-            }
-          }
+          setElevator(Low_Hatch);
+        } else if (ElevatorState.LOW_HATCH.equals(elevatorState)) {
+          setElevator(Mid_Hatch);
+          // Checks if the elevator state is "middle hatch"
+        } else if(ElevatorState.MIDDLE_HATCH.equals(elevatorState)){
+          setElevator(High_Hatch);
+        }
+        // Checks if the arm mode is "cargo"
+      } else if(false){
+        // If the elevator state is "low cargo" then proceed
+        if(ElevatorState.LOW_CARGO.equals(elevatorState)){
+          setElevator(Mid_Cargo);
+          // Checks if the elevator state is "middle cargo"
+        }  else if(ElevatorState.MIDDLE_CARGO.equals(elevatorState)){
+          setElevator(High_Cargo);
+        }
+      }
     }
 
   /**
@@ -152,7 +153,7 @@ public class Elevator extends Subsystem {
    */
   public void elevatorDown(){
     // Check if the arm mode is "hatch"
-    if (Robot.arm.isHatch()) {
+    if (true) {
         // If the elevator's height is "high hatch" then proceed
       if (ElevatorState.HIGH_HATCH.equals(elevatorState)) {
         setElevator(Mid_Hatch);
@@ -164,7 +165,7 @@ public class Elevator extends Subsystem {
         setElevator(Floor);
       }
       // Checks if the arm mode is "cargo"
-    } else if (Robot.arm.isCargo()){
+    } else if (false){
         // Checks if the elevator state is "high cargo"
       if(ElevatorState.HIGH_CARGO.equals(elevatorState)) {
         setElevator(Mid_Cargo);

@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 public class Arm extends Subsystem {
 
   //Define motor
-  private static WPI_TalonSRX armMotor = new WPI_TalonSRX(5);
+  //private static WPI_TalonSRX armMotor = new WPI_TalonSRX(6);
 
   //The maximum and minimum numbers of ticks for how far the arm can move
   private static final int MAX_TICKS = 0;
@@ -41,10 +41,10 @@ public class Arm extends Subsystem {
  * Initialize SmartDashboard and other local variables
  */
   public void init() {
-    armMotor.setName("Arm", "Motor");
-    armMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
-    armMotor.setNeutralMode(NeutralMode.Brake);
-    LiveWindow.add(armMotor);
+    //armMotor.setName("Arm", "Motor");
+    //armMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
+    //armMotor.setNeutralMode(NeutralMode.Brake);
+    //LiveWindow.add(armMotor);
   }
 
   /**
@@ -60,7 +60,7 @@ public class Arm extends Subsystem {
       setPoint = MAX_TICKS;
     }
 
-    armMotor.set(ControlMode.Position, setPoint);
+    //armMotor.set(ControlMode.Position, setPoint);
   }
 
   /**
@@ -112,7 +112,8 @@ public class Arm extends Subsystem {
    * @return double setpoint
    */
   public double getSetPoint() {
-    return armMotor.getClosedLoopTarget();
+    return 0;
+    //return armMotor.getClosedLoopTarget();
   }
 
   /**
@@ -120,7 +121,8 @@ public class Arm extends Subsystem {
    * @return double error
    */
   public double getError() {
-    return armMotor.getClosedLoopError();
+    return 0;
+    //return armMotor.getClosedLoopError();
   }
 
   /**
@@ -128,7 +130,8 @@ public class Arm extends Subsystem {
    * @return double position
    */
   public double getPosition() {
-    return armMotor.getSelectedSensorPosition();
+    return 0;
+    //return armMotor.getSelectedSensorPosition();
   }
 
 }

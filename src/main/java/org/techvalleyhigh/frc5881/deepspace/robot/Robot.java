@@ -20,6 +20,10 @@ import org.techvalleyhigh.frc5881.deepspace.robot.subsystem.*;
 public class Robot extends TimedRobot {
   private static final String kDefaultAuto = "Default";
   private static final String kCustomAuto = "My Auto";
+
+  private int ticks = 0;
+  private long lastTime = System.currentTimeMillis();
+
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
@@ -88,6 +92,13 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("X gyro", navX.getRawGyroX());
     SmartDashboard.putNumber("Y gyro", navX.getRawGyroY());
     SmartDashboard.putNumber("Z gyro", navX.getRawGyroZ());
+
+    if (ticks % 100 == 0) {
+      SmartDashboard.putNumber("ultra Distance", driveControl.getUltrasonicRange());
+      SmartDashboard.putBoolean("is range valid", DriveControl.ultra.isRangeValid());
+    }
+
+    ticks++;
   }
 
   /**
