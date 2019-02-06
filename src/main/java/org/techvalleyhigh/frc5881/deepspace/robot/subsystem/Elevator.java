@@ -64,19 +64,19 @@ public class Elevator extends Subsystem {
    */
   public static final double[] Floor = {0, 0};
 
-  public static final double[] Low_Hatch = {5, 5};
+  public static final double[] Low_Hatch = {500, 500};
 
-  public static final double[] Low_Cargo = {5 , 5};
+  public static final double[] Low_Cargo = {750 , 50};
 
-  public static final double[] Mid_Hatch = {5, 5};
+  public static final double[] Mid_Hatch = {1000, 250};
 
-  public static final double[] Mid_Cargo = {5, 5};
+  public static final double[] Mid_Cargo = {1250, 250};
 
-  public static final double[] High_Hatch = {5, 5};
+  public static final double[] High_Hatch = {1750, 500};
 
-  public static final double[] High_Cargo = {5, 5};
+  public static final double[] High_Cargo = {2000, 200};
 
-  public static final double[] Top = {5, 5};
+  public static final double[] Top = {3500, 500};
 
  /**
   * Does the normal stuff but also adds the PID values to Smart Dashboard.
@@ -262,16 +262,16 @@ public class Elevator extends Subsystem {
    * Gets the target height of the elevator
    * @return Returns the desired height of the elevator
    */
-  private double elevatorTarget(){
-    return elevatorMasterMotor.getClosedLoopTarget(2);
+  public double elevatorTarget(){
+    return elevatorMasterMotor.getClosedLoopTarget(0);
   }
 
   /**
    * Gets the target height of the lift
    * @return Returns the desired height of the lift
    */
-  private double liftTarget(){
-    return liftMasterMotor.getClosedLoopTarget(3);
+  public double liftTarget(){
+    return liftMasterMotor.getClosedLoopTarget(0);
   }
 
   /**
@@ -382,14 +382,14 @@ public class Elevator extends Subsystem {
    * @return returns the value of Setpoint
    */
   public double getSetpointElevator(){
-      return elevatorMasterMotor.getClosedLoopTarget(0);
+      return elevatorMasterMotor.getSelectedSensorPosition();
     }
   /**
    * Gets the value of Setpoint
    * @return returns the value of Setpoint
    */
   public double getSetpointLift(){
-    return liftMasterMotor.getClosedLoopTarget(0);
+    return liftMasterMotor.getSelectedSensorPosition();
   }
 
   /**

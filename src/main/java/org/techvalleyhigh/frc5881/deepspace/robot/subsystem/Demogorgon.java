@@ -15,7 +15,7 @@ public class Demogorgon extends Subsystem {
 
   }
 
-  public static DoubleSolenoid mainSolenoid = new DoubleSolenoid(20, 0, 1);
+  public static DoubleSolenoid mainSolenoid = new DoubleSolenoid(20, 6, 7);
 
   public Demogorgon() {
     super();

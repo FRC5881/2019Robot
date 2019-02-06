@@ -29,6 +29,7 @@ public class Arm extends Subsystem {
 
   @Override
   protected void initDefaultCommand() {
+
   }
 
   /**Create the subsystem with a default name*/

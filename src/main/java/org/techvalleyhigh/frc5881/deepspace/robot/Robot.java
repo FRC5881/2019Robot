@@ -3,6 +3,7 @@ package org.techvalleyhigh.frc5881.deepspace.robot;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.techvalleyhigh.frc5881.deepspace.robot.commands.elevator.ElevatorSave;
@@ -85,6 +86,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    // Runs the required drive commands
+    Scheduler.getInstance().run();
+
     SmartDashboard.putNumber("X accel", navX.getRawAccelX());
     SmartDashboard.putNumber("Y accel", navX.getRawAccelY());
     SmartDashboard.putNumber("Z accel", navX.getRawAccelZ());
@@ -92,6 +96,10 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("X gyro", navX.getRawGyroX());
     SmartDashboard.putNumber("Y gyro", navX.getRawGyroY());
     SmartDashboard.putNumber("Z gyro", navX.getRawGyroZ());
+
+    SmartDashboard.putNumber("Elevator Set Point", elevator.elevatorTarget());
+    SmartDashboard.putNumber("Elevator Error", elevator.getElevatorError());
+    SmartDashboard.putNumber("Elevator Encoder Position", elevator.getSetpointElevator());
 
     if (ticks % 100 == 0) {
       SmartDashboard.putNumber("ultra Distance", driveControl.getUltrasonicRange());

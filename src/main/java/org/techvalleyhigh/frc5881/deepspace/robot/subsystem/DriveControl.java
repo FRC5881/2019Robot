@@ -22,7 +22,7 @@ public class DriveControl extends Subsystem {
   public static WPI_TalonSRX frontRightMotor = new WPI_TalonSRX(2);
   public static WPI_TalonSRX backLeftMotor = new WPI_TalonSRX(3);
   public static WPI_TalonSRX backRightMotor = new WPI_TalonSRX(4);
-  public static Ultrasonic ultra = new Ultrasonic(6, 7);
+  public static Ultrasonic ultra = new Ultrasonic(1, 0);
 
   // Define robot drive for controls
   private DifferentialDrive robotDrive;
@@ -79,8 +79,10 @@ public class DriveControl extends Subsystem {
     SpeedControllerGroup m_right = new SpeedControllerGroup(frontRightMotor);
     robotDrive = new DifferentialDrive(m_right, m_left);
 
-    robotDrive.setName("Drive");
+    robotDrive.setName("Drive", "Differential Drive");
     LiveWindow.add(robotDrive);
+
+    robotDrive.setSafetyEnabled(false);
   }
 
   public double getUltrasonicRange() {
@@ -112,6 +114,8 @@ public class DriveControl extends Subsystem {
       speed = 0;
     }
 
+    SmartDashboard.putNumber("Left Y Value", speed);
+    SmartDashboard.putNumber("Right X Value", turn);
     rawArcadeDrive(turn, speed);
   }
 

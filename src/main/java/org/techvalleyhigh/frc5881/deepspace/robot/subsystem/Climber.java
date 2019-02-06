@@ -16,16 +16,16 @@ import org.techvalleyhigh.frc5881.deepspace.robot.commands.climber.ClimberLegsAl
  * Subsystem controls everything to do with our 4 legged climber
  */
 public class Climber extends Subsystem {
-  public static DoubleSolenoid frontSolenoid = new DoubleSolenoid(20, 2, 3);
-  public static DoubleSolenoid backSolenoid = new DoubleSolenoid(20, 4, 5);
+  public static DoubleSolenoid frontSolenoid = new DoubleSolenoid(20, 0, 1);
+  public static DoubleSolenoid backSolenoid = new DoubleSolenoid(20, 2, 3);
   //public static WPI_TalonSRX leftMotor = new WPI_TalonSRX(16);
   //public static WPI_TalonSRX rightMotor = new WPI_TalonSRX(17);
 
-  // Differential drive to handle arcade drive
-  private DifferentialDrive climberDriveBase;
-
-  // Climber arcade drive command
-  private ClimberDrive driveCommand;
+//  // Differential drive to handle arcade drive
+//  private DifferentialDrive climberDriveBase;
+//
+//  // Climber arcade drive command
+//  private ClimberDrive driveCommand;
 
   // Current mode of the climber
   private ClimberMode state = ClimberMode.DISENGAGED;
@@ -70,6 +70,8 @@ public class Climber extends Subsystem {
     backSolenoid.setName("Climber", "Back Piston");
     LiveWindow.add(backSolenoid);
 
+
+
     //SpeedControllerGroup m_left = new SpeedControllerGroup(leftMotor);
     //SpeedControllerGroup m_right = new SpeedControllerGroup(rightMotor);
     //climberDriveBase = new DifferentialDrive(m_right, m_left);
@@ -82,7 +84,7 @@ public class Climber extends Subsystem {
    */
   public void rawArcadeDrive(double speed, double turn){
     if (state == ClimberMode.ENGAGED) {
-      climberDriveBase.arcadeDrive(speed, turn, true);
+//      climberDriveBase.arcadeDrive(speed, turn, true);
     }
   }
 
@@ -111,7 +113,7 @@ public class Climber extends Subsystem {
     setState(ClimberMode.ENGAGED);
 
     // Start driving
-    driveCommand.start();
+//    driveCommand.start();
   }
 
   public void frontUp(){
