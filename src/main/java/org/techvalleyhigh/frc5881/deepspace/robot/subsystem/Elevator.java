@@ -11,8 +11,7 @@ import org.techvalleyhigh.frc5881.deepspace.robot.Robot;
  * Contains methods to get the error of the motors, set the PIDs and even move the elevator and lift!
  */
 public class Elevator extends Subsystem {
-   public ElevatorState elevatorState = ElevatorState.HIGH_HATCH;
-
+    public ElevatorState elevatorState = ElevatorState.HIGH_HATCH;
     // TODO: Change the "deviceNumber" to whatever the actual number on the talon is.
     private WPI_TalonSRX elevatorMasterMotor = new WPI_TalonSRX(5);
     //  ||                                          ||
@@ -57,19 +56,12 @@ public class Elevator extends Subsystem {
    * and the second value is the height that the lift is required to move.
    */
   public static final double[] FLOOR = {0, 0};
-
   public static final double[] LOW_HATCH = {5, 5};
-
   public static final double[] LOW_CARGO = {5 , 5};
-
   public static final double[] MIDDLE_HATCH = {5, 5};
-
   public static final double[] MIDDLE_CARGO = {5, 5};
-
   public static final double[] HIGH_HATCH = {5, 5};
-
   public static final double[] HIGH_CARGO = {5, 5};
-
   public static final double[] TOP = {5, 5};
 
  /**
@@ -77,7 +69,6 @@ public class Elevator extends Subsystem {
   */
   public Elevator() {
         super();
-
         // Put numbers on SmartDashboard
         SmartDashboard.putNumber("elevator kP", 2);
         SmartDashboard.putNumber("elevator kI", 0);
@@ -118,7 +109,6 @@ public class Elevator extends Subsystem {
 
     @Override
     protected void initDefaultCommand() {
-
     }
 
   /**
@@ -309,19 +299,19 @@ public class Elevator extends Subsystem {
    * @param setpoint is the height (in ticks) of which you want the elevator to go to
    */
   private void setSetpointElevator(double setpoint) {
-        // Checks to see if the elevator is within safe operating heights
-      if(getSetpointElevator() >= FLOOR[1] && getSetpointElevator() <= TOP[1]) {
-        elevatorMasterMotor.set(ControlMode.Position, setpoint);
-      }
+    // Checks to see if the elevator is within safe operating heights
+    if(getSetpointElevator() >= FLOOR[0] && getSetpointElevator() <= TOP[0]) {
+      elevatorMasterMotor.set(ControlMode.Position, setpoint);
     }
+  }
 
   /**
    * Sets the height of the lift
    * @param setpoint Is the height to which is need to get to
    */
   private void setSetpointLift(double setpoint){
-      // Checks to see if the lift is within safe operation heights
-    if(getSetpointLift() >= FLOOR[2] && getSetpointLift() <= TOP[2]) {
+    // Checks to see if the lift is within safe operation heights
+    if(getSetpointLift() >= FLOOR[1] && getSetpointLift() <= TOP[1]) {
       liftMasterMotor.set(ControlMode.Position, setpoint);
     }
   }
@@ -356,8 +346,8 @@ public class Elevator extends Subsystem {
    * @return returns the value of Setpoint
    */
   public double getSetpointElevator(){
-      return elevatorMasterMotor.getClosedLoopTarget(0);
-    }
+    return elevatorMasterMotor.getClosedLoopTarget(0);
+  }
   /**
    * Gets the value of Setpoint
    * @return returns the value of Setpoint
@@ -371,80 +361,79 @@ public class Elevator extends Subsystem {
    * @return Returns the value of Elevator_kP
    */
   private double getElevator_kP() {
-      return SmartDashboard.getNumber("elevator kP", 2.0);
-    }
+    return SmartDashboard.getNumber("elevator kP", 2.0);
+  }
 
   /**
    * Gets the value of Elevator_kI from Smart Dashboard
    * @return Returns the value of Elevator_kI
    */
   private double getElevator_kI() {
-      return SmartDashboard.getNumber("elevator kI", 0);
-    }
+    return SmartDashboard.getNumber("elevator kI", 0);
+  }
 
   /**
    * Gets the value of Elevator_kD from Smart Dashboard
    * @return Returns the value of Elevator_kD
    */
   private double getElevator_kD(){
-      return SmartDashboard.getNumber("elevator kD", 20);
-    }
+    return SmartDashboard.getNumber("elevator kD", 20);
+  }
 
   /**
    * Gets the value of Elevator_kF from Smart Dashboard
    * @return Returns the value of Elevator_kF
    */
   private double getElevator_kF() {
-      return SmartDashboard.getNumber("elevator kF", 0.076);
-    }
+    return SmartDashboard.getNumber("elevator kF", 0.076);
+  }
 
   /**
    * Gets the value of Lift_kP from Smart Dashboard
    * @return Returns the value of Lift_kP
    */
   private double getLift_kP() {
-     return SmartDashboard.getNumber("lift kP", 2.0);
-    }
+    return SmartDashboard.getNumber("lift kP", 2.0);
+  }
 
   /**
    * Gets the value of Lift_kI from Smart Dashboard
    * @return Returns the value of Lift_kI
    */
   private double getLift_kI() {
-      return SmartDashboard.getNumber("lift kI", 0);
-    }
+    return SmartDashboard.getNumber("lift kI", 0);
+  }
 
   /**
    * Gets the value of Lift_kD from Smart Dashboard
    * @return Returns the value of Lift_kD
    */
   private double getLift_kD(){
-     return SmartDashboard.getNumber("lift kD", 20);
-    }
+    return SmartDashboard.getNumber("lift kD", 20);
+  }
 
   /**
    * Gets the value of Lift_kF from Smart Dashboard
    * @return Returns the value of Lift_kF
    */
   private double getLift_kF() {
-      return SmartDashboard.getNumber("lift kF", 0.076);
-    }
+    return SmartDashboard.getNumber("lift kF", 0.076);
+  }
   /**
    * Tells you how many ticks you need to turn a motor to go a certain amount of inches.
    * @param inches is the amount of inches you want to convert to ticks.
    * @return Returns the amount of ticks it takes to go the certain amount of inches.
    */
   private double getInchesToTicks(double inches){
-      // The amount of ticks that the given amount of inches will be
-      double ticks;
-      // Is the amount of inches per amount of ticks per rotation
-      double ticksPerRotation = 1000;
-      double inchesMovedPerRotation = 0.5;
+    // The amount of ticks that the given amount of inches will be
+    double ticks;
+    // Is the amount of inches per amount of ticks per rotation
+    double ticksPerRotation = 1000;
+    double inchesMovedPerRotation = 0.5;
+    // The part in parenthesis (hopefully) calculates how many rotations you would need to get to the next "closest" number
+    // Then it is multiplied by the amount of ticks per rotation as to make it into the amount of ticks.
+    ticks = (inches / inchesMovedPerRotation) * ticksPerRotation;
 
-      // The part in parenthesis (hopefully) calculates how many rotations you would need to get to the next "closest" number
-      // Then it is multiplied by the amount of ticks per rotation as to make it into the amount of ticks.
-      ticks = (inches / inchesMovedPerRotation) * ticksPerRotation;
-
-      return ticks;
+    return ticks;
   }
 }
