@@ -11,10 +11,7 @@ import org.techvalleyhigh.frc5881.deepspace.robot.Robot;
  * Contains methods to get the error of the motors, set the PIDs and even move the elevator and lift!
  */
 public class Elevator extends Subsystem {
-
-    public boolean isFired = false;
-
-    public ElevatorState elevatorState = ElevatorState.HIGH_HATCH;
+   public ElevatorState elevatorState = ElevatorState.HIGH_HATCH;
 
     // TODO: Change the "deviceNumber" to whatever the actual number on the talon is.
     private WPI_TalonSRX elevatorMasterMotor = new WPI_TalonSRX(5);
@@ -36,6 +33,8 @@ public class Elevator extends Subsystem {
     5. Low cargo
 
     6. Low hatch
+
+    7. Top
      */
 
   /**
@@ -43,18 +42,13 @@ public class Elevator extends Subsystem {
    */
   public enum ElevatorState {
     FLOOR,
-
     LOW_HATCH,
-
     LOW_CARGO,
-
     MIDDLE_HATCH,
-
     MIDDLE_CARGO,
-
     HIGH_HATCH,
-
-    HIGH_CARGO
+    HIGH_CARGO,
+    TOP
     }
 
   // TODO: We need to figure out what the actual heights of these things will be.
@@ -62,21 +56,21 @@ public class Elevator extends Subsystem {
    * For all of the following double[]'s the first double value is the required height for the elevator to move
    * and the second value is the height that the lift is required to move.
    */
-  public static final double[] Floor = {0, 0};
+  public static final double[] FLOOR = {0, 0};
 
-  public static final double[] Low_Hatch = {5, 5};
+  public static final double[] LOW_HATCH = {5, 5};
 
-  public static final double[] Low_Cargo = {5 , 5};
+  public static final double[] LOW_CARGO = {5 , 5};
 
-  public static final double[] Mid_Hatch = {5, 5};
+  public static final double[] MIDDLE_HATCH = {5, 5};
 
-  public static final double[] Mid_Cargo = {5, 5};
+  public static final double[] MIDDLE_CARGO = {5, 5};
 
-  public static final double[] High_Hatch = {5, 5};
+  public static final double[] HIGH_HATCH = {5, 5};
 
-  public static final double[] High_Cargo = {5, 5};
+  public static final double[] HIGH_CARGO = {5, 5};
 
-  public static final double[] Top = {5, 5};
+  public static final double[] TOP = {5, 5};
 
  /**
   * Does the normal stuff but also adds the PID values to Smart Dashboard.
@@ -124,58 +118,54 @@ public class Elevator extends Subsystem {
   /**
    * Moves the elevator up to the next possible level.
    */
-  public void elevatorUp(){
-    // Checks if the arm mode is "hatch"
-    if(true) {
-      // Checks to see if the elevator state is "Floor"
-        if(ElevatorState.FLOOR.equals(elevatorState)){
-          setElevator(Low_Hatch);
-        } else if (ElevatorState.LOW_HATCH.equals(elevatorState)) {
-          setElevator(Mid_Hatch);
-          // Checks if the elevator state is "middle hatch"
-        } else if(ElevatorState.MIDDLE_HATCH.equals(elevatorState)){
-          setElevator(High_Hatch);
+  public void elevatorUp() {
+    switch(elevatorState) {
+      case FLOOR:
+        if (Robot.arm.isHatch()) {
+          setElevator(LOW_HATCH);
+        } else {
+          setElevator(LOW_CARGO);
         }
-        // Checks if the arm mode is "cargo"
-      } else if(false){
-        // If the elevator state is "low cargo" then proceed
-        if(ElevatorState.LOW_CARGO.equals(elevatorState)){
-          setElevator(Mid_Cargo);
-          // Checks if the elevator state is "middle cargo"
-        }  else if(ElevatorState.MIDDLE_CARGO.equals(elevatorState)){
-          setElevator(High_Cargo);
-        }
-      }
+        break;
+      case LOW_HATCH:
+        setElevator(MIDDLE_HATCH);
+        break;
+      case LOW_CARGO:
+        setElevator(MIDDLE_CARGO);
+        break;
+      case MIDDLE_HATCH:
+        setElevator(HIGH_HATCH);
+        break;
+      case MIDDLE_CARGO:
+        setElevator(HIGH_CARGO);
+        break;
     }
+  }
 
   /**
    * Moves the elevator down to the next possible state.
    */
+  @SuppressWarnings("Duplicates")
   public void elevatorDown(){
-    // Check if the arm mode is "hatch"
-    if (true) {
-        // If the elevator's height is "high hatch" then proceed
-      if (ElevatorState.HIGH_HATCH.equals(elevatorState)) {
-        setElevator(Mid_Hatch);
-        // Check if the elevator state is middle hatch
-      } else if (ElevatorState.MIDDLE_HATCH.equals(elevatorState)) {
-        setElevator(Low_Hatch);
-        // Checks if the elevator's state is "low hatch"
-      } else if (ElevatorState.LOW_HATCH.equals(elevatorState)) {
-        setElevator(Floor);
-      }
-      // Checks if the arm mode is "cargo"
-    } else if (false){
-        // Checks if the elevator state is "high cargo"
-      if(ElevatorState.HIGH_CARGO.equals(elevatorState)) {
-        setElevator(Mid_Cargo);
-        // Checks if the elevator state is "middle cargo"
-      } else if(ElevatorState.MIDDLE_CARGO.equals(elevatorState)){
-        setElevator(Low_Cargo);
-        // Checks if elevator state is "low cargo"
-      } else if(ElevatorState.LOW_CARGO.equals(elevatorState)){
-        setElevator(Floor);
-      }
+    switch (elevatorState) {
+      case LOW_HATCH:
+        setElevator(FLOOR);
+        break;
+      case LOW_CARGO:
+        setElevator(FLOOR);
+        break;
+      case MIDDLE_HATCH:
+        setElevator(LOW_HATCH);
+        break;
+      case MIDDLE_CARGO:
+        setElevator(LOW_CARGO);
+        break;
+      case HIGH_HATCH:
+        setElevator(MIDDLE_HATCH);
+        break;
+      case HIGH_CARGO:
+        setElevator(MIDDLE_CARGO);
+        break;
     }
   }
 
@@ -183,15 +173,7 @@ public class Elevator extends Subsystem {
    * Sets the elevator and lift height to the lowest setting as to prevent a high center of mass
    */
   public void saveElevator(){
-    setElevator(Floor);
-  }
-
-  /**
-   * Gets the total target height of the elevator and lift together
-   * @return Returns the sum of the elevator target height and the lift target height to get the total desired height
-   */
-  public double overallTarget(){
-    return elevatorTarget() + liftTarget();
+    setElevator(FLOOR);
   }
 
   /**
@@ -200,47 +182,33 @@ public class Elevator extends Subsystem {
    */
   public boolean isSetpointReached(){
     double goal = getSetpoint();
-    double goalError = getSetpoint() + 5;
-    double goalError2 = getSetpoint() - 5;
-    if(overallTarget() == goal && overallTarget() <= goalError && overallTarget() >= goalError2){
-      return true;
-    } else {
-      return false;
-    }
+
+    return isElevatorAllowableError() && isLiftAllowableError();
   }
 
   /**
    * If elevatorFlip is equal to one thing than set elevator to that height
    */
+  @SuppressWarnings("Duplicates")
   public void elevatorFlip(){
     switch (elevatorState) {
-      case FLOOR:
-        setElevator(ElevatorState.FLOOR);
-        isFired = true;
-        break;
       case LOW_HATCH:
-        setElevator(ElevatorState.LOW_HATCH);
-        isFired = true;
+        setElevator(LOW_CARGO);
         break;
       case LOW_CARGO:
-        setElevator(ElevatorState.LOW_CARGO);
-        isFired = true;
+        setElevator(LOW_HATCH);
         break;
       case MIDDLE_HATCH:
-        setElevator(ElevatorState.MIDDLE_HATCH);
-        isFired = true;
+        setElevator(MIDDLE_CARGO);
         break;
       case MIDDLE_CARGO:
-        setElevator(ElevatorState.MIDDLE_CARGO);
-        isFired = true;
+        setElevator(MIDDLE_HATCH);
         break;
       case HIGH_HATCH:
-        setElevator(ElevatorState.HIGH_HATCH);
-        isFired = true;
+        setElevator(HIGH_CARGO);
         break;
       case HIGH_CARGO:
-        setElevator(ElevatorState.HIGH_CARGO);
-        isFired = true;
+        setElevator(HIGH_HATCH);
         break;
     }
   }
@@ -290,31 +258,31 @@ public class Elevator extends Subsystem {
   public void setElevator(ElevatorState state) {
     switch (state) {
       case FLOOR:
-        setElevator(Floor);
+        setElevator(FLOOR);
         elevatorState = ElevatorState.FLOOR;
         break;
       case LOW_HATCH:
-        setElevator(Low_Hatch);
+        setElevator(LOW_HATCH);
         elevatorState = ElevatorState.LOW_HATCH;
         break;
       case LOW_CARGO:
-        setElevator(Low_Cargo);
+        setElevator(LOW_CARGO);
         elevatorState = ElevatorState.LOW_CARGO;
         break;
       case MIDDLE_HATCH:
-        setElevator(Mid_Hatch);
+        setElevator(MIDDLE_HATCH);
         elevatorState = ElevatorState.MIDDLE_HATCH;
         break;
       case MIDDLE_CARGO:
-        setElevator(Mid_Cargo);
+        setElevator(MIDDLE_CARGO);
         elevatorState = ElevatorState.MIDDLE_CARGO;
         break;
       case HIGH_HATCH:
-        setElevator(High_Hatch);
+        setElevator(HIGH_HATCH);
         elevatorState = ElevatorState.HIGH_HATCH;
         break;
       case HIGH_CARGO:
-        setElevator(High_Cargo);
+        setElevator(HIGH_CARGO);
         elevatorState = ElevatorState.HIGH_CARGO;
         break;
     }
@@ -331,12 +299,12 @@ public class Elevator extends Subsystem {
 
   /**
    * Sets the height of the elevator
-   * Will not move the elevator if you want to move it below 0 ticks or above the Top ticks number
+   * Will not move the elevator if you want to move it below 0 ticks or above the TOP ticks number
    * @param setpoint is the height (in ticks) of which you want the elevator to go to
    */
   private void setSetpointElevator(double setpoint) {
         // Checks to see if the elevator is within safe operating heights
-      if(getSetpointElevator() >= Floor[1] && getSetpointElevator() <= Top[1]) {
+      if(getSetpointElevator() >= FLOOR[1] && getSetpointElevator() <= TOP[1]) {
         elevatorMasterMotor.set(ControlMode.Position, setpoint);
       }
     }
@@ -347,7 +315,7 @@ public class Elevator extends Subsystem {
    */
   private void setSetpointLift(double setpoint){
       // Checks to see if the lift is within safe operation heights
-    if(getSetpointLift() >= Floor[2] && getSetpointLift() <= Top[2]) {
+    if(getSetpointLift() >= FLOOR[2] && getSetpointLift() <= TOP[2]) {
       liftMasterMotor.set(ControlMode.Position, setpoint);
     }
   }

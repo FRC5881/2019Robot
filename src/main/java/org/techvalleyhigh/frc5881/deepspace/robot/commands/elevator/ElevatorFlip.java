@@ -22,9 +22,7 @@ public class ElevatorFlip extends Command {
 
   @Override
   protected void execute() {
-    if(!Robot.elevator.isFired){
-      Robot.elevator.elevatorFlip();
-    }
+    Robot.elevator.elevatorFlip();
   }
 
   @Override

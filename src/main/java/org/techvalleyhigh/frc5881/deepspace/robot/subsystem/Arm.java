@@ -52,7 +52,7 @@ public class Arm extends Subsystem {
    * If setPoint is less than minTicks, it will be equal to minTicks
    * If setPoint is more than maxTicks, it will be equal to maxTicks
   */
-  public void setArmMotor (double setPoint){
+  public void setArmMotor(double setPoint){
     if (setPoint < MIN_TICKS) {
       setPoint = MIN_TICKS;
     }
