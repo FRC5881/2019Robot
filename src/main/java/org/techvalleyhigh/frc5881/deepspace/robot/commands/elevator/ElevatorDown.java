@@ -8,7 +8,7 @@ import org.techvalleyhigh.frc5881.deepspace.robot.Robot;
  * If it is at the lowest possible level it will do nothing
  */
 public class ElevatorDown extends Command {
-
+  private boolean isFirstRun = true;
   public ElevatorDown() {
     requires(Robot.elevator);
   }
@@ -26,7 +26,10 @@ public class ElevatorDown extends Command {
    */
   @Override
   protected void execute() {
-    Robot.elevator.elevatorDown();
+    if(isFirstRun) {
+      Robot.elevator.elevatorDown();
+      isFirstRun = false;
+    }
   }
 
   @Override
@@ -39,6 +42,7 @@ public class ElevatorDown extends Command {
    */
   @Override
   protected void end() {
+    isFirstRun = true;
     System.out.println("Elevator down command ended");
   }
 

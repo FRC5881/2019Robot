@@ -17,6 +17,7 @@ public class ElevatorSave extends Command {
   @Override
   protected void initialize() {
     System.out.println("Elevator save initialized");
+    Robot.elevator.saveElevator();
   }
 
   /**
@@ -24,7 +25,6 @@ public class ElevatorSave extends Command {
    */
   @Override
   protected void execute() {
-    Robot.elevator.saveElevator();
   }
 
   /**

@@ -20,7 +20,7 @@ public class DriveControl extends Subsystem {
   // Define motors
   public static WPI_TalonSRX frontLeftMotor = new WPI_TalonSRX(1);
   public static WPI_TalonSRX frontRightMotor = new WPI_TalonSRX(2);
-  public static WPI_TalonSRX backLeftMotor = new WPI_TalonSRX(3);
+//  public static WPI_TalonSRX backLeftMotor = new WPI_TalonSRX(3);
   public static WPI_TalonSRX backRightMotor = new WPI_TalonSRX(4);
   public static Ultrasonic ultra = new Ultrasonic(6, 7);
 
@@ -67,9 +67,9 @@ public class DriveControl extends Subsystem {
     frontRightMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
     LiveWindow.add(frontRightMotor);
 
-    backLeftMotor.setName("Drive", "Back Left");
-    backLeftMotor.set(ControlMode.Follower, 1);
-    LiveWindow.add(backLeftMotor);
+//    backLeftMotor.setName("Drive", "Back Left");
+//    backLeftMotor.set(ControlMode.Follower, 1);
+//    LiveWindow.add(backLeftMotor);
 
     backRightMotor.setName("Drive", "Back Right");
     backRightMotor.set(ControlMode.Follower, 2);

@@ -7,6 +7,7 @@ import org.techvalleyhigh.frc5881.deepspace.robot.Robot;
  * Makes the elevator go up
  */
 public class ElevatorUp extends Command {
+  private boolean isFirstRun;
   public ElevatorUp() {
     requires(Robot.elevator);
   }
@@ -16,6 +17,7 @@ public class ElevatorUp extends Command {
    */
   @Override
   protected void initialize() {
+    isFirstRun = true;
     System.out.println("Elevator up initialized");
   }
 
@@ -24,7 +26,10 @@ public class ElevatorUp extends Command {
    */
   @Override
   protected void execute() {
-    Robot.elevator.elevatorUp();
+    if(isFirstRun) {
+      Robot.elevator.elevatorUp();
+      isFirstRun = false;
+    }
   }
 
   /**
@@ -42,6 +47,7 @@ public class ElevatorUp extends Command {
   @Override
   protected void end() {
     System.out.println("Elevator up command ended");
+    isFirstRun = true;
   }
 
   /**

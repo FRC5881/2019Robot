@@ -22,6 +22,7 @@ public class SetElevator extends Command {
   @Override
   protected void initialize() {
     System.out.println("Set elevator initialized");
+    Robot.elevator.setElevator(target);
   }
 
   /**
@@ -29,7 +30,6 @@ public class SetElevator extends Command {
    */
   @Override
   protected void execute() {
-    Robot.elevator.setElevator(target);
   }
 
   /**

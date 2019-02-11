@@ -3,6 +3,7 @@ package org.techvalleyhigh.frc5881.deepspace.robot;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.techvalleyhigh.frc5881.deepspace.robot.commands.elevator.ElevatorSave;
@@ -34,7 +35,6 @@ public class Robot extends TimedRobot {
   public static DriveControl driveControl;
   public static Elevator elevator;
   public static Intake intake;
-  public static Arm arm;
   public static UpsideDown upsideDown;
   public static LED led;
 
@@ -56,7 +56,6 @@ public class Robot extends TimedRobot {
     elevator = new Elevator();
     intake = new Intake();
     upsideDown = new UpsideDown();
-    arm = new Arm();
 
     /*
     OI must be constructed after subsystems. If the OI creates Commands
@@ -86,6 +85,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    Scheduler.getInstance().run();
+
     SmartDashboard.putNumber("X accel", navX.getRawAccelX());
     SmartDashboard.putNumber("Y accel", navX.getRawAccelY());
     SmartDashboard.putNumber("Z accel", navX.getRawAccelZ());
@@ -93,6 +94,20 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("X gyro", navX.getRawGyroX());
     SmartDashboard.putNumber("Y gyro", navX.getRawGyroY());
     SmartDashboard.putNumber("Z gyro", navX.getRawGyroZ());
+
+    // Puts the Elevator encoder position into Smart Dashboard
+    SmartDashboard.putNumber("Elevator Encoder", elevator.getElevatorEncoderPosition());
+    // Puts the Elevator error value into the Smart Dashboard
+    SmartDashboard.putNumber("Elevator Error", elevator.getElevatorError());
+    // Puts the Elevator set point value into the Smart Dashboard
+    SmartDashboard.putNumber("Elevator Set Point", elevator.getElevatorSetpoint());
+
+    // Puts the Lift encoder position into Smart Dashboard
+    SmartDashboard.putNumber("Lift Encoder", elevator.getLiftEncoderPosition());
+    // Puts the Lift error value into the Smart Dashboard
+    SmartDashboard.putNumber("Lift Error", elevator.getLiftError());
+    // Puts the Lift set point value into the Smart Dashboard
+    SmartDashboard.putNumber("Lift Set Point", elevator.getLiftSetpoint());
 
     if (ticks % 100 == 0) {
       SmartDashboard.putNumber("ultra Distance", driveControl.getUltrasonicRange());

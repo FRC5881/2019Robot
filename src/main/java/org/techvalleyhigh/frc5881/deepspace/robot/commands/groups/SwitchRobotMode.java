@@ -1,7 +1,6 @@
 package org.techvalleyhigh.frc5881.deepspace.robot.commands.groups;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import org.techvalleyhigh.frc5881.deepspace.robot.commands.arm.ArmFlip;
 import org.techvalleyhigh.frc5881.deepspace.robot.commands.elevator.ElevatorFlip;
 
 /**
@@ -9,7 +8,6 @@ import org.techvalleyhigh.frc5881.deepspace.robot.commands.elevator.ElevatorFlip
  */
 public class SwitchRobotMode extends CommandGroup {
   public SwitchRobotMode() {
-    addParallel(new ArmFlip());
     addParallel(new ElevatorFlip());
   }
 }
