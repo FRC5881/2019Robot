@@ -2,17 +2,13 @@ package org.techvalleyhigh.frc5881.deepspace.robot.commands.elevator;
 
 import edu.wpi.first.wpilibj.command.Command;
 import org.techvalleyhigh.frc5881.deepspace.robot.Robot;
-import org.techvalleyhigh.frc5881.deepspace.robot.subsystem.Elevator;
 
 /**
- * Sets the height of the elevator
+ * Makes the elevator go up
  */
-public class SetElevator extends Command {
-  private Elevator.ElevatorState target;
-
-  public SetElevator(Elevator.ElevatorState state) {
-    target = state;
-
+public class LiftUp extends Command {
+  private boolean isFirstRun;
+  public LiftUp() {
     requires(Robot.elevator);
   }
 
@@ -21,8 +17,8 @@ public class SetElevator extends Command {
    */
   @Override
   protected void initialize() {
-    System.out.println("Set elevator initialized");
-    Robot.elevator.setElevator(target);
+    isFirstRun = true;
+    System.out.println("Elevator up initialized");
   }
 
   /**
@@ -30,6 +26,10 @@ public class SetElevator extends Command {
    */
   @Override
   protected void execute() {
+    if(isFirstRun) {
+      Robot.elevator.elevatorUp();
+      isFirstRun = false;
+    }
   }
 
   /**
@@ -38,7 +38,7 @@ public class SetElevator extends Command {
    */
   @Override
   protected boolean isFinished() {
-    return Robot.elevator.isSetpointReached();
+    return Robot.elevator.isElevatorSetpointReached();
   }
 
   /**
@@ -46,7 +46,8 @@ public class SetElevator extends Command {
    */
   @Override
   protected void end() {
-    System.out.println("Set elevator command ended");
+    System.out.println("Elevator up command ended");
+    isFirstRun = true;
   }
 
   /**

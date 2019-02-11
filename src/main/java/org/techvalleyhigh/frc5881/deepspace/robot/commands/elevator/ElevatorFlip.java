@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import org.techvalleyhigh.frc5881.deepspace.robot.Robot;
 
 /**
- * Changes the elevator height
+ * Changes the elevators height accordingly to the expected game piece to be receiving
  */
 public class ElevatorFlip extends Command {
 
@@ -27,7 +27,7 @@ public class ElevatorFlip extends Command {
 
   @Override
   protected boolean isFinished() {
-    return Robot.elevator.isSetpointReached();
+    return Robot.elevator.isElevatorSetpointReached();
   }
 
   /**
