@@ -30,34 +30,50 @@ public class Elevator extends Subsystem {
   }
 
   /**
-   * Is the state of the elevator
+   * Is the state of the elevator and bar
    */
   public enum ElevatorState {
-    FLOOR,
-    LOW_HATCH,
-    LOW_CARGO,
-    MIDDLE_HATCH,
-    MIDDLE_CARGO,
-    HIGH_HATCH,
-    HIGH_CARGO,
-    TOP
-  }
+    FLOOR(0, 0),
+    LOW_HATCH(10, 50),
+    START(10, 100),
+    LOW_CARGO(20, 100),
+    MIDDLE_HATCH(0, 1000),
+    MIDDLE_CARGO(50, 1000),
+    HIGH_HATCH(150, 8000),
+    HIGH_CARGO(160, 10000),
+    TOP(160, 11000);
+
+    private double barPos, elevatorPos;
+
+    ElevatorState(double bar, double elevator) {
+      barPos = bar;
+      elevatorPos = elevator;
+    }
+
+    public double getElevatorPosition() {
+      return elevatorPos;
+    }
+
+    public double getBarPosition() {
+      return barPos;
+    }
+    }
 
   // TODO: We need to figure out what the actual heights of these things will be.
   /**
    * For all of the following double[]'s the first double value is the required height for the elevator to move
    * and the second value is the ticks that the bar is required turn.
    */
-  private static final double[] FLOOR = {0, 0};
-  // TODO: Figure out how we want the elevator and bar to start
-  private static final double[] START = {1000, 0};
-  private static final double[] LOW_HATCH = {2000, 1000};
-  private static final double[] LOW_CARGO = {4000 , 2000};
-  private static final double[] MIDDLE_HATCH = {6000, 3000};
-  private static final double[] MIDDLE_CARGO = {8000, 4000};
-  private static final double[] HIGH_HATCH = {10000, 5000};
-  private static final double[] HIGH_CARGO = {12000, 6000};
-  private static final double[] TOP = {14000, 7000};
+//  private static final double[] FLOOR = {0, 0};
+//  // TODO: Figure out how we want the elevator and bar to start
+//  private static final double[] START = {1000, 0};
+//  private static final double[] LOW_HATCH = {2000, 1000};
+//  private static final double[] LOW_CARGO = {4000 , 2000};
+//  private static final double[] MIDDLE_HATCH = {6000, 3000};
+//  private static final double[] MIDDLE_CARGO = {8000, 4000};
+//  private static final double[] HIGH_HATCH = {10000, 5000};
+//  private static final double[] HIGH_CARGO = {12000, 6000};
+//  private static final double[] TOP = {14000, 7000};
 
   private static final double BAR_ALLOWED_ERROR = 50;
   private static final double ELEVATOR_ALLOWED_ERROR = 50;
@@ -198,22 +214,22 @@ public class Elevator extends Subsystem {
 
     switch (elevatorState) {
       case LOW_HATCH:
-        setLiftSetpoint(LOW_CARGO);
+        setLiftSetpoint(ElevatorState.LOW_HATCH);
         break;
       case LOW_CARGO:
-        setLiftSetpoint(LOW_HATCH);
+        setLiftSetpoint(ElevatorState.LOW_HATCH);
         break;
       case MIDDLE_HATCH:
-        setLiftSetpoint(MIDDLE_CARGO);
+        setLiftSetpoint(ElevatorState.MIDDLE_CARGO);
         break;
       case MIDDLE_CARGO:
-        setLiftSetpoint(MIDDLE_HATCH);
+        setLiftSetpoint(ElevatorState.MIDDLE_HATCH);
         break;
       case HIGH_HATCH:
-        setLiftSetpoint(HIGH_CARGO);
+        setLiftSetpoint(ElevatorState.HIGH_CARGO);
         break;
       case HIGH_CARGO:
-        setLiftSetpoint(HIGH_HATCH);
+        setLiftSetpoint(ElevatorState.HIGH_HATCH);
         break;
     }
   }
@@ -222,7 +238,7 @@ public class Elevator extends Subsystem {
    * Sets the elevator and bar height to the lowest setting as to prevent a high center of mass
    */
   public void saveElevator() {
-    setLiftSetpoint(START);
+    setLiftSetpoint(ElevatorState.START);
     System.out.println("Saved Elevator");
   }
 
@@ -268,37 +284,37 @@ public class Elevator extends Subsystem {
     switch (state) {
       case FLOOR:
         System.out.println("FLOOR");
-        setLiftSetpoint(FLOOR);
+        setLiftSetpoint(state.getBarPosition(), state.getElevatorPosition());
         elevatorState = ElevatorState.FLOOR;
         break;
       case LOW_HATCH:
         System.out.println("LOW_HATCH");
-        setLiftSetpoint(LOW_HATCH);
+        setLiftSetpoint(state.getBarPosition(), state.getElevatorPosition());
         elevatorState = ElevatorState.LOW_HATCH;
         break;
       case LOW_CARGO:
         System.out.println("LOW_CARGO");
-        setLiftSetpoint(LOW_CARGO);
+        setLiftSetpoint(state.getBarPosition(), state.getElevatorPosition());
         elevatorState = ElevatorState.LOW_CARGO;
         break;
       case MIDDLE_HATCH:
         System.out.println("MIDDLE_HATCH");
-        setLiftSetpoint(MIDDLE_HATCH);
+        setLiftSetpoint(state.getBarPosition(), state.getElevatorPosition());
         elevatorState = ElevatorState.MIDDLE_HATCH;
         break;
       case MIDDLE_CARGO:
         System.out.println("MIDDLE_CARGO");
-        setLiftSetpoint(MIDDLE_CARGO);
+        setLiftSetpoint(state.getBarPosition(), state.getElevatorPosition());
         elevatorState = ElevatorState.MIDDLE_CARGO;
         break;
       case HIGH_HATCH:
         System.out.println("HIGH_HATCH");
-        setLiftSetpoint(HIGH_HATCH);
+        setLiftSetpoint(state.getBarPosition(), state.getElevatorPosition());
         elevatorState = ElevatorState.HIGH_HATCH;
         break;
       case HIGH_CARGO:
         System.out.println("HIGH_CARGO");
-        setLiftSetpoint(HIGH_CARGO);
+        setLiftSetpoint(state.getBarPosition(), state.getElevatorPosition());
         elevatorState = ElevatorState.HIGH_CARGO;
         break;
     }
@@ -306,17 +322,19 @@ public class Elevator extends Subsystem {
 
   /**
    * "Runs" setLiftSetpoint and setBarSetpoint with the appropriate parameters.
-   * @param setpoints double[2] both
+   * @param barSetpoint is the desired setpoint for the bar to go to
+   * @param elevatorSetpoint is the desired setpoint for the elevator to go to
    */
-  public void setLiftSetpoint(double[] setpoints) {
-    System.out.println(Arrays.toString(setpoints));
-    setElevatorSetpoint(setpoints[0]);
-    setBarSetpoint(setpoints[1]);
+
+  public void setLiftSetpoint(double barSetpoint, double elevatorSetpoint) {
+    System.out.println(barSetpoint + " <-- is bar setpoint");
+    System.out.println(elevatorSetpoint + " <-- is elevator setpoint");
+    setElevatorSetpoint(elevatorSetpoint);
+    setBarSetpoint(barSetpoint);
   }
 
   /**
    * Sets the height of the elevator
-   * Will not move the elevator if you want to move it below 0 ticks or above the TOP ticks number
    * @param setpoint is the height (in ticks) of which you want the elevator to go to
    */
   private void setElevatorSetpoint(double setpoint) {
@@ -324,8 +342,8 @@ public class Elevator extends Subsystem {
   }
 
   /**
-   * Sets the height of the bar
-   * @param setpoint Is the height to which is need to get to
+   * Sets the setpoint of the bar
+   * @param setpoint Is the setpoint to which the bar needs to get to
    */
   private void setBarSetpoint(double setpoint){
     System.out.println(setpoint);
