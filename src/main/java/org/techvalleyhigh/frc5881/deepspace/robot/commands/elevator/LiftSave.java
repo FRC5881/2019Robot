@@ -17,7 +17,6 @@ public class LiftSave extends Command {
   @Override
   protected void initialize() {
     System.out.println("Elevator save initialized");
-    Robot.elevator.saveElevator();
   }
 
   /**
@@ -25,6 +24,7 @@ public class LiftSave extends Command {
    */
   @Override
   protected void execute() {
+    Robot.elevator.saveElevator();
   }
 
   /**
@@ -33,7 +33,7 @@ public class LiftSave extends Command {
    */
   @Override
   protected boolean isFinished() {
-    return Robot.elevator.isElevatorSetpointReached();
+    return Robot.navX.getRawGyroY() < 30;
   }
 
   /**

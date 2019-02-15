@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import org.techvalleyhigh.frc5881.deepspace.robot.commands.elevator.ElevatorFlip;
 
 /**
- * Will change the mode of the arm.
+ * Will change the mode of the lift.
  */
 public class SwitchRobotMode extends CommandGroup {
   public SwitchRobotMode() {
