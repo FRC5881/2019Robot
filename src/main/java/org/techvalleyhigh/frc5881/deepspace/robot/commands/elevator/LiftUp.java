@@ -33,7 +33,7 @@ public class LiftUp extends Command {
    */
   @Override
   protected boolean isFinished() {
-    return Robot.elevator.isElevatorSetpointReached();
+    return Robot.elevator.isElevatorSetpointReached() == Robot.elevator.isBarSetpointReached();
   }
 
   /**

@@ -22,9 +22,6 @@ public class Robot extends TimedRobot {
   private static final String kDefaultAuto = "Default";
   private static final String kCustomAuto = "My Auto";
 
-  private int ticks = 0;
-  private long lastTime = System.currentTimeMillis();
-
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
@@ -188,12 +185,8 @@ public class Robot extends TimedRobot {
     // Puts the Bar set point value into the Smart Dashboard
     SmartDashboard.putNumber("Bar Set Point", elevator.getBarSetpoint());
 
-    if (ticks % 100 == 0) {
-      SmartDashboard.putNumber("ultra Distance", driveControl.getUltrasonicRange());
-      SmartDashboard.putBoolean("is range valid", DriveControl.ultra.isRangeValid());
-    }
-
-    ticks++;
+    SmartDashboard.putNumber("ultra Distance", driveControl.getUltrasonicRange());
+    SmartDashboard.putBoolean("is range valid", DriveControl.ultra.isRangeValid());
   }
 
   /**
@@ -235,6 +228,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopInit() {
+    elevator.init();
+
     // Start the drive command
     driveCommand.start();
   }
