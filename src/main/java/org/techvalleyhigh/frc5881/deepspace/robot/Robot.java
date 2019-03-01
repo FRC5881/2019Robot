@@ -184,9 +184,6 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Bar Error", elevator.getBarError());
     // Puts the Bar set point value into the Smart Dashboard
     SmartDashboard.putNumber("Bar Set Point", elevator.getBarSetpoint());
-
-    SmartDashboard.putNumber("ultra Distance", driveControl.getUltrasonicRange());
-    SmartDashboard.putBoolean("is range valid", DriveControl.ultra.isRangeValid());
   }
 
   /**
