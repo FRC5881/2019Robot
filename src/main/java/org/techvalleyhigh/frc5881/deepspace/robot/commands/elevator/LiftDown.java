@@ -2,17 +2,13 @@ package org.techvalleyhigh.frc5881.deepspace.robot.commands.elevator;
 
 import edu.wpi.first.wpilibj.command.Command;
 import org.techvalleyhigh.frc5881.deepspace.robot.Robot;
-import org.techvalleyhigh.frc5881.deepspace.robot.subsystem.Elevator;
 
 /**
- * Sets the height of the elevator
+ * When executed moves the elevator down to the next lowest level
+ * If it is at the lowest possible level it will do nothing
  */
-public class SetElevator extends Command {
-  private Elevator.ElevatorState target;
-
-  public SetElevator(Elevator.ElevatorState state) {
-    target = state;
-
+public class LiftDown extends Command {
+  public LiftDown() {
     requires(Robot.elevator);
   }
 
@@ -21,7 +17,8 @@ public class SetElevator extends Command {
    */
   @Override
   protected void initialize() {
-    System.out.println("Set elevator initialized");
+    System.out.println("Elevator down initialized");
+    Robot.elevator.elevatorDown();
   }
 
   /**
@@ -29,16 +26,11 @@ public class SetElevator extends Command {
    */
   @Override
   protected void execute() {
-    Robot.elevator.setElevator(target);
   }
 
-  /**
-   * Make this return true when this Command no longer needs to run execute()
-   * Since this is a drive command we never want it to end
-   */
   @Override
   protected boolean isFinished() {
-    return Robot.elevator.isSetpointReached();
+    return Robot.elevator.isElevatorSetpointReached();
   }
 
   /**
@@ -46,7 +38,7 @@ public class SetElevator extends Command {
    */
   @Override
   protected void end() {
-    System.out.println("Set elevator command ended");
+    System.out.println("Elevator down command ended");
   }
 
   /**

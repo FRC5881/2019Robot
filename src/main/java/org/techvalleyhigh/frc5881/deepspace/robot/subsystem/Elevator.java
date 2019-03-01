@@ -2,124 +2,147 @@ package org.techvalleyhigh.frc5881.deepspace.robot.subsystem;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.techvalleyhigh.frc5881.deepspace.robot.Robot;
+
+import javax.naming.ldap.Control;
+import java.util.Arrays;
 
 /**
- * Contains methods to get the error of the motors, set the PIDs and even move the elevator and lift!
+ * Contains methods to get the error of the motors, set the PIDs and even move the elevator and bar!
  */
 public class Elevator extends Subsystem {
-   public ElevatorState elevatorState = ElevatorState.HIGH_HATCH;
+  private ElevatorState elevatorState = ElevatorState.FLOOR;
+  private LiftMode liftMode = LiftMode.HATCH;
 
-    // TODO: Change the "deviceNumber" to whatever the actual number on the talon is.
-    private WPI_TalonSRX elevatorMasterMotor = new WPI_TalonSRX(5);
-    //  ||                                          ||
-    //  \/ is the talon for the four bar lift motor \/
-    private WPI_TalonSRX liftMasterMotor = new WPI_TalonSRX(6);
-
-  /*
-    The order of heights is: (greatest to least)
-
-    1. High cargo
-
-    2. High hatch
-
-    3. Middle cargo
-
-    4. Middle hatch
-
-    5. Low cargo
-
-    6. Low hatch
-
-    7. Top
-     */
+  // TODO: Change the "deviceNumber" to whatever the actual number on the talon is.
+  private WPI_TalonSRX elevatorMasterMotor = new WPI_TalonSRX(5);
+  //  \/ is the talon for the four bar lift motor \/
+  private WPI_TalonSRX barMasterMotor = new WPI_TalonSRX(3);
 
   /**
-   * Is the state of the elevator
+   * Is the mode of the lift
+   */
+  public enum LiftMode {
+    HATCH,
+    CARGO
+  }
+
+  /**
+   * Is the state of the elevator and bar
    */
   public enum ElevatorState {
-    FLOOR,
-    LOW_HATCH,
-    LOW_CARGO,
-    MIDDLE_HATCH,
-    MIDDLE_CARGO,
-    HIGH_HATCH,
-    HIGH_CARGO,
-    TOP
+    FLOOR(0, 0),
+    LOW_HATCH(125, 50),
+    START(100, 100),
+    LOW_CARGO( 20, 150),
+    MIDDLE_HATCH(125, 1000),
+    MIDDLE_CARGO(20, 1000),
+    HIGH_HATCH(125, 8000),
+    HIGH_CARGO(20, 10000),
+    TOP(17640, 11000);
+
+    private double barPos, elevatorPos;
+
+    ElevatorState(double bar, double elevator) {
+      barPos = bar;
+      elevatorPos = elevator;
+    }
+
+    public double getElevatorPosition() {
+      return elevatorPos;
+    }
+
+    public double getBarPosition() {
+      return barPos;
+    }
     }
 
   // TODO: We need to figure out what the actual heights of these things will be.
   /**
    * For all of the following double[]'s the first double value is the required height for the elevator to move
-   * and the second value is the height that the lift is required to move.
+   * and the second value is the ticks that the bar is required turn.
    */
-  public static final double[] FLOOR = {0, 0};
+//  private static final double[] FLOOR = {0, 0};
+//  // TODO: Figure out how we want the elevator and bar to start
+//  private static final double[] START = {1000, 0};
+//  private static final double[] LOW_HATCH = {2000, 1000};
+//  private static final double[] LOW_CARGO = {4000 , 2000};
+//  private static final double[] MIDDLE_HATCH = {6000, 3000};
+//  private static final double[] MIDDLE_CARGO = {8000, 4000};
+//  private static final double[] HIGH_HATCH = {10000, 5000};
+//  private static final double[] HIGH_CARGO = {12000, 6000};
+//  private static final double[] TOP = {14000, 7000};
 
-  public static final double[] LOW_HATCH = {5, 5};
-
-  public static final double[] LOW_CARGO = {5 , 5};
-
-  public static final double[] MIDDLE_HATCH = {5, 5};
-
-  public static final double[] MIDDLE_CARGO = {5, 5};
-
-  public static final double[] HIGH_HATCH = {5, 5};
-
-  public static final double[] HIGH_CARGO = {5, 5};
-
-  public static final double[] TOP = {5, 5};
+  private static final double BAR_ALLOWED_ERROR = 50;
+  private static final double ELEVATOR_ALLOWED_ERROR = 50;
 
  /**
   * Does the normal stuff but also adds the PID values to Smart Dashboard.
   */
   public Elevator() {
-        super();
+    super();
+    // Puts Elevator PID values into Smart Dashboard
+    SmartDashboard.putNumber("Elevator kP", 2);
+    SmartDashboard.putNumber("Elevator kI", 0);
+    SmartDashboard.putNumber("Elevator kD", 20);
+    SmartDashboard.putNumber("Elevator kF", 0.076);
 
-        // Put numbers on SmartDashboard
-        SmartDashboard.putNumber("elevator kP", 2);
-        SmartDashboard.putNumber("elevator kI", 0);
-        SmartDashboard.putNumber("elevator kD", 20);
-        SmartDashboard.putNumber("elevator kF", 0.076);
-        SmartDashboard.putNumber("lift kP", 2);
-        SmartDashboard.putNumber("lift kI", 0);
-        SmartDashboard.putNumber("lift kD", 20);
-        SmartDashboard.putNumber("lift kF", 0.076);
+    // Puts Bar PID values into Smart Dashboard
+    SmartDashboard.putNumber("Bar kP", 2);
+    SmartDashboard.putNumber("Bar kI", 0);
+    SmartDashboard.putNumber("Bar kD", 20);
+    SmartDashboard.putNumber("Bar kF", 0.076);
 
-        init();
-    }
+    init();
+  }
 
   /**
    * Adds the encoder to the motor/ Talon
    * Also sets the PID values
    */
-  private void init(){
+  public void init(){
+    barMasterMotor.set(ControlMode.Position, 0);
+    elevatorMasterMotor.set(ControlMode.Position, 0);
+    barMasterMotor.setSelectedSensorPosition(0);
+    elevatorMasterMotor.setSelectedSensorPosition(0);
 
-      liftMasterMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
-      elevatorMasterMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
+    barMasterMotor.setInverted(true);
+    barMasterMotor.setSensorPhase(true);
+    elevatorMasterMotor.setInverted(false);
 
-      elevatorMasterMotor.config_kP(0, getElevator_kP(), 10);
-      elevatorMasterMotor.config_kI(0, getElevator_kI(), 10);
-      elevatorMasterMotor.config_kD(0, getElevator_kD(), 10);
-      elevatorMasterMotor.config_kF(0, getElevator_kF(), 10);
+    elevatorMasterMotor.setNeutralMode(NeutralMode.Coast);
+    barMasterMotor.setNeutralMode(NeutralMode.Coast);
 
-      // TODO: Find out what the max amperage should be
-      elevatorMasterMotor.configPeakCurrentLimit(24);
-      liftMasterMotor.configPeakCurrentLimit(24);
-      elevatorMasterMotor.configPeakCurrentDuration(2000);
+    // Configures an encoder for the bar motor and elevator motor
+    elevatorMasterMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
+    barMasterMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
 
-      liftMasterMotor.config_kP(0, getLift_kP(), 10);
-      liftMasterMotor.config_kI(0, getLift_kI(), 10);
-      liftMasterMotor.config_kD(0, getLift_kD(), 10);
-      liftMasterMotor.config_kF(0, getLift_kF(), 10);
-    }
+    // Configures the elevators PID values
+    elevatorMasterMotor.config_kP(0, getElevator_kP(), 10);
+    elevatorMasterMotor.config_kI(0, getElevator_kI(), 10);
+    elevatorMasterMotor.config_kD(0, getElevator_kD(), 10);
+    elevatorMasterMotor.config_kF(0, getElevator_kF(), 10);
 
-    @Override
-    protected void initDefaultCommand() {
+    // TODO: Find out what the max amperage should be
+    elevatorMasterMotor.configPeakCurrentLimit(24);
+    elevatorMasterMotor.configPeakCurrentDuration(2000);
 
-    }
+    // Configures the bar's PID values
+    barMasterMotor.config_kP(0, getBar_kP(), 10);
+    barMasterMotor.config_kI(0, getBar_kI(), 10);
+    barMasterMotor.config_kD(0, getBar_kD(), 10);
+    barMasterMotor.config_kF(0, getBar_kF(), 10);
+
+    barMasterMotor.configPeakCurrentLimit(24);
+    barMasterMotor.configPeakCurrentDuration(2000);
+  }
+
+  @Override
+  protected void initDefaultCommand() {
+  }
 
   /**
    * Moves the elevator up to the next possible level.
@@ -127,23 +150,29 @@ public class Elevator extends Subsystem {
   public void elevatorUp() {
     switch(elevatorState) {
       case FLOOR:
-        if (Robot.arm.isHatch()) {
-          setElevator(LOW_HATCH);
+        if (isHatch()) {
+          System.out.println("Going to low hatch (up)");
+          setLiftSetpoint(ElevatorState.LOW_HATCH);
         } else {
-          setElevator(LOW_CARGO);
+          System.out.println("Going to low cargo (up)");
+          setLiftSetpoint(ElevatorState.LOW_CARGO);
         }
         break;
       case LOW_HATCH:
-        setElevator(MIDDLE_HATCH);
+        System.out.println("Going to middle hatch (up)");
+        setLiftSetpoint(ElevatorState.MIDDLE_HATCH);
         break;
       case LOW_CARGO:
-        setElevator(MIDDLE_CARGO);
+        System.out.println("Going to middle cargo (up)");
+        setLiftSetpoint(ElevatorState.MIDDLE_CARGO);
         break;
       case MIDDLE_HATCH:
-        setElevator(HIGH_HATCH);
+        System.out.println("Going to high hatch (up)");
+        setLiftSetpoint(ElevatorState.HIGH_HATCH);
         break;
       case MIDDLE_CARGO:
-        setElevator(HIGH_CARGO);
+        System.out.println("Going to high cargo (up)");
+        setLiftSetpoint(ElevatorState.HIGH_CARGO);
         break;
     }
   }
@@ -152,44 +181,33 @@ public class Elevator extends Subsystem {
    * Moves the elevator down to the next possible state.
    */
   @SuppressWarnings("Duplicates")
-  public void elevatorDown(){
+  public void elevatorDown() {
     switch (elevatorState) {
       case LOW_HATCH:
-        setElevator(FLOOR);
+        System.out.println("Going to floor (down)");
+        setLiftSetpoint(ElevatorState.FLOOR);
         break;
       case LOW_CARGO:
-        setElevator(FLOOR);
+        System.out.println("Going to floor (down)");
+        setLiftSetpoint(ElevatorState.FLOOR);
         break;
       case MIDDLE_HATCH:
-        setElevator(LOW_HATCH);
+        System.out.println("Going to low hatch (down)");
+        setLiftSetpoint(ElevatorState.LOW_HATCH);
         break;
       case MIDDLE_CARGO:
-        setElevator(LOW_CARGO);
+        System.out.println("Going to low cargo (down)");
+        setLiftSetpoint(ElevatorState.LOW_CARGO);
         break;
       case HIGH_HATCH:
-        setElevator(MIDDLE_HATCH);
+        System.out.println("Going to middle hatch (down)");
+        setLiftSetpoint(ElevatorState.MIDDLE_HATCH);
         break;
       case HIGH_CARGO:
-        setElevator(MIDDLE_CARGO);
+        System.out.println("Going to middle cargo (down)");
+        setLiftSetpoint(ElevatorState.MIDDLE_CARGO);
         break;
     }
-  }
-
-  /**
-   * Sets the elevator and lift height to the lowest setting as to prevent a high center of mass
-   */
-  public void saveElevator(){
-    setElevator(FLOOR);
-  }
-
-  /**
-   * Checks to see if the elevator and lift are at the desired location
-   * @return Returns true if it has reached destination, returns false if it has not reached destination
-   */
-  public boolean isSetpointReached(){
-    double goal = getSetpoint();
-
-    return isElevatorAllowableError() && isLiftAllowableError();
   }
 
   /**
@@ -197,173 +215,180 @@ public class Elevator extends Subsystem {
    */
   @SuppressWarnings("Duplicates")
   public void elevatorFlip(){
+    if (isHatch()) {
+      liftMode = LiftMode.CARGO;
+    } else {
+      liftMode = LiftMode.HATCH;
+    }
+
     switch (elevatorState) {
       case LOW_HATCH:
-        setElevator(LOW_CARGO);
+        setLiftSetpoint(ElevatorState.LOW_HATCH);
         break;
       case LOW_CARGO:
-        setElevator(LOW_HATCH);
+        setLiftSetpoint(ElevatorState.LOW_HATCH);
         break;
       case MIDDLE_HATCH:
-        setElevator(MIDDLE_CARGO);
+        setLiftSetpoint(ElevatorState.MIDDLE_CARGO);
         break;
       case MIDDLE_CARGO:
-        setElevator(MIDDLE_HATCH);
+        setLiftSetpoint(ElevatorState.MIDDLE_HATCH);
         break;
       case HIGH_HATCH:
-        setElevator(HIGH_CARGO);
+        setLiftSetpoint(ElevatorState.HIGH_CARGO);
         break;
       case HIGH_CARGO:
-        setElevator(HIGH_HATCH);
+        setLiftSetpoint(ElevatorState.HIGH_HATCH);
         break;
     }
+  }
+
+  /**
+   * Sets the elevator and bar height to the lowest setting as to prevent a high center of mass
+   */
+  public void saveElevator() {
+    setLiftSetpoint(ElevatorState.START);
+    System.out.println("Saved Elevator");
+  }
+
+  /**
+   * Checks to see if the elevator is within the margin of error of it's target
+   * @return true if it's close enough to the desired target
+   */
+  public boolean isElevatorSetpointReached(){
+    return isElevatorAllowableError();
   }
 
   /**
    * Checks to see if the amount of error in the elevator motors is acceptable
    * @return Returns true if it is within the allowed range, returns false if it is not close enough
    */
-  public boolean isElevatorAllowableError(){
-    double error = 5;
-    if(getElevatorError() <= error && getElevatorError() >= -error){
-      return true;
-    } else {
-      return false;
-    }
+  private boolean isElevatorAllowableError() {
+    return Math.abs(getElevatorError()) <= ELEVATOR_ALLOWED_ERROR;
   }
 
   /**
-   * Gets the target height of the elevator
-   * @return Returns the desired height of the elevator
+   * Checks to see if the bar is within the margin of error of it's target
+   * @return true if it's close enough to the desired target
    */
-  private double elevatorTarget(){
-    return elevatorMasterMotor.getClosedLoopTarget(2);
+  public boolean isBarSetpointReached(){
+    return isBarAllowableError();
   }
 
   /**
-   * Gets the target height of the lift
-   * @return Returns the desired height of the lift
-   */
-  private double liftTarget(){
-    return liftMasterMotor.getClosedLoopTarget(3);
-  }
-
-  /**
-   * Checks to see if te amount of error in the lift motors is acceptable
+   * Checks to see if te amount of error in the bar motors is acceptable
    * @return Returns true if it is within the allowed range, returns false if it is not close enough
    */
-  public boolean isLiftAllowableError(){
-    double error = 5;
-    return getLiftError() <= error && getLiftError() >= -error;
+  private boolean isBarAllowableError(){
+    return Math.abs(getBarError()) <= BAR_ALLOWED_ERROR;
   }
 
   /**
-   * Tells the elevator to go to the specified height, also sets elevatorState
+   * Tells the bar and elevator to go to the specified height, also sets elevatorState
    * @param state Is the state of which the elevator is wanted to go to
    */
-  public void setElevator(ElevatorState state) {
+  public void setLiftSetpoint(ElevatorState state) {
+    System.out.println("---------------");
+    System.out.println(isHatch());
     switch (state) {
       case FLOOR:
-        setElevator(FLOOR);
+        System.out.println("FLOOR");
+        setLiftSetpoint(state.getBarPosition(), state.getElevatorPosition());
         elevatorState = ElevatorState.FLOOR;
         break;
       case LOW_HATCH:
-        setElevator(LOW_HATCH);
+        System.out.println("LOW_HATCH");
+        setLiftSetpoint(state.getBarPosition(), state.getElevatorPosition());
         elevatorState = ElevatorState.LOW_HATCH;
         break;
       case LOW_CARGO:
-        setElevator(LOW_CARGO);
+        System.out.println("LOW_CARGO");
+        setLiftSetpoint(state.getBarPosition(), state.getElevatorPosition());
         elevatorState = ElevatorState.LOW_CARGO;
         break;
       case MIDDLE_HATCH:
-        setElevator(MIDDLE_HATCH);
+        System.out.println("MIDDLE_HATCH");
+        setLiftSetpoint(state.getBarPosition(), state.getElevatorPosition());
         elevatorState = ElevatorState.MIDDLE_HATCH;
         break;
       case MIDDLE_CARGO:
-        setElevator(MIDDLE_CARGO);
+        System.out.println("MIDDLE_CARGO");
+        setLiftSetpoint(state.getBarPosition(), state.getElevatorPosition());
         elevatorState = ElevatorState.MIDDLE_CARGO;
         break;
       case HIGH_HATCH:
-        setElevator(HIGH_HATCH);
+        System.out.println("HIGH_HATCH");
+        setLiftSetpoint(state.getBarPosition(), state.getElevatorPosition());
         elevatorState = ElevatorState.HIGH_HATCH;
         break;
       case HIGH_CARGO:
-        setElevator(HIGH_CARGO);
+        System.out.println("HIGH_CARGO");
+        setLiftSetpoint(state.getBarPosition(), state.getElevatorPosition());
         elevatorState = ElevatorState.HIGH_CARGO;
         break;
     }
   }
 
   /**
-   * "Runs" setSetpointElevator and setSetpointLift with the appropriate parameters.
-   * @param setpoints double[2] both
+   * "Runs" setLiftSetpoint and setBarSetpoint with the appropriate parameters.
+   * @param barSetpoint is the desired setpoint for the bar to go to
+   * @param elevatorSetpoint is the desired setpoint for the elevator to go to
    */
-  public void setElevator(double[] setpoints) {
-    setSetpointLift(setpoints[0]);
-    setSetpointElevator(setpoints[1]);
+
+  public void setLiftSetpoint(double barSetpoint, double elevatorSetpoint) {
+    System.out.println(barSetpoint + " <-- is bar setpoint");
+    System.out.println(elevatorSetpoint + " <-- is elevator setpoint");
+    setElevatorSetpoint(elevatorSetpoint);
+    setBarSetpoint(barSetpoint);
   }
 
   /**
    * Sets the height of the elevator
-   * Will not move the elevator if you want to move it below 0 ticks or above the TOP ticks number
    * @param setpoint is the height (in ticks) of which you want the elevator to go to
    */
-  private void setSetpointElevator(double setpoint) {
-        // Checks to see if the elevator is within safe operating heights
-      if(getSetpointElevator() >= FLOOR[1] && getSetpointElevator() <= TOP[1]) {
-        elevatorMasterMotor.set(ControlMode.Position, setpoint);
-      }
-    }
+  private void setElevatorSetpoint(double setpoint) {
+    elevatorMasterMotor.set(ControlMode.Position, setpoint);
+  }
 
   /**
-   * Sets the height of the lift
-   * @param setpoint Is the height to which is need to get to
+   * Sets the setpoint of the bar
+   * @param setpoint Is the setpoint to which the bar needs to get to
    */
-  private void setSetpointLift(double setpoint){
-      // Checks to see if the lift is within safe operation heights
-    if(getSetpointLift() >= FLOOR[2] && getSetpointLift() <= TOP[2]) {
-      liftMasterMotor.set(ControlMode.Position, setpoint);
-    }
+  private void setBarSetpoint(double setpoint){
+    System.out.println(setpoint);
+    barMasterMotor.set(ControlMode.Position, setpoint);
   }
 
   /**
    * Gets the error of the elevator motor
    * @return Returns the error of the elevator motor
    */
-  public double getElevatorError(){
-    return elevatorMasterMotor.getClosedLoopError(2);
+  public double getElevatorError() {
+    return elevatorMasterMotor.getClosedLoopError(0);
   }
 
   /**
-   * Gets the error of the lift motor
-   * @return Returns the error of the lift motor
+   * Gets the error of the bar motor
+   * @return Returns the error of the bar motor
    */
-  public double getLiftError(){
-    return liftMasterMotor.getClosedLoopError(3);
+  public double getBarError() {
+    return barMasterMotor.getClosedLoopError(0);
   }
 
   /**
-   * Gets the total height of the elevator and lift together
-   * @return /\
-   *         ||
+   * Gets the value of elevator setpoint
+   * @return returns the value of elevator setpoint
    */
-  public double getSetpoint(){
-    return getSetpointElevator() + getSetpointLift();
+  public double getElevatorSetpoint(){
+    return elevatorMasterMotor.getClosedLoopTarget(0);
   }
 
   /**
-   * Gets the value of Setpoint
-   * @return returns the value of Setpoint
+   * Gets the value of bar setpoint
+   * @return returns the value of bar setpoint
    */
-  public double getSetpointElevator(){
-      return elevatorMasterMotor.getClosedLoopTarget(0);
-    }
-  /**
-   * Gets the value of Setpoint
-   * @return returns the value of Setpoint
-   */
-  public double getSetpointLift(){
-    return liftMasterMotor.getClosedLoopTarget(0);
+  public double getBarSetpoint(){
+    return barMasterMotor.getClosedLoopTarget(0);
   }
 
   /**
@@ -371,80 +396,96 @@ public class Elevator extends Subsystem {
    * @return Returns the value of Elevator_kP
    */
   private double getElevator_kP() {
-      return SmartDashboard.getNumber("elevator kP", 2.0);
-    }
+    return SmartDashboard.getNumber("Elevator kP", 2.0);
+  }
 
   /**
    * Gets the value of Elevator_kI from Smart Dashboard
    * @return Returns the value of Elevator_kI
    */
   private double getElevator_kI() {
-      return SmartDashboard.getNumber("elevator kI", 0);
-    }
+    return SmartDashboard.getNumber("Elevator kI", 0);
+  }
 
   /**
    * Gets the value of Elevator_kD from Smart Dashboard
    * @return Returns the value of Elevator_kD
    */
   private double getElevator_kD(){
-      return SmartDashboard.getNumber("elevator kD", 20);
-    }
+    return SmartDashboard.getNumber("Elevator kD", 20);
+  }
 
   /**
    * Gets the value of Elevator_kF from Smart Dashboard
    * @return Returns the value of Elevator_kF
    */
   private double getElevator_kF() {
-      return SmartDashboard.getNumber("elevator kF", 0.076);
-    }
+    return SmartDashboard.getNumber("Elevator kF", 0.076);
+  }
+
+  public double getElevatorEncoderPosition(){
+    return elevatorMasterMotor.getSelectedSensorPosition(0);
+  }
 
   /**
-   * Gets the value of Lift_kP from Smart Dashboard
-   * @return Returns the value of Lift_kP
+   * Gets the value of Bar_kP from Smart Dashboard
+   * @return Returns the value of Bar_kP
    */
-  private double getLift_kP() {
-     return SmartDashboard.getNumber("lift kP", 2.0);
-    }
+  private double getBar_kP() {
+    return SmartDashboard.getNumber("Bar kP", 2.0);
+  }
 
   /**
-   * Gets the value of Lift_kI from Smart Dashboard
-   * @return Returns the value of Lift_kI
+   * Gets the value of Bar_kI from Smart Dashboard
+   * @return Returns the value of Bar_kI
    */
-  private double getLift_kI() {
-      return SmartDashboard.getNumber("lift kI", 0);
-    }
+  private double getBar_kI() {
+    return SmartDashboard.getNumber("Bar kI", 0);
+  }
 
   /**
-   * Gets the value of Lift_kD from Smart Dashboard
-   * @return Returns the value of Lift_kD
+   * Gets the value of Bar_kD from Smart Dashboard
+   * @return Returns the value of Bar_kD
    */
-  private double getLift_kD(){
-     return SmartDashboard.getNumber("lift kD", 20);
-    }
+  private double getBar_kD(){
+    return SmartDashboard.getNumber("Bar kD", 20);
+  }
 
   /**
-   * Gets the value of Lift_kF from Smart Dashboard
-   * @return Returns the value of Lift_kF
+   * Gets the value of Bar_kF from Smart Dashboard
+   * @return Returns the value of Bar_kF
    */
-  private double getLift_kF() {
-      return SmartDashboard.getNumber("lift kF", 0.076);
-    }
+  private double getBar_kF() {
+    return SmartDashboard.getNumber("Bar kF", 0.076);
+  }
+
+  public double getBarEncoderPosition(){
+    return barMasterMotor.getSelectedSensorPosition(0);
+  }
+
+  public boolean isHatch() {
+    return liftMode == LiftMode.HATCH;
+  }
+
+  public boolean isCargo() {
+    return liftMode == LiftMode.CARGO;
+  }
+
   /**
    * Tells you how many ticks you need to turn a motor to go a certain amount of inches.
    * @param inches is the amount of inches you want to convert to ticks.
    * @return Returns the amount of ticks it takes to go the certain amount of inches.
    */
   private double getInchesToTicks(double inches){
-      // The amount of ticks that the given amount of inches will be
-      double ticks;
-      // Is the amount of inches per amount of ticks per rotation
-      double ticksPerRotation = 1000;
-      double inchesMovedPerRotation = 0.5;
+    // The amount of ticks that the given amount of inches will be
+    double ticks;
+    // Is the amount of inches per amount of ticks per rotation
+    double ticksPerRotation = 1000;
+    double inchesMovedPerRotation = 0.5;
+    // The part in parenthesis (hopefully) calculates how many rotations you would need to get to the next "closest" number
+    // Then it is multiplied by the amount of ticks per rotation as to make it into the amount of ticks.
+    ticks = (inches / inchesMovedPerRotation) * ticksPerRotation;
 
-      // The part in parenthesis (hopefully) calculates how many rotations you would need to get to the next "closest" number
-      // Then it is multiplied by the amount of ticks per rotation as to make it into the amount of ticks.
-      ticks = (inches / inchesMovedPerRotation) * ticksPerRotation;
-
-      return ticks;
+    return ticks;
   }
 }

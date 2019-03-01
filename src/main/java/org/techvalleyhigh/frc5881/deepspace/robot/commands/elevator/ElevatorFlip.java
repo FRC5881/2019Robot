@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import org.techvalleyhigh.frc5881.deepspace.robot.Robot;
 
 /**
- * Changes the elevator height
+ * Changes the lifts mode accordingly to the expected game piece to be receiving
  */
 public class ElevatorFlip extends Command {
 
@@ -18,16 +18,16 @@ public class ElevatorFlip extends Command {
   @Override
   protected void initialize() {
     System.out.println("Elevator flip initialized");
-  }
-
-  @Override
-  protected void execute() {
     Robot.elevator.elevatorFlip();
   }
 
   @Override
+  protected void execute() {
+  }
+
+  @Override
   protected boolean isFinished() {
-    return Robot.elevator.isSetpointReached();
+    return Robot.elevator.isElevatorSetpointReached();
   }
 
   /**

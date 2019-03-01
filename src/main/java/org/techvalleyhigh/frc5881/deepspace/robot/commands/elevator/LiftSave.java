@@ -4,12 +4,10 @@ import edu.wpi.first.wpilibj.command.Command;
 import org.techvalleyhigh.frc5881.deepspace.robot.Robot;
 
 /**
- * When executed moves the elevator down to the next lowest level
- * If it is at the lowest possible level it will do nothing
+ * "Saves" the bot from tipping by lowering the elevator when we are tipping and not climbing
  */
-public class ElevatorDown extends Command {
-
-  public ElevatorDown() {
+public class LiftSave extends Command {
+  public LiftSave() {
     requires(Robot.elevator);
   }
 
@@ -18,7 +16,7 @@ public class ElevatorDown extends Command {
    */
   @Override
   protected void initialize() {
-    System.out.println("Elevator down initialized");
+    System.out.println("Elevator save initialized");
   }
 
   /**
@@ -26,12 +24,16 @@ public class ElevatorDown extends Command {
    */
   @Override
   protected void execute() {
-    Robot.elevator.elevatorDown();
+    Robot.elevator.saveElevator();
   }
 
+  /**
+   * Make this return true when this Command has done it's job
+   * Since this is just an elevator command it should finish eventually
+   */
   @Override
   protected boolean isFinished() {
-    return Robot.elevator.isSetpointReached();
+    return Robot.navX.getRawGyroY() < 30;
   }
 
   /**
@@ -39,7 +41,7 @@ public class ElevatorDown extends Command {
    */
   @Override
   protected void end() {
-    System.out.println("Elevator down command ended");
+    System.out.println("Elevator save command finished");
   }
 
   /**

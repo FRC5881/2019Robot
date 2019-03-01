@@ -5,8 +5,8 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import org.techvalleyhigh.frc5881.deepspace.robot.commands.climber.ClimberLegsBackToggle;
 import org.techvalleyhigh.frc5881.deepspace.robot.commands.climber.ClimberLegsFrontToggle;
-import org.techvalleyhigh.frc5881.deepspace.robot.commands.elevator.ElevatorDown;
-import org.techvalleyhigh.frc5881.deepspace.robot.commands.elevator.ElevatorUp;
+import org.techvalleyhigh.frc5881.deepspace.robot.commands.elevator.LiftDown;
+import org.techvalleyhigh.frc5881.deepspace.robot.commands.elevator.LiftUp;
 import org.techvalleyhigh.frc5881.deepspace.robot.commands.groups.SwitchRobotMode;
 
 /**
@@ -86,9 +86,9 @@ public class OI {
         // When the "Y" button is pressed change the arm mode
         driveControllerButtonY.whenPressed(new SwitchRobotMode());
 
-        // When the left/ right bumper is pressed lower or raise the elevator
-        driveControllerLeftBumper.whenPressed(new ElevatorDown());
-        driveControllerRightBumper.whenPressed(new ElevatorUp());
+        // When the left/ right bumper is pressed lower or raise the lift
+        driveControllerLeftBumper.whenPressed(new LiftDown());
+        driveControllerRightBumper.whenPressed(new LiftUp());
 
         // When the "Back" button is pressed toggle front climber
         driveControllerBackButton.whenPressed(new ClimberLegsFrontToggle());
