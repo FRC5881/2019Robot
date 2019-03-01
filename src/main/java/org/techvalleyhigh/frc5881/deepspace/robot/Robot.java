@@ -68,7 +68,7 @@ public class Robot extends TimedRobot {
 
     driveCommand = new ArcadeDrive();
 
-    SPI.Port port = SPI.Port.kOnboardCS0;
+    SPI.Port port = SPI.Port.kMXP;
     navX = new AHRS(port);
 
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
