@@ -7,6 +7,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+import javax.naming.ldap.Control;
 import java.util.Arrays;
 
 /**
@@ -34,14 +35,14 @@ public class Elevator extends Subsystem {
    */
   public enum ElevatorState {
     FLOOR(0, 0),
-    LOW_HATCH(10, 50),
-    START(10, 100),
-    LOW_CARGO(20, 100),
-    MIDDLE_HATCH(0, 1000),
-    MIDDLE_CARGO(50, 1000),
-    HIGH_HATCH(150, 8000),
-    HIGH_CARGO(160, 10000),
-    TOP(160, 11000);
+    LOW_HATCH(125, 50),
+    START(100, 100),
+    LOW_CARGO( 20, 150),
+    MIDDLE_HATCH(125, 1000),
+    MIDDLE_CARGO(20, 1000),
+    HIGH_HATCH(125, 8000),
+    HIGH_CARGO(20, 10000),
+    TOP(17640, 11000);
 
     private double barPos, elevatorPos;
 
@@ -102,7 +103,15 @@ public class Elevator extends Subsystem {
    * Adds the encoder to the motor/ Talon
    * Also sets the PID values
    */
-  private void init(){
+  public void init(){
+    barMasterMotor.set(ControlMode.Position, 0);
+    elevatorMasterMotor.set(ControlMode.Position, 0);
+    barMasterMotor.setSelectedSensorPosition(0);
+    elevatorMasterMotor.setSelectedSensorPosition(0);
+
+    barMasterMotor.setInverted(true);
+    barMasterMotor.setSensorPhase(true);
+    elevatorMasterMotor.setInverted(false);
 
     elevatorMasterMotor.setNeutralMode(NeutralMode.Coast);
     barMasterMotor.setNeutralMode(NeutralMode.Coast);
