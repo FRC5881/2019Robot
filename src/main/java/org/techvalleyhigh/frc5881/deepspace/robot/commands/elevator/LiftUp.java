@@ -16,7 +16,7 @@ public class LiftUp extends Command {
    */
   @Override
   protected void initialize() {
-    System.out.println("Elevator up initialized");
+    System.out.println("elevator up initialized");
     Robot.elevator.elevatorUp();
   }
 
@@ -25,6 +25,7 @@ public class LiftUp extends Command {
    */
   @Override
   protected void execute() {
+    Robot.elevator.elevatorUp();
   }
 
   /**
