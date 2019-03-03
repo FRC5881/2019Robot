@@ -27,7 +27,6 @@ public class Robot extends TimedRobot {
 
   // Define OI and subsystems
   public static OI oi;
-  public static TestSubsystem testSubsystem;
   public static Climber climber;
   public static DriveControl driveControl;
   public static Elevator elevator;
@@ -47,7 +46,6 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     // Init subsystems
-    testSubsystem = new TestSubsystem();
     climber = new Climber();
     driveControl = new DriveControl();
     elevator = new Elevator();
@@ -171,6 +169,9 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("IMU_Byte_Count", navX.getByteCount());
     SmartDashboard.putNumber("IMU_Update_Count", navX.getUpdateCount());
 
+    SmartDashboard.putNumber("Intake current", intake.intakeMotor.getOutputCurrent());
+
+    /*
     // Puts the Elevator encoder position into Smart Dashboard
     SmartDashboard.putNumber("Elevator Encoder", elevator.getElevatorEncoderPosition());
     // Puts the Elevator error value into the Smart Dashboard
@@ -184,9 +185,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Bar Error", elevator.getBarError());
     // Puts the Bar set point value into the Smart Dashboard
     SmartDashboard.putNumber("Bar Set Point", elevator.getBarSetpoint());
-
-    SmartDashboard.putNumber("ultra Distance", driveControl.getUltrasonicRange());
-    SmartDashboard.putBoolean("is range valid", DriveControl.ultra.isRangeValid());
+    */
   }
 
   /**
@@ -228,10 +227,10 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopInit() {
-    elevator.init();
+    //elevator.init();
 
     // Start the drive command
-    driveCommand.start();
+    //driveCommand.start();
   }
 
   /**

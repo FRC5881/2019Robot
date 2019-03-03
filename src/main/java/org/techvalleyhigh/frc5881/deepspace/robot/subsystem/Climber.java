@@ -53,7 +53,7 @@ public class Climber extends Subsystem {
   public Climber(){
     super();
 
-    init();
+    //init();
   }
 
   public void init() {

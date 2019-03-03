@@ -11,7 +11,7 @@ public class Intake extends Subsystem {
   private double GRAB_SPEED = -1;
   private double SHOOT_SPEED = 1;
 
-  private WPI_TalonSRX intakeMotor = new WPI_TalonSRX(7);
+  public WPI_TalonSRX intakeMotor = new WPI_TalonSRX(7);
 
   /**
    * Initialize the default command for a subsystem By default subsystems have no default command,
@@ -27,7 +27,7 @@ public class Intake extends Subsystem {
    * Creates a subsystem. This will set the name to the name of the class.
    */
   public Intake() {
-
+    init();
   }
 
   public void init() {

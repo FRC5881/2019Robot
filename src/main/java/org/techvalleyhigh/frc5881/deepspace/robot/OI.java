@@ -78,11 +78,11 @@ public class OI {
         driverController.setRumble(GenericHID.RumbleType.kRightRumble, 0);
 
         // When the "A" button is pressed grab hatch/ cargo
-        driveControllerButtonA.whenActive(new GrabCargo());
+        driveControllerButtonA.whileHeld(new GrabCargo());
         // TODO: Finish upsideDown/ hatch and cargo grabber code
 
         // When the "B" button is pressed drop the hatch/ cargo
-        driveControllerButtonB.whenActive(new ShootCargo());
+        driveControllerButtonB.whileHeld(new ShootCargo());
         // TODO: Finish upsideDown/ hatch and cargo dropping code
 
         // When the "X" button is pressed abort docking

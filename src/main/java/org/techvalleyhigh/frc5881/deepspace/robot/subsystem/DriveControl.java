@@ -42,8 +42,6 @@ public class DriveControl extends Subsystem {
      * Create the subsystem with a default name
      */
     public DriveControl() {
-        super();
-
         // Put numbers on SmartDashboard
         SmartDashboard.putNumber("left kP", 2);
         SmartDashboard.putNumber("left kI", 0);
@@ -54,7 +52,7 @@ public class DriveControl extends Subsystem {
         SmartDashboard.putNumber("right kD", 20);
         SmartDashboard.putNumber("right kF", 0.076);
 
-        init();
+        //init();
     }
 
     /**
@@ -128,7 +126,7 @@ public class DriveControl extends Subsystem {
         double turn = Robot.oi.driverController.getRawAxis(OI.XBOX_RIGHT_X_AXIS);
 
         // Slow down turn rate linearly to elevator height
-        turn *= (1.4 - Robot.elevator.getBarSetpoint());
+        //turn *= (1.4 - Robot.elevator.getBarSetpoint());
 
         // Cap turn rate to XAxisSensitivity
         turn = Math.min(turn, getXAxisSensitivity());
