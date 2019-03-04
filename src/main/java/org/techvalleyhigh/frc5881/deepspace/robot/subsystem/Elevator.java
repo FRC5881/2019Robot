@@ -92,6 +92,7 @@ public class Elevator extends Subsystem {
         SmartDashboard.putNumber("lift kI", 0);
         SmartDashboard.putNumber("lift kD", 20);
         SmartDashboard.putNumber("lift kF", 0.076);
+
         init();
     }
 

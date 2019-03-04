@@ -1,6 +1,8 @@
 package org.techvalleyhigh.frc5881.deepspace.robot.subsystem;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
+import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
@@ -29,7 +31,7 @@ public class Intake extends Subsystem {
    */
   public void init(){
     intakeMotor.setName("Intake", "Motor");
-    intakeMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
+    intakeMotor.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
     LiveWindow.add(intakeMotor);
   }
 
