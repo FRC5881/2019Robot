@@ -14,7 +14,7 @@ import java.util.Arrays;
  * Contains methods to get the error of the motors, set the PIDs and even move the elevator and bar!
  */
 public class Elevator extends Subsystem {
-  private ElevatorState elevatorState = ElevatorState.FLOOR;
+  private ElevatorState  elevatorState = ElevatorState.FLOOR;
   private LiftMode liftMode = LiftMode.HATCH;
 
   // TODO: Change the "deviceNumber" to whatever the actual number on the talon is.

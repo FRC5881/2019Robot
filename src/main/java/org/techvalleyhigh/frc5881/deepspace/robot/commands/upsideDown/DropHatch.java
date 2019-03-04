@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.command.InstantCommand;
 import org.techvalleyhigh.frc5881.deepspace.robot.Robot;
 
 /**
- * its runnable
+ * Drops hatch panels.
  */
 public class DropHatch extends InstantCommand {
   private static Runnable runnable = () -> Robot.upsideDown.dropHatch();

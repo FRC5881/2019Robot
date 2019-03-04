@@ -1,14 +1,15 @@
-package org.techvalleyhigh.frc5881.deepspace.robot.commands.elevator;
+package org.techvalleyhigh.frc5881.deepspace.robot.commands.intake;
 
-import edu.wpi.first.wpilibj.command.Command;
 import org.techvalleyhigh.frc5881.deepspace.robot.Robot;
+import edu.wpi.first.wpilibj.command.Command;
 
 /**
- * "Saves" the bot from tipping by lowering the elevator when we are tipping and not climbing
+ *Command to drop cargo
  */
-public class LiftSave extends Command {
-  public LiftSave() {
-    requires(Robot.elevator);
+public class DropCargo extends Command{
+
+  public DropCargo() {
+    requires(Robot.intake);
   }
 
   /**
@@ -16,7 +17,7 @@ public class LiftSave extends Command {
    */
   @Override
   protected void initialize() {
-    System.out.println("elevator save initialized");
+    System.out.println("DropCargo Command initialized");
   }
 
   /**
@@ -24,16 +25,15 @@ public class LiftSave extends Command {
    */
   @Override
   protected void execute() {
-    Robot.elevator.saveElevator();
+    Robot.intake.spinOutInput();
   }
 
   /**
-   * Make this return true when this Command has done it's job
-   * Since this is just an elevator command it should finish eventually
+   * Make this return true when this Command no longer needs to run execute()
    */
   @Override
   protected boolean isFinished() {
-    return Robot.navX.getRawGyroY() < 30;
+    return false;
   }
 
   /**
@@ -41,7 +41,8 @@ public class LiftSave extends Command {
    */
   @Override
   protected void end() {
-    System.out.println("elevator save command finished");
+    System.out.println("DropCargo ended");
+    Robot.intake.stop();
   }
 
   /**
@@ -52,4 +53,5 @@ public class LiftSave extends Command {
   protected void interrupted() {
     end();
   }
+
 }

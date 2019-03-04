@@ -8,6 +8,10 @@ import org.techvalleyhigh.frc5881.deepspace.robot.commands.climber.ClimberLegsFr
 import org.techvalleyhigh.frc5881.deepspace.robot.commands.elevator.LiftDown;
 import org.techvalleyhigh.frc5881.deepspace.robot.commands.elevator.LiftUp;
 import org.techvalleyhigh.frc5881.deepspace.robot.commands.groups.SwitchRobotMode;
+import org.techvalleyhigh.frc5881.deepspace.robot.commands.upsideDown.DropHatch;
+import org.techvalleyhigh.frc5881.deepspace.robot.commands.upsideDown.GrabHatch;
+import org.techvalleyhigh.frc5881.deepspace.robot.commands.intake.DropCargo;
+
 
 /**
  * Controls operator interfaces, such as controllers (and a few buttons)
@@ -75,10 +79,10 @@ public class OI {
         driverController.setRumble(GenericHID.RumbleType.kRightRumble, 0);
 
         // When the "A" button is pressed grab hatch/ cargo
-        // TODO: Finish upsideDown/ hatch and cargo grabber code
+        driveControllerButtonA.whenPressed(new GrabHatch());
 
         // When the "B" button is pressed drop the hatch/ cargo
-        // TODO: Finish upsideDown/ hatch and cargo dropping code
+        driveControllerButtonB.whileHeld(new DropCargo());
 
         // When the "X" button is pressed abort docking
         // TODO: Make a command to abort docking

@@ -2,6 +2,9 @@ package org.techvalleyhigh.frc5881.deepspace.robot.subsystem;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 
+/**
+ * Does stuff the the LED's
+ */
 public class LED extends Subsystem {
 
   public LED() {
@@ -21,6 +24,9 @@ public class LED extends Subsystem {
   protected void initDefaultCommand() {
   }
 
+  /**
+   * Change the color of the LED's
+   */
   public void ledDocking(){
     // TODO: Code this.
   }
