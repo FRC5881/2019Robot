@@ -1,13 +1,14 @@
-package org.techvalleyhigh.frc5881.deepspace.robot.commands.elevator;
+package org.techvalleyhigh.frc5881.deepspace.robot.commands.lift;
 
 import edu.wpi.first.wpilibj.command.Command;
 import org.techvalleyhigh.frc5881.deepspace.robot.Robot;
 
 /**
- * "Saves" the bot from tipping by lowering the elevator when we are tipping and not climbing
+ * Changes the lifts mode accordingly to the expected game piece to be receiving
  */
-public class LiftSave extends Command {
-  public LiftSave() {
+public class LiftFlip extends Command {
+
+  public LiftFlip() {
     requires(Robot.elevator);
   }
 
@@ -16,24 +17,17 @@ public class LiftSave extends Command {
    */
   @Override
   protected void initialize() {
-    System.out.println("elevator save initialized");
+    System.out.println("Elevator flip initialized");
+    Robot.elevator.elevatorFlip();
   }
 
-  /**
-   * Called repeatedly when this Command is scheduled to run
-   */
   @Override
   protected void execute() {
-    Robot.elevator.saveElevator();
   }
 
-  /**
-   * Make this return true when this Command has done it's job
-   * Since this is just an elevator command it should finish eventually
-   */
   @Override
   protected boolean isFinished() {
-    return Robot.navX.getRawGyroY() < 30;
+    return Robot.elevator.isElevatorSetpointReached() && Robot.elevator.isBarSetpointReached();
   }
 
   /**
@@ -41,7 +35,7 @@ public class LiftSave extends Command {
    */
   @Override
   protected void end() {
-    System.out.println("elevator save command finished");
+    System.out.println("Elevator flip command ended");
   }
 
   /**

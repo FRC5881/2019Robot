@@ -1,10 +1,10 @@
-package org.techvalleyhigh.frc5881.deepspace.robot.commands.elevator;
+package org.techvalleyhigh.frc5881.deepspace.robot.commands.lift;
 
 import edu.wpi.first.wpilibj.command.Command;
 import org.techvalleyhigh.frc5881.deepspace.robot.Robot;
 
 /**
- * When executed moves the elevator down to the next lowest level
+ * When executed moves the lift down to the next lowest level
  * If it is at the lowest possible level it will do nothing
  */
 public class LiftDown extends Command {
@@ -30,7 +30,7 @@ public class LiftDown extends Command {
 
   @Override
   protected boolean isFinished() {
-    return Robot.elevator.isElevatorSetpointReached() && Robot.elevator.isBarSetpointReached();
+    return true;
   }
 
   /**

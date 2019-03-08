@@ -1,14 +1,13 @@
-package org.techvalleyhigh.frc5881.deepspace.robot.commands.elevator;
+package org.techvalleyhigh.frc5881.deepspace.robot.commands.lift;
 
 import edu.wpi.first.wpilibj.command.Command;
 import org.techvalleyhigh.frc5881.deepspace.robot.Robot;
 
 /**
- * Changes the lifts mode accordingly to the expected game piece to be receiving
+ * Makes the lift go up
  */
-public class ElevatorFlip extends Command {
-
-  public ElevatorFlip() {
+public class LiftUp extends Command {
+  public LiftUp() {
     requires(Robot.elevator);
   }
 
@@ -17,17 +16,24 @@ public class ElevatorFlip extends Command {
    */
   @Override
   protected void initialize() {
-    System.out.println("Elevator flip initialized");
-    Robot.elevator.elevatorFlip();
+    System.out.println("Elevator up initialized");
+    Robot.elevator.elevatorUp();
   }
 
+  /**
+   * Called repeatedly when this Command is scheduled to run
+   */
   @Override
   protected void execute() {
   }
 
+  /**
+   * Make this return true when this Command no longer needs to run execute()
+   * Since this is a drive command we never want it to end
+   */
   @Override
   protected boolean isFinished() {
-    return Robot.elevator.isElevatorSetpointReached() && Robot.elevator.isBarSetpointReached();
+      return true;
   }
 
   /**
@@ -35,7 +41,7 @@ public class ElevatorFlip extends Command {
    */
   @Override
   protected void end() {
-    System.out.println("Elevator flip command ended");
+    System.out.println("Elevator up command ended");
   }
 
   /**

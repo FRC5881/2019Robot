@@ -1,13 +1,13 @@
-package org.techvalleyhigh.frc5881.deepspace.robot.commands.elevator;
+package org.techvalleyhigh.frc5881.deepspace.robot.commands.lift;
 
 import edu.wpi.first.wpilibj.command.Command;
 import org.techvalleyhigh.frc5881.deepspace.robot.Robot;
 
 /**
- * Makes the elevator go up
+ * "Saves" the bot from tipping by lowering the lift when we are tipping and not climbing
  */
-public class LiftUp extends Command {
-  public LiftUp() {
+public class LiftSave extends Command {
+  public LiftSave() {
     requires(Robot.elevator);
   }
 
@@ -16,8 +16,7 @@ public class LiftUp extends Command {
    */
   @Override
   protected void initialize() {
-    System.out.println("Elevator up initialized");
-    Robot.elevator.elevatorUp();
+    System.out.println("lift save initialized");
   }
 
   /**
@@ -25,15 +24,16 @@ public class LiftUp extends Command {
    */
   @Override
   protected void execute() {
+    Robot.elevator.saveElevator();
   }
 
   /**
-   * Make this return true when this Command no longer needs to run execute()
-   * Since this is a drive command we never want it to end
+   * Make this return true when this Command has done it's job
+   * Since this is just an lift command it should finish eventually
    */
   @Override
   protected boolean isFinished() {
-      return Robot.elevator.isElevatorSetpointReached() && Robot.elevator.isBarSetpointReached();
+    return true;
   }
 
   /**
@@ -41,7 +41,7 @@ public class LiftUp extends Command {
    */
   @Override
   protected void end() {
-    System.out.println("Elevator up command ended");
+    System.out.println("lift save command finished");
   }
 
   /**

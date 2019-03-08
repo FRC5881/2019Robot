@@ -19,9 +19,9 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 public class DriveControl extends Subsystem {
   // Define motors
   public static CANSparkMax frontLeftMotor = new CANSparkMax(1, MotorType.kBrushed);
-  public static CANSparkMax frontRightMotor = new CANSparkMax(2, MotorType.kBrushed);
+  public static CANSparkMax frontRightMotor = new CANSparkMax(2, MotorType.kBrushless);
   public static CANSparkMax backLeftMotor = new CANSparkMax(3, MotorType.kBrushed);
-  public static CANSparkMax backRightMotor = new CANSparkMax(4, MotorType.kBrushed);
+  public static CANSparkMax backRightMotor = new CANSparkMax(4, MotorType.kBrushless);
 
   // Speed to target when we start tipping
   public static final double TIPPING_SPEED = 0.5;
@@ -72,8 +72,15 @@ public class DriveControl extends Subsystem {
    * Initialize SmartDashboard and other local variables
    */
   public void init() {
-    backLeftMotor.follow(frontLeftMotor);
+    frontLeftMotor.setInverted(true);
 
+    frontLeftMotor.setOpenLoopRampRate(.25);
+    frontLeftMotor.setSmartCurrentLimit(40);
+
+    frontRightMotor.setOpenLoopRampRate(0.25);
+    frontRightMotor.setSmartCurrentLimit(40);
+
+    backLeftMotor.follow(frontLeftMotor);
     backRightMotor.follow(frontRightMotor);
 
 
@@ -109,6 +116,8 @@ public class DriveControl extends Subsystem {
   public void arcadeJoystickInputs() {
     double speed = Robot.oi.driverController.getRawAxis(OI.XBOX_LEFT_Y_AXIS);
     double turn = Robot.oi.driverController.getRawAxis(OI.XBOX_RIGHT_X_AXIS);
+
+    System.out.println(turn + " " + speed);
 
     if (Math.abs(turn) < 0.1) {
       turn = 0;
@@ -151,7 +160,7 @@ public class DriveControl extends Subsystem {
     double speed = Robot.oi.driverController.getRawAxis(OI.XBOX_LEFT_Y_AXIS) * getYAxisSensitivity();
     double turn = Robot.oi.driverController.getRawAxis(OI.XBOX_RIGHT_X_AXIS);
 
-    // Slow down turn rate linearly to elevator height
+    // Slow down turn rate linearly to lift height
     turn *= (1.4 - Robot.elevator.getElevatorEncoderPosition());
 
     // Cap turn rate to XAxisSensitivity

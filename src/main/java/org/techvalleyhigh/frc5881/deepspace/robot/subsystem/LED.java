@@ -19,13 +19,13 @@ public class LED extends Subsystem {
   public enum Color {
     NONE(false, false, false, false), // No colors : 0
 
-    LOW_ORANGE(false, false, false, true), // Low elevator + cargo : 1
-    MID_ORANGE(false, false, true, false), // Mid elevator + cargo : 2
-    HIGH_ORANGE(false, false, true, true), // High elevator + cargo : 3
+    LOW_ORANGE(false, false, false, true), // Low lift + cargo : 1
+    MID_ORANGE(false, false, true, false), // Mid lift + cargo : 2
+    HIGH_ORANGE(false, false, true, true), // High lift + cargo : 3
 
-    LOW_YELLOW(false, true, false, false), // Low elevator + hatch panel : 4
-    MID_YELLOW(false, true, false, true), // Mid elevator + hatch panel : 5
-    HIGH_YELLOW(false, true, true, false), // High elevator + hatch panel : 6
+    LOW_YELLOW(false, true, false, false), // Low lift + hatch panel : 4
+    MID_YELLOW(false, true, false, true), // Mid lift + hatch panel : 5
+    HIGH_YELLOW(false, true, true, false), // High lift + hatch panel : 6
 
     FLASH_BLUE(false, true, true, true), // Score Blue : 7
     FLASH_RED(true, false, false, false), // Score Red : 8
@@ -36,8 +36,8 @@ public class LED extends Subsystem {
     CHARGE_BLUE(true, false, true, true), // POWERUP Blue : 11
     CHARGE_RED(true, true, false, false), // POPWERUP Red : 12
 
-    VERY_LOW_ORANGE(true, true, false, true), // Floor elevator + cargo : 13
-    VERY_LOW_YELLOW(true, true, true, false), // Floor elevator + hatch panel : 14
+    VERY_LOW_ORANGE(true, true, false, true), // Floor lift + cargo : 13
+    VERY_LOW_YELLOW(true, true, true, false), // Floor lift + hatch panel : 14
 
     RAINBOW(true, true, true, true); // Test Mode (: 15
 

@@ -3,14 +3,10 @@ package org.techvalleyhigh.frc5881.deepspace.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import org.techvalleyhigh.frc5881.deepspace.robot.commands.climber.ClimberLegsBackToggle;
-import org.techvalleyhigh.frc5881.deepspace.robot.commands.climber.ClimberLegsFrontToggle;
-import org.techvalleyhigh.frc5881.deepspace.robot.commands.elevator.LiftDown;
-import org.techvalleyhigh.frc5881.deepspace.robot.commands.elevator.LiftUp;
+import org.techvalleyhigh.frc5881.deepspace.robot.commands.lift.LiftDown;
+import org.techvalleyhigh.frc5881.deepspace.robot.commands.lift.LiftUp;
 import org.techvalleyhigh.frc5881.deepspace.robot.commands.groups.SwitchRobotMode;
 import org.techvalleyhigh.frc5881.deepspace.robot.commands.intake.GrabCargo;
-import org.techvalleyhigh.frc5881.deepspace.robot.commands.upsideDown.DropHatch;
-import org.techvalleyhigh.frc5881.deepspace.robot.commands.upsideDown.GrabHatch;
 import org.techvalleyhigh.frc5881.deepspace.robot.commands.intake.DropCargo;
 import org.techvalleyhigh.frc5881.deepspace.robot.commands.upsideDown.UpsideDownFlip;
 
@@ -53,8 +49,8 @@ public class OI {
         Drive is left thumb stick (forward and backward)
         Turning is on the right thumb stick (left and right)
         "Y" swaps the arm mode (DONE)
-        Right bumper moves elevator up (DONE)
-        Left bumper moves elevator down (DONE)
+        Right bumper moves lift up (DONE)
+        Left bumper moves lift down (DONE)
         "A" grabs hatch/ cargo
         "B" drops hatch/ cargo
         Back toggles front climber
@@ -87,20 +83,19 @@ public class OI {
         driveControllerButtonB.whileHeld(new DropCargo());
 
         driveControllerButtonX.whenPressed(new UpsideDownFlip());
-        // TODO: Make a command to abort docking
 
         // When the "Y" button is pressed change the arm mode
         driveControllerButtonY.whenPressed(new SwitchRobotMode());
 
         // When the left/ right bumper is pressed lower or raise the lift
-        driveControllerLeftBumper.whenPressed(new LiftDown());
-        driveControllerRightBumper.whenPressed(new LiftUp());
+        //driveControllerLeftBumper.whenPressed(new LiftDown());
+        //driveControllerRightBumper.whenPressed(new LiftUp());
 
         // When the "Back" button is pressed toggle front climber
-        driveControllerBackButton.whenPressed(new ClimberLegsFrontToggle());
+        //driveControllerBackButton.whenPressed(new ClimberLegsFrontToggle());
 
         // When the "Start" button is pressed toggle back climber
-        driveControllerStartButton.whenPressed(new ClimberLegsBackToggle());
+        //driveControllerStartButton.whenPressed(new ClimberLegsBackToggle());
     }
 
     /**
