@@ -211,9 +211,6 @@ public class Robot extends TimedRobot {
 
     // Start the drive command
     driveCommand.start();
-
-    // Show off our AWESOME LEDs
-    led.chargeTeam();
   }
 
   /**
@@ -238,7 +235,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void testPeriodic() {
-    led.sendLED(LED.Color.RAINBOW);
+
   }
 
   /**
@@ -246,6 +243,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void disabledPeriodic() {
-    led.rotateTeam();
+
   }
 }

@@ -277,47 +277,36 @@ public class Elevator extends Subsystem {
     switch (state) {
       case FLOOR:
         System.out.println("FLOOR");
-        if (isHatch()) {
-            Robot.led.sendLED(LED.Color.VERY_LOW_YELLOW);
-        } else {
-            Robot.led.sendLED(LED.Color.VERY_LOW_ORANGE);
-        }
         setLiftSetpoint(state.getBarPosition(), state.getElevatorPosition());
         elevatorState = ElevatorState.FLOOR;
         break;
       case LOW_HATCH:
         System.out.println("LOW_HATCH");
-        Robot.led.sendLED(LED.Color.LOW_YELLOW);
         setLiftSetpoint(state.getBarPosition(), state.getElevatorPosition());
         elevatorState = ElevatorState.LOW_HATCH;
         break;
       case LOW_CARGO:
         System.out.println("LOW_CARGO");
-        Robot.led.sendLED(LED.Color.LOW_ORANGE);
         setLiftSetpoint(state.getBarPosition(), state.getElevatorPosition());
         elevatorState = ElevatorState.LOW_CARGO;
         break;
       case MIDDLE_HATCH:
         System.out.println("MIDDLE_HATCH");
-        Robot.led.sendLED(LED.Color.MID_YELLOW);
         setLiftSetpoint(state.getBarPosition(), state.getElevatorPosition());
         elevatorState = ElevatorState.MIDDLE_HATCH;
         break;
       case MIDDLE_CARGO:
         System.out.println("MIDDLE_CARGO");
-        Robot.led.sendLED(LED.Color.MID_ORANGE);
         setLiftSetpoint(state.getBarPosition(), state.getElevatorPosition());
         elevatorState = ElevatorState.MIDDLE_CARGO;
         break;
       case HIGH_HATCH:
         System.out.println("HIGH_HATCH");
-        Robot.led.sendLED(LED.Color.HIGH_YELLOW);
         setLiftSetpoint(state.getBarPosition(), state.getElevatorPosition());
         elevatorState = ElevatorState.HIGH_HATCH;
         break;
       case HIGH_CARGO:
         System.out.println("HIGH_CARGO");
-        Robot.led.sendLED(LED.Color.HIGH_ORANGE);
         setLiftSetpoint(state.getBarPosition(), state.getElevatorPosition());
         elevatorState = ElevatorState.HIGH_CARGO;
         break;

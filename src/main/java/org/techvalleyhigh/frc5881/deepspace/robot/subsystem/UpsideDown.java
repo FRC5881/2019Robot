@@ -51,7 +51,6 @@ public class UpsideDown extends Subsystem {
   public void dropHatch() {
     grabberPiston.set(DoubleSolenoid.Value.kReverse);
     extenderPiston.set(DoubleSolenoid.Value.kReverse);
-    Robot.led.flashTeam();
     setState(UpsideDownMode.DISENGAGED);
   }
 
@@ -61,7 +60,6 @@ public class UpsideDown extends Subsystem {
   public void grabHatch(){
     grabberPiston.set(DoubleSolenoid.Value.kForward);
     extenderPiston.set(DoubleSolenoid.Value.kForward);
-    Robot.led.flashTeam();
     setState(UpsideDownMode.ENGAGED);
   }
 

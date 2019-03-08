@@ -41,7 +41,6 @@ public class Intake extends Subsystem {
    */
   public void spinInInput(){
     intakeMotor.set(SPEED);
-    Robot.led.flashTeam();
   }
 
   /**
@@ -49,7 +48,6 @@ public class Intake extends Subsystem {
    */
   public void spinOutInput(){
     intakeMotor.set(-SPEED);
-    Robot.led.flashTeam();
   }
 
   /**
