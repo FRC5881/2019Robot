@@ -6,14 +6,15 @@ import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import org.techvalleyhigh.frc5881.deepspace.robot.Robot;
 
 /**
  * Subsystem controls everything to do with intake
  */
 public class Intake extends Subsystem {
   //Only one motor
-  public static WPI_TalonSRX intakeMotor = new WPI_TalonSRX(15);
-  public static final double SPEED = -.5;
+  public static WPI_TalonSRX intakeMotor = new WPI_TalonSRX(7);
+  public static final double SPEED = -1.0;
 
   @Override
   protected void initDefaultCommand() {
@@ -40,6 +41,7 @@ public class Intake extends Subsystem {
    */
   public void spinInInput(){
     intakeMotor.set(SPEED);
+    Robot.led.flashTeam();
   }
 
   /**
@@ -47,6 +49,7 @@ public class Intake extends Subsystem {
    */
   public void spinOutInput(){
     intakeMotor.set(-SPEED);
+    Robot.led.flashTeam();
   }
 
   /**

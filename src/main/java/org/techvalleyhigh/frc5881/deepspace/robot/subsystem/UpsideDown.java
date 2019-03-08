@@ -3,15 +3,15 @@ package org.techvalleyhigh.frc5881.deepspace.robot.subsystem;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import org.techvalleyhigh.frc5881.deepspace.robot.Robot;
 import org.techvalleyhigh.frc5881.deepspace.robot.commands.upsideDown.DropHatch;
 
 /**
  * Houses a majority of the code for "Upside Down" (a.k.a the hatch grabber)
  */
 public class UpsideDown extends Subsystem {
-
-
-  public static DoubleSolenoid mainSolenoid = new DoubleSolenoid(20, 0, 1);
+  public static DoubleSolenoid grabberPiston = new DoubleSolenoid(20,0, 1);
+  public static DoubleSolenoid extenderPiston = new DoubleSolenoid(20 ,2, 3);
   public UpsideDownMode state = UpsideDownMode.ENGAGED;
 
 
@@ -41,15 +41,17 @@ public class UpsideDown extends Subsystem {
    * Subsystem: UpsideDown
    */
   public void init() {
-    mainSolenoid.setName("UpsideDown", "Main");
-    LiveWindow.add(mainSolenoid);
+    grabberPiston.setName("UpsideDown", "Main");
+    LiveWindow.add(grabberPiston);
   }
 
   /**
    * Drops the hatch
    */
   public void dropHatch() {
-    mainSolenoid.set(DoubleSolenoid.Value.kReverse);
+    grabberPiston.set(DoubleSolenoid.Value.kReverse);
+    extenderPiston.set(DoubleSolenoid.Value.kReverse);
+    Robot.led.flashTeam();
     setState(UpsideDownMode.DISENGAGED);
   }
 
@@ -57,8 +59,9 @@ public class UpsideDown extends Subsystem {
    * Grabs the hatch
    */
   public void grabHatch(){
-    mainSolenoid.set(DoubleSolenoid.Value.kForward);
-
+    grabberPiston.set(DoubleSolenoid.Value.kForward);
+    extenderPiston.set(DoubleSolenoid.Value.kForward);
+    Robot.led.flashTeam();
     setState(UpsideDownMode.ENGAGED);
   }
 

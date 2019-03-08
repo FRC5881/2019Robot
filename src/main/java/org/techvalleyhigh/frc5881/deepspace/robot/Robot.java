@@ -3,9 +3,10 @@ package org.techvalleyhigh.frc5881.deepspace.robot;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.techvalleyhigh.frc5881.deepspace.robot.commands.elevator.ElevatorSave;
+import org.techvalleyhigh.frc5881.deepspace.robot.commands.elevator.LiftSave;
 import org.techvalleyhigh.frc5881.deepspace.robot.commands.drive.ArcadeDrive;
 import org.techvalleyhigh.frc5881.deepspace.robot.commands.drive.DriveSave;
 import org.techvalleyhigh.frc5881.deepspace.robot.subsystem.*;
@@ -18,19 +19,12 @@ import org.techvalleyhigh.frc5881.deepspace.robot.subsystem.*;
  * project.
  */
 public class Robot extends TimedRobot {
-  private static final String kDefaultAuto = "Default";
-  private static final String kCustomAuto = "My Auto";
-  private String m_autoSelected;
-  private final SendableChooser<String> m_chooser = new SendableChooser<>();
-
   // Define OI and subsystems
   public static OI oi;
-  public static TestSubsystem testSubsystem;
   public static Climber climber;
   public static DriveControl driveControl;
   public static Elevator elevator;
   public static Intake intake;
-  public static Arm arm;
   public static UpsideDown upsideDown;
   public static LED led;
 
@@ -46,13 +40,12 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     // Init subsystems
-    testSubsystem = new TestSubsystem();
     climber = new Climber();
     driveControl = new DriveControl();
     elevator = new Elevator();
     intake = new Intake();
     upsideDown = new UpsideDown();
-    arm = new Arm();
+    led = new LED();
 
     /*
     OI must be constructed after subsystems. If the OI creates Commands
@@ -64,12 +57,12 @@ public class Robot extends TimedRobot {
 
     driveCommand = new ArcadeDrive();
 
-    SPI.Port port = SPI.Port.kOnboardCS0;
-    navX = new AHRS(port);
-
-    m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
-    m_chooser.addOption("My Auto", kCustomAuto);
-    SmartDashboard.putData("Auto choices", m_chooser);
+    try {
+      SPI.Port port = SPI.Port.kMXP;
+      navX = new AHRS(port);
+    } catch (RuntimeException ex) {
+      System.err.println(ex);
+    }
   }
 
   /**
@@ -82,13 +75,105 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    Scheduler.getInstance().run();
+
     SmartDashboard.putNumber("X accel", navX.getRawAccelX());
     SmartDashboard.putNumber("Y accel", navX.getRawAccelY());
     SmartDashboard.putNumber("Z accel", navX.getRawAccelZ());
 
-    SmartDashboard.putNumber("X gyro", navX.getRawGyroX());
-    SmartDashboard.putNumber("Y gyro", navX.getRawGyroY());
-    SmartDashboard.putNumber("Z gyro", navX.getRawGyroZ());
+    /* Display 6-axis Processed Angle Data                                      */
+    SmartDashboard.putBoolean("IMU_Connected", navX.isConnected());
+    SmartDashboard.putBoolean("IMU_IsCalibrating", navX.isCalibrating());
+    SmartDashboard.putNumber("IMU_Yaw", navX.getYaw());
+    SmartDashboard.putNumber("IMU_Pitch", navX.getPitch());
+    SmartDashboard.putNumber("IMU_Roll", navX.getRoll());
+
+    /* Display tilt-corrected, Magnetometer-based heading (requires             */
+    /* magnetometer calibration to be useful)                                   */
+
+    SmartDashboard.putNumber("IMU_CompassHeading", navX.getCompassHeading());
+
+    /* Display 9-axis Heading (requires magnetometer calibration to be useful)  */
+    SmartDashboard.putNumber("IMU_FusedHeading", navX.getFusedHeading());
+
+    /* These functions are compatible w/the WPI Gyro Class, providing a simple  */
+    /* path for upgrading from the Kit-of-Parts gyro to the navx-MXP            */
+
+    SmartDashboard.putNumber("IMU_TotalYaw", navX.getAngle());
+    SmartDashboard.putNumber("IMU_YawRateDPS", navX.getRate());
+
+    /* Display Processed Acceleration Data (Linear Acceleration, Motion Detect) */
+
+    SmartDashboard.putNumber("IMU_Accel_X", navX.getWorldLinearAccelX());
+    SmartDashboard.putNumber("IMU_Accel_Y", navX.getWorldLinearAccelY());
+    SmartDashboard.putBoolean("IMU_IsMoving", navX.isMoving());
+    SmartDashboard.putBoolean("IMU_IsRotating", navX.isRotating());
+
+    /* Display estimates of velocity/displacement.  Note that these values are  */
+    /* not expected to be accurate enough for estimating robot position on a    */
+    /* FIRST FRC Robotics Field, due to accelerometer noise and the compounding */
+    /* of these errors due to single (velocity) integration and especially      */
+    /* double (displacement) integration.                                       */
+
+    SmartDashboard.putNumber("Velocity_X", navX.getVelocityX());
+    SmartDashboard.putNumber("Velocity_Y", navX.getVelocityY());
+    SmartDashboard.putNumber("Displacement_X", navX.getDisplacementX());
+    SmartDashboard.putNumber("Displacement_Y", navX.getDisplacementY());
+
+    /* Display Raw Gyro/Accelerometer/Magnetometer Values                       */
+    /* NOTE:  These values are not normally necessary, but are made available   */
+    /* for advanced users.  Before using this data, please consider whether     */
+    /* the processed data (see above) will suit your needs.                     */
+
+    SmartDashboard.putNumber("RawGyro_X", navX.getRawGyroX());
+    SmartDashboard.putNumber("RawGyro_Y", navX.getRawGyroY());
+    SmartDashboard.putNumber("RawGyro_Z", navX.getRawGyroZ());
+    SmartDashboard.putNumber("RawAccel_X", navX.getRawAccelX());
+    SmartDashboard.putNumber("RawAccel_Y", navX.getRawAccelY());
+    SmartDashboard.putNumber("RawAccel_Z", navX.getRawAccelZ());
+    SmartDashboard.putNumber("RawMag_X", navX.getRawMagX());
+    SmartDashboard.putNumber("RawMag_Y", navX.getRawMagY());
+    SmartDashboard.putNumber("RawMag_Z", navX.getRawMagZ());
+    SmartDashboard.putNumber("IMU_Temp_C", navX.getTempC());
+
+    /* Omnimount Yaw Axis Information                                           */
+    /* For more info, see http://navx-mxp.kauailabs.com/installation/omnimount  */
+    AHRS.BoardYawAxis yaw_axis = navX.getBoardYawAxis();
+    SmartDashboard.putString("YawAxisDirection", yaw_axis.up ? "Up" : "Down");
+    SmartDashboard.putNumber("YawAxis", yaw_axis.board_axis.getValue());
+
+    /* Sensor Board Information                                                 */
+    SmartDashboard.putString("FirmwareVersion", navX.getFirmwareVersion());
+
+    /* Quaternion Data                                                          */
+    /* Quaternions are fascinating, and are the most compact representation of  */
+    /* orientation data. All of the Yaw, Pitch and Roll Values can be derived   */
+    /* from the Quaternions. If interested in motion processing, knowledge of   */
+    /* Quaternions is highly recommended.                                       */
+    SmartDashboard.putNumber("QuaternionW", navX.getQuaternionW());
+    SmartDashboard.putNumber("QuaternionX", navX.getQuaternionX());
+    SmartDashboard.putNumber("QuaternionY", navX.getQuaternionY());
+    SmartDashboard.putNumber("QuaternionZ", navX.getQuaternionZ());
+
+    /* Connectivity Debugging Support                                           */
+    SmartDashboard.putNumber("IMU_Byte_Count", navX.getByteCount());
+    SmartDashboard.putNumber("IMU_Update_Count", navX.getUpdateCount());
+
+    // Puts the Elevator encoder position into Smart Dashboard
+    SmartDashboard.putNumber("Elevator Encoder", elevator.getElevatorEncoderPosition());
+    // Puts the Elevator error value into the Smart Dashboard
+    SmartDashboard.putNumber("Elevator Error", elevator.getElevatorError());
+    // Puts the Elevator set point value into the Smart Dashboard
+    SmartDashboard.putNumber("Elevator Set Point", elevator.getElevatorSetpoint());
+
+    // Puts the Bar encoder position into Smart Dashboard
+    SmartDashboard.putNumber("Bar Encoder", elevator.getBarEncoderPosition());
+    // Puts the Bar error value into the Smart Dashboard
+    SmartDashboard.putNumber("Bar Error", elevator.getBarError());
+    // Puts the Bar set point value into the Smart Dashboard
+    SmartDashboard.putNumber("Bar Set Point", elevator.getBarSetpoint());
+
+    SmartDashboard.putNumber("Bar Current", elevator.getBarCurrent());
   }
 
   /**
@@ -104,9 +189,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    m_autoSelected = m_chooser.getSelected();
-    // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
-    System.out.println("Auto selected: " + m_autoSelected);
+    // We don't have auto, start tele-op instead
+    teleopInit();
   }
 
   /**
@@ -114,15 +198,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousPeriodic() {
-    switch (m_autoSelected) {
-      case kCustomAuto:
-        // Put custom auto code here
-        break;
-      case kDefaultAuto:
-      default:
-        // Put default auto code here
-        break;
-    }
+    // Use normal drive control
+    teleopPeriodic();
   }
 
   /**
@@ -130,8 +207,13 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopInit() {
+    elevator.init();
+
     // Start the drive command
     driveCommand.start();
+
+    // Show off our AWESOME LEDs
+    led.chargeTeam();
   }
 
   /**
@@ -146,8 +228,8 @@ public class Robot extends TimedRobot {
     }
     // If the bot is at an angle of greater than 30 degrees then do elevator save.
     if (navX.getRawGyroY() > 30) {
-      ElevatorSave elevatorSave = new ElevatorSave();
-      elevatorSave.start();
+      LiftSave liftSave = new LiftSave();
+      liftSave.start();
     }
   }
 
@@ -156,5 +238,14 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void testPeriodic() {
+    led.sendLED(LED.Color.RAINBOW);
+  }
+
+  /**
+   * Periodic code for disabled mode should go here.
+   */
+  @Override
+  public void disabledPeriodic() {
+    led.rotateTeam();
   }
 }
