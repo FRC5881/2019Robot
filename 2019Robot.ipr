@@ -204,33 +204,6 @@
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
   </component>
   <component name="libraryTable">
-    <library name="Gradle: com.ctre.phoenix:api-java:5.12.0">
-      <CLASSES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.ctre.phoenix/api-java/5.12.0/67bee152c70e47d981b1ecb1b7d6b59465aa506e/api-java-5.12.0.jar!/" />
-      </CLASSES>
-      <JAVADOC />
-      <SOURCES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.ctre.phoenix/api-java/5.12.0/aca8d84775394631caa2992da07e3b11f14bc513/api-java-5.12.0-sources.jar!/" />
-      </SOURCES>
-    </library>
-    <library name="Gradle: com.ctre.phoenix:wpiapi-java:5.12.0">
-      <CLASSES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.ctre.phoenix/wpiapi-java/5.12.0/a355071240b46081f86795119258fa2ffa1401e5/wpiapi-java-5.12.0.jar!/" />
-      </CLASSES>
-      <JAVADOC />
-      <SOURCES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.ctre.phoenix/wpiapi-java/5.12.0/7ba7915eee25afd745d0c76be698132d71c8f519/wpiapi-java-5.12.0-sources.jar!/" />
-      </SOURCES>
-    </library>
-    <library name="Gradle: com.kauailabs.navx.frc:navx-java:3.1.344">
-      <CLASSES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.kauailabs.navx.frc/navx-java/3.1.344/30981bb5cf08864cfdca75cfd21418470e16c167/navx-java-3.1.344.jar!/" />
-      </CLASSES>
-      <JAVADOC />
-      <SOURCES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.kauailabs.navx.frc/navx-java/3.1.344/d4d52e9506c6d7a139b3a473ce62d4b2d2ed6019/navx-java-3.1.344-sources.jar!/" />
-      </SOURCES>
-    </library>
     <library name="Gradle: edu.wpi.first.cameraserver:cameraserver-java:2019.1.1">
       <CLASSES>
         <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/edu.wpi.first.cameraserver/cameraserver-java/2019.1.1/bbb8d8cccfe7611d8bd0b2d0cf176b9384ce4a7d/cameraserver-java-2019.1.1.jar!/" />

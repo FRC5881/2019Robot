@@ -1,14 +1,9 @@
 package org.techvalleyhigh.frc5881.deepspace.robot;
 
-import com.kauailabs.navx.frc.AHRS;
-import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.techvalleyhigh.frc5881.deepspace.robot.commands.elevator.ElevatorSave;
-import org.techvalleyhigh.frc5881.deepspace.robot.commands.drive.ArcadeDrive;
-import org.techvalleyhigh.frc5881.deepspace.robot.commands.drive.DriveSave;
-import org.techvalleyhigh.frc5881.deepspace.robot.subsystem.*;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -20,24 +15,12 @@ import org.techvalleyhigh.frc5881.deepspace.robot.subsystem.*;
 public class Robot extends TimedRobot {
   private static final String kDefaultAuto = "Default";
   private static final String kCustomAuto = "My Auto";
-  private String m_autoSelected;
-  private final SendableChooser<String> m_chooser = new SendableChooser<>();
+  //private String m_autoSelected;
+  //private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
   // Define OI and subsystems
   public static OI oi;
-  public static TestSubsystem testSubsystem;
-  public static Climber climber;
   public static DriveControl driveControl;
-  public static Elevator elevator;
-  public static Intake intake;
-  public static Arm arm;
-  public static UpsideDown upsideDown;
-  public static LED led;
-
-  public static AHRS navX;
-
-  // Commands
-  public static ArcadeDrive driveCommand;
 
   /**
    * This function is run when the robot is first started up and should be
@@ -45,32 +28,16 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    // Init subsystems
-    testSubsystem = new TestSubsystem();
-    climber = new Climber();
-    driveControl = new DriveControl();
-    elevator = new Elevator();
-    intake = new Intake();
-    upsideDown = new UpsideDown();
-    arm = new Arm();
-
-    /*
-    OI must be constructed after subsystems. If the OI creates Commands
-    (which it very likely will), subsystems are not guaranteed to be
-    constructed yet. Thus, their requires() statements may grab null
-    pointers. Bad news. Don't move it.
-     */
+    // Subsystems
     oi = new OI();
+    driveControl = new DriveControl();
 
-    driveCommand = new ArcadeDrive();
-
-    SPI.Port port = SPI.Port.kOnboardCS0;
-    navX = new AHRS(port);
-
-    m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
-    m_chooser.addOption("My Auto", kCustomAuto);
-    SmartDashboard.putData("Auto choices", m_chooser);
+    //m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
+    //m_chooser.addOption("My Auto", kCustomAuto);
+    //smartDashboard.putData("Auto choices", m_chooser);
   }
+
+
 
   /**
    * This function is called every robot packet, no matter the mode. Use
@@ -82,13 +49,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    SmartDashboard.putNumber("X accel", navX.getRawAccelX());
-    SmartDashboard.putNumber("Y accel", navX.getRawAccelY());
-    SmartDashboard.putNumber("Z accel", navX.getRawAccelZ());
-
-    SmartDashboard.putNumber("X gyro", navX.getRawGyroX());
-    SmartDashboard.putNumber("Y gyro", navX.getRawGyroY());
-    SmartDashboard.putNumber("Z gyro", navX.getRawGyroZ());
+    Scheduler.getInstance().run();
   }
 
   /**
@@ -104,9 +65,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    m_autoSelected = m_chooser.getSelected();
+    //m_autoSelected = m_chooser.getSelected();
     // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
-    System.out.println("Auto selected: " + m_autoSelected);
+    //System.out.println("Auto selected: " + m_autoSelected);
   }
 
   /**
@@ -114,7 +75,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousPeriodic() {
-    switch (m_autoSelected) {
+    /*switch (m_autoSelected) {
       case kCustomAuto:
         // Put custom auto code here
         break;
@@ -122,16 +83,11 @@ public class Robot extends TimedRobot {
       default:
         // Put default auto code here
         break;
-    }
+    }*/
   }
 
-  /**
-   * Initialization code for teleop mode should go here.
-   */
   @Override
   public void teleopInit() {
-    // Start the drive command
-    driveCommand.start();
   }
 
   /**
@@ -139,16 +95,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-    // If the bot is at an angle of greater than 30 degrees then run stop tipping
-    if (Math.abs(navX.getRawGyroY()) > 30) {
-      DriveSave driveSave = new DriveSave();
-      driveSave.start();
-    }
-    // If the bot is at an angle of greater than 30 degrees then do elevator save.
-    if (navX.getRawGyroY() > 30) {
-      ElevatorSave elevatorSave = new ElevatorSave();
-      elevatorSave.start();
-    }
   }
 
   /**

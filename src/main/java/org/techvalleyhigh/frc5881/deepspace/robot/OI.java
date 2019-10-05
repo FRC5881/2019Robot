@@ -3,15 +3,6 @@ package org.techvalleyhigh.frc5881.deepspace.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import org.techvalleyhigh.frc5881.deepspace.robot.commands.climber.ClimberLegsBackToggle;
-import org.techvalleyhigh.frc5881.deepspace.robot.commands.climber.ClimberLegsFrontToggle;
-import org.techvalleyhigh.frc5881.deepspace.robot.commands.elevator.ElevatorDown;
-import org.techvalleyhigh.frc5881.deepspace.robot.commands.elevator.ElevatorUp;
-import org.techvalleyhigh.frc5881.deepspace.robot.commands.groups.SwitchRobotMode;
-import org.techvalleyhigh.frc5881.deepspace.robot.commands.upsideDown.DropHatch;
-import org.techvalleyhigh.frc5881.deepspace.robot.commands.upsideDown.GrabHatch;
-import org.techvalleyhigh.frc5881.deepspace.robot.commands.intake.DropCargo;
-
 
 /**
  * Controls operator interfaces, such as controllers (and a few buttons)
@@ -50,15 +41,6 @@ public class OI {
         /*
         Drive is left thumb stick (forward and backward)
         Turning is on the right thumb stick (left and right)
-        "Y" swaps the arm mode (DONE)
-        Right bumper moves elevator up (DONE)
-        Left bumper moves elevator down (DONE)
-        "A" grabs hatch/ cargo
-        "B" drops hatch/ cargo
-        Back toggles front climber
-        Start toggles back climber
-        Right thumb stick drives climber (up and down)
-        "X" aborts the docking
          */
 
         // Define controllers as joysticks
@@ -78,27 +60,6 @@ public class OI {
         driverController.setRumble(GenericHID.RumbleType.kLeftRumble, 0);
         driverController.setRumble(GenericHID.RumbleType.kRightRumble, 0);
 
-        // When the "A" button is pressed grab hatch/ cargo
-        driveControllerButtonA.whenPressed(new GrabHatch());
-
-        // When the "B" button is pressed drop the hatch/ cargo
-        driveControllerButtonB.whileHeld(new DropCargo());
-
-        // When the "X" button is pressed abort docking
-        // TODO: Make a command to abort docking
-
-        // When the "Y" button is pressed change the arm mode
-        driveControllerButtonY.whenPressed(new SwitchRobotMode());
-
-        // When the left/ right bumper is pressed lower or raise the elevator
-        driveControllerLeftBumper.whenPressed(new ElevatorDown());
-        driveControllerRightBumper.whenPressed(new ElevatorUp());
-
-        // When the "Back" button is pressed toggle front climber
-        driveControllerBackButton.whenPressed(new ClimberLegsFrontToggle());
-
-        // When the "Start" button is pressed toggle back climber
-        driveControllerStartButton.whenPressed(new ClimberLegsBackToggle());
     }
 
     /**
