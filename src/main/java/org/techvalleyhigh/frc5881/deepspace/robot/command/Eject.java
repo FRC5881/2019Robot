@@ -1,11 +1,11 @@
-package org.techvalleyhigh.frc5881.deepspace.robot;
+package org.techvalleyhigh.frc5881.deepspace.robot.command;
 
 import edu.wpi.first.wpilibj.command.Command;
 import org.techvalleyhigh.frc5881.deepspace.robot.Robot;
 
-public class ArcadeDrive extends Command  {
-    public ArcadeDrive() {
-        requires(Robot.driveControl);
+public class Eject extends Command {
+    public Eject() {
+        requires(Robot.cargo);
     }
 
     /**
@@ -13,7 +13,7 @@ public class ArcadeDrive extends Command  {
      */
     @Override
     protected void initialize() {
-        System.out.println("ArcadeDrive Command initialized");
+        System.out.println("Eject Command initialized");
     }
 
     /**
@@ -21,7 +21,7 @@ public class ArcadeDrive extends Command  {
      */
     @Override
     protected void execute() {
-        Robot.driveControl.arcadeJoystickInputs();
+        Robot.cargo.startEject();
     }
 
     /**
@@ -38,7 +38,8 @@ public class ArcadeDrive extends Command  {
      */
     @Override
     protected void end() {
-        System.out.println("ArcadeDrive ended");
+        Robot.cargo.stopMotor();
+        System.out.println("Eject ended");
     }
 
     /**
@@ -50,4 +51,3 @@ public class ArcadeDrive extends Command  {
         end();
     }
 }
-

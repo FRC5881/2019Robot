@@ -22,8 +22,8 @@ public class OI {
     // Joysticks
     public static final int XBOX_LEFT_X_AXIS = 0;
     public static final int XBOX_LEFT_Y_AXIS = 1;
-    public static final int XBOX_RIGHT_TRIGGER = 2;
-    public static final int XBOX_LEFT_TRIGGER = 3;
+    public static final int XBOX_RIGHT_TRIGGER_AXIS = 3;
+    public static final int XBOX_LEFT_TRIGGER_AXIS = 2;
     public static final int XBOX_RIGHT_X_AXIS = 4;
     public static final int XBOX_RIGHT_Y_AXIS = 5;
 
@@ -59,6 +59,8 @@ public class OI {
         // Turns the rumble off in case it was left on
         driverController.setRumble(GenericHID.RumbleType.kLeftRumble, 0);
         driverController.setRumble(GenericHID.RumbleType.kRightRumble, 0);
+
+
 
     }
 

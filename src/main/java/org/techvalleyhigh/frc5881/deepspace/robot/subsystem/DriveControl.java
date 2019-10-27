@@ -1,21 +1,22 @@
-package org.techvalleyhigh.frc5881.deepspace.robot;
+package org.techvalleyhigh.frc5881.deepspace.robot.subsystem;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.techvalleyhigh.frc5881.deepspace.robot.command.ArcadeDrive;
+import org.techvalleyhigh.frc5881.deepspace.robot.OI;
+import org.techvalleyhigh.frc5881.deepspace.robot.Robot;
 
 
 public class DriveControl extends Subsystem {
     // Define motors
-    public static WPI_TalonSRX frontLeftMotor = new WPI_TalonSRX(2);
-    public static WPI_TalonSRX frontRightMotor = new WPI_TalonSRX(4);
-    public static WPI_TalonSRX backLeftMotor = new WPI_TalonSRX(1);
-    public static WPI_TalonSRX backRightMotor = new WPI_TalonSRX(3);
+    private WPI_TalonSRX frontLeftMotor = new WPI_TalonSRX(3);
+    private WPI_TalonSRX frontRightMotor = new WPI_TalonSRX(4);
+    private WPI_TalonSRX backLeftMotor = new WPI_TalonSRX(1);
+    private WPI_TalonSRX backRightMotor = new WPI_TalonSRX(2);
 
     private static final String X_AXIS_SENSITIVITY = "X axis sensitivity";
     private static final String Y_AXIS_SENSITIVITY = "Y axis sensitivity";
@@ -50,23 +51,19 @@ public class DriveControl extends Subsystem {
         backRightMotor.configFactoryDefault();
 
         frontLeftMotor.setName("Drive", "Front Left");
-        //frontLeftMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
-        //frontLeftMotor.setInverted(true);
+        frontLeftMotor.setInverted(true);
         LiveWindow.add(frontLeftMotor);
 
         frontRightMotor.setName("Drive", "Front Right");
-        //frontRightMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
         //frontRightMotor.setInverted(true);
         LiveWindow.add(frontRightMotor);
 
         backLeftMotor.setName("Drive", "Back Left");
-        //backLeftMotor.set(ControlMode.Follower, 1);
-        //backLeftMotor.setInverted(true);
+        backLeftMotor.setInverted(true);
         LiveWindow.add(backLeftMotor);
 
         backRightMotor.setName("Drive", "Back Right");
-        //backRightMotor.set(ControlMode.Follower, 2);
-        //backRightMotor.setInverted(true);
+        backRightMotor.setInverted(true);
         LiveWindow.add(backRightMotor);
 
         SmartDashboard.putNumber(X_AXIS_SENSITIVITY, .8);
@@ -94,12 +91,8 @@ public class DriveControl extends Subsystem {
         double speed = Robot.oi.driverController.getRawAxis(OI.XBOX_LEFT_Y_AXIS) * -1;
         double turn = Robot.oi.driverController.getRawAxis(OI.XBOX_RIGHT_X_AXIS);
 
-        if(Math.abs(turn) < 0.1) {
-            turn = 0;
-        }
-        if(Math.abs(speed) < 0.1) {
-            speed = 0;
-        }
+        speed = OI.applyDeadZone(speed, 0.05);
+        turn = OI.applyDeadZone(turn, 0.05);
 
         rawArcadeDrive(speed, turn);
     }
